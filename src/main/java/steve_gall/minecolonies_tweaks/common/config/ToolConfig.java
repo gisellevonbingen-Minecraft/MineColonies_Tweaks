@@ -6,13 +6,13 @@ import java.util.List;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
-public class ToolTypeConfig
+public class ToolConfig
 {
-	public final ConfigValue<List<? extends String>> add;
+	public final ConfigValue<List<? extends String>> customTypes;
 
-	public ToolTypeConfig(ForgeConfigSpec.Builder builder)
+	public ToolConfig(ForgeConfigSpec.Builder builder)
 	{
-		this.add = builder.defineList("add", Collections.emptyList(), e -> true);
+		this.customTypes = builder.defineList("customTypes", Collections.emptyList(), e -> true);
 	}
 
 }

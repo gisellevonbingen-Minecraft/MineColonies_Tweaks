@@ -14,12 +14,18 @@ public class MineColoniesTweaksConfigCommon
 		SPEC = common.getRight();
 	}
 
-	public final ToolTypeConfig tools;
+	public final ToolConfig tools;
+
+	public final JobConfig jobs;
 
 	public MineColoniesTweaksConfigCommon(ForgeConfigSpec.Builder builder)
 	{
-		builder.push("items");
-		this.tools = new ToolTypeConfig(builder);
+		builder.push("tools");
+		this.tools = new ToolConfig(builder);
+		builder.pop();
+
+		builder.push("jobs");
+		this.jobs = new JobConfig(builder);
 		builder.pop();
 	}
 

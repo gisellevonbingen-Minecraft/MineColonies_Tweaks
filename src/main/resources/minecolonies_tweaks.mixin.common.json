@@ -4,6 +4,8 @@
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"AbstractEntityAICraftingAccessor",
+		"AbstractEntityAICraftingMixin",
 		"ItemStackUtilsMixin",
 		"ToolMixin",
 		"ToolTypeMixin"

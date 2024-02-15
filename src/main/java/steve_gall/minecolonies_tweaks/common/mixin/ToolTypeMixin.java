@@ -38,7 +38,7 @@ public abstract class ToolTypeMixin
 	{
 		Gson gson = new Gson();
 
-		for (String raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.add.get())
+		for (String raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
 		{
 			var json = gson.fromJson(raw, JsonObject.class);
 			CustomToolTypeData data = new CustomToolTypeData(json);
