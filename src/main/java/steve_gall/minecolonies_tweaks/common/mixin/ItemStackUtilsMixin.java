@@ -20,9 +20,9 @@ public abstract class ItemStackUtilsMixin
 	{
 		var data = CustomToolTypeData.find(toolType.getName());
 
-		if (data != null)
+		if (data != null && data.isTool(itemStack))
 		{
-			cir.setReturnValue(itemStack.is(data.getItemTag()));
+			cir.setReturnValue(true);
 		}
 
 	}

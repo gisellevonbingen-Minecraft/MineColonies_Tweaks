@@ -30,7 +30,7 @@ public class CustomToolTypeData
 
 	public static void register(CustomToolTypeData data)
 	{
-		MAP.put(data.getName().toLowerCase(), data);
+		MAP.put(data.getName(), data);
 		LIST.add(data);
 
 		MineColoniesTweaks.LOGGER.info("CustomToolData Added: " + data.getName());
@@ -55,7 +55,7 @@ public class CustomToolTypeData
 	@Nullable
 	public static CustomToolTypeData find(String name)
 	{
-		return MAP.get(name.toLowerCase());
+		return MAP.get(name);
 	}
 
 	private final String name;
@@ -64,13 +64,14 @@ public class CustomToolTypeData
 
 	private final Optional<Integer> defaultLevel;
 
+	private IToolType toolType;
 	private TagKey<Item> itemTag;
 	private final Int2ObjectOpenHashMap<TagKey<Item>> levelTags;
 
 	public CustomToolTypeData(JsonObject json)
 	{
 		this.name = GsonHelper.getAsString(json, "name");
-		this.hasVariableMaterials = GsonHelper.getAsBoolean(json, "hasVariableMaterials");
+		this.hasVariableMaterials = GsonHelper.getAsBoolean(json, "hasVariableMaterials", false);
 		this.translationKey = GsonHelper.getAsString(json, "translationKey", MineColoniesTweaks.MOD_ID + ".custom_tooltype." + this.name);
 
 		if (json.has("defaultLevel"))
@@ -135,6 +136,11 @@ public class CustomToolTypeData
 		});
 	}
 
+	/***
+	 *
+	 * @param item
+	 * @return -1 mean be fallback level
+	 */
 	public int getLevel(ItemStack item)
 	{
 		for (var i = 0; i <= Constants.MAX_BUILDING_LEVEL; i++)
@@ -149,9 +155,46 @@ public class CustomToolTypeData
 		return -1;
 	}
 
+	public boolean isTool(ItemStack itemStack)
+	{
+		int level = this.getLevel(itemStack);
+
+		if (level == -1)
+		{
+			return itemStack.is(this.getItemTag());
+		}
+		else
+		{
+			return true;
+		}
+
+	}
+
 	public Optional<Integer> getDefaultLevel()
 	{
 		return this.defaultLevel;
+	}
+
+	public void pair(IToolType toolType)
+	{
+		if (toolType == null)
+		{
+			throw new NullPointerException("toolType");
+		}
+		else if (this.toolType != null)
+		{
+			throw new IllegalCallerException("Arleay paired");
+		}
+		else
+		{
+			this.toolType = toolType;
+		}
+
+	}
+
+	public IToolType getToolType()
+	{
+		return this.toolType;
 	}
 
 }
