@@ -48,7 +48,7 @@ public abstract class ToolTypeMixin
 	}
 
 	@Inject(method = "<clinit>", at = @At(value = "TAIL"), cancellable = true)
-	private static void cinit(CallbackInfo ci)
+	private static void clinit(CallbackInfo ci)
 	{
 		for (CustomToolTypeData data : CustomToolTypeData.list())
 		{

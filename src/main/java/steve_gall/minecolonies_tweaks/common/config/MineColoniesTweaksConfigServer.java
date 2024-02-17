@@ -14,9 +14,13 @@ public class MineColoniesTweaksConfigServer
 		SPEC = common.getRight();
 	}
 
+	public final JobConfig jobs;
+
 	public MineColoniesTweaksConfigServer(ForgeConfigSpec.Builder builder)
 	{
-
+		builder.push("jobs");
+		this.jobs = new JobConfig(builder);
+		builder.pop();
 	}
 
 }

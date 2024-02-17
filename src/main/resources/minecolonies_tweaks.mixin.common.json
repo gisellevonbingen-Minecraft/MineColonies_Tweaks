@@ -6,6 +6,8 @@
 	"mixins": [
 		"AbstractEntityAICraftingAccessor",
 		"AbstractEntityAICraftingMixin",
+		"EntityAIWorkSifterAccessor",
+		"EntityAIWorkSifterMixin",
 		"ItemStackUtilsMixin",
 		"ToolMixin",
 		"ToolTypeMixin"

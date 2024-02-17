@@ -8,7 +8,7 @@ issueTrackerURL="${mod_issues}"
     version="${mod_version}"
     displayName="${mod_name}"
     displayURL="${mod_homepage}"
-    authors="gisellevonbingen"
+    authors="gisellevonbingen, supernova0102"
     logoFile="icon.png"
     description='''${mod_description}'''
 

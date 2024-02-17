@@ -8,26 +8,14 @@ import com.minecolonies.core.entity.ai.basic.AbstractEntityAICrafting;
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
 public interface AbstractEntityAICraftingAccessor
 {
-	@Accessor("PROGRESS_MULTIPLIER")
-	public static int getProgressMultiplier()
+	@Accessor(value = "PROGRESS_MULTIPLIER")
+	static int getProgressMultiplier()
 	{
 		throw new AssertionError();
 	}
 
-	@Accessor("PROGRESS_MULTIPLIER")
-	public static void setProgressMultiplier(int progressMultiplier)
-	{
-		throw new AssertionError();
-	}
-
-	@Accessor("HITTING_TIME")
-	public static int getHittingTime()
-	{
-		throw new AssertionError();
-	}
-
-	@Accessor("HITTING_TIME")
-	public static void setHittingTime(int hittingTime)
+	@Accessor(value = "HITTING_TIME")
+	static int getHittingTime()
 	{
 		throw new AssertionError();
 	}
