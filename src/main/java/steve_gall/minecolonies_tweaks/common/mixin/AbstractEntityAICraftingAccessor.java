@@ -3,7 +3,7 @@ package steve_gall.minecolonies_tweaks.common.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import com.minecolonies.core.entity.ai.basic.AbstractEntityAICrafting;
+import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
 public interface AbstractEntityAICraftingAccessor

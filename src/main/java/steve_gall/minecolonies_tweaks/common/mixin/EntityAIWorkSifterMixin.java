@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import com.minecolonies.core.entity.ai.citizen.sifter.EntityAIWorkSifter;
+import com.minecolonies.core.entity.ai.workers.crafting.EntityAIWorkSifter;
 
 import steve_gall.minecolonies_tweaks.common.config.MineColoniesTweaksConfigServer;
 

@@ -6,6 +6,11 @@
 	"mixins": [
 		"AbstractEntityAICraftingAccessor",
 		"AbstractEntityAICraftingMixin",
+		"AbstractEntityAIInteractMixin",
+		"AbstractEntityAIStructureAccessor",
+		"AbstractEntityAIStructureMixin",
+		"EntityAIStructureBuilderAccessor",
+		"EntityAIStructureBuilderMixin",
 		"EntityAIWorkSifterAccessor",
 		"EntityAIWorkSifterMixin",
 		"ItemStackUtilsMixin",
