@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common.mixin;
+package steve_gall.minecolonies_tweaks.common.mixin.minecolonies;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
