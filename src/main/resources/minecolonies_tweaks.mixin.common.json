@@ -10,7 +10,8 @@
 		"minecolonies.EntityAIWorkSifterMixin",
 		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.ToolMixin",
-		"minecolonies.ToolTypeMixin"
+		"minecolonies.ToolTypeMixin",
+		"minecraft.ChunkGeneratorMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
