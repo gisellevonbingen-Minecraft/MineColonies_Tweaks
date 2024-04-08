@@ -15,11 +15,16 @@ public class MineColoniesTweaksConfigCommon
 	}
 
 	public final ToolConfig tools;
+	public final WorldGenConfig worldGens;
 
 	public MineColoniesTweaksConfigCommon(ForgeConfigSpec.Builder builder)
 	{
 		builder.push("tools");
 		this.tools = new ToolConfig(builder);
+		builder.pop();
+
+		builder.push("worldGens");
+		this.worldGens = new WorldGenConfig(builder);
 		builder.pop();
 	}
 
