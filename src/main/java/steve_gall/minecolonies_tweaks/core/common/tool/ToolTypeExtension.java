@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common.tool;
+package steve_gall.minecolonies_tweaks.core.common.tool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 public class ToolTypeExtension
 {

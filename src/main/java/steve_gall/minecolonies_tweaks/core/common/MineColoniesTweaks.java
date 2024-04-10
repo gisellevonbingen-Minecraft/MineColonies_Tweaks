@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common;
+package steve_gall.minecolonies_tweaks.core.common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,9 +12,9 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import steve_gall.minecolonies_tweaks.client.MineColoniesTweaksClient;
-import steve_gall.minecolonies_tweaks.common.config.MineColoniesTweaksConfigCommon;
-import steve_gall.minecolonies_tweaks.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
+import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mod(MineColoniesTweaks.MOD_ID)
 public class MineColoniesTweaks

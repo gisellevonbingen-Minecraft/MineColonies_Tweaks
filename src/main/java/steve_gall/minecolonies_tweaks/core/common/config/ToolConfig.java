@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common.config;
+package steve_gall.minecolonies_tweaks.core.common.config;
 
 import java.util.Collections;
 import java.util.List;

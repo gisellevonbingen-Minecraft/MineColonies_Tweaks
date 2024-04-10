@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common.mixin.minecolonies;
+package steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,8 +10,8 @@ import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.common.tool.CustomToolTypeData;
-import steve_gall.minecolonies_tweaks.common.tool.ToolTypeExtension;
+import steve_gall.minecolonies_tweaks.core.common.tool.CustomToolTypeData;
+import steve_gall.minecolonies_tweaks.core.common.tool.ToolTypeExtension;
 
 @Mixin(value = ItemStackUtils.class, remap = false)
 public abstract class ItemStackUtilsMixin

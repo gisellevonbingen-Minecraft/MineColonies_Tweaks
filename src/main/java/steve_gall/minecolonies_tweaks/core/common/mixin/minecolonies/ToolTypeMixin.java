@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common.mixin.minecolonies;
+package steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +20,8 @@ import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.network.chat.Component;
-import steve_gall.minecolonies_tweaks.common.config.MineColoniesTweaksConfigCommon;
-import steve_gall.minecolonies_tweaks.common.tool.CustomToolTypeData;
+import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.common.tool.CustomToolTypeData;
 
 @Mixin(value = ToolType.class, remap = false)
 public abstract class ToolTypeMixin
