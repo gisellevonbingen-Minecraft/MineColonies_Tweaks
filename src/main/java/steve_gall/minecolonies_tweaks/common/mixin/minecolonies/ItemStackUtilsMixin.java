@@ -11,6 +11,7 @@ import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.common.tool.CustomToolTypeData;
+import steve_gall.minecolonies_tweaks.common.tool.ToolTypeExtension;
 
 @Mixin(value = ItemStackUtils.class, remap = false)
 public abstract class ItemStackUtilsMixin
@@ -18,9 +19,7 @@ public abstract class ItemStackUtilsMixin
 	@Inject(method = "isTool", at = @At(value = "TAIL"), cancellable = true)
 	private static void isTool(@Nullable final ItemStack itemStack, final IToolType toolType, CallbackInfoReturnable<Boolean> cir)
 	{
-		var data = CustomToolTypeData.find(toolType.getName());
-
-		if (data != null && data.isTool(itemStack))
+		if (ToolTypeExtension.from(toolType).isCustomTool(itemStack))
 		{
 			cir.setReturnValue(true);
 		}
@@ -30,19 +29,24 @@ public abstract class ItemStackUtilsMixin
 	@Inject(method = "getMiningLevel", at = @At(value = "HEAD"), cancellable = true)
 	private static void getMiningLevel(@Nullable final ItemStack stack, @Nullable final IToolType toolType, CallbackInfoReturnable<Integer> cir)
 	{
-		var data = CustomToolTypeData.find(toolType.getName());
-
-		if (data != null && ItemStackUtils.isTool(stack, toolType))
+		if (ItemStackUtils.isTool(stack, toolType))
 		{
-			int level = data.getLevel(stack);
+			ToolTypeExtension extension = ToolTypeExtension.from(toolType);
+			int level = extension.getCustomLevel(stack);
 
-			if (level == -1)
+			if (level != -1)
 			{
-				data.getDefaultLevel().ifPresent(cir::setReturnValue);
+				cir.setReturnValue(level);
 			}
 			else
 			{
-				cir.setReturnValue(level);
+				var data = CustomToolTypeData.find(toolType.getName());
+
+				if (data != null)
+				{
+					data.getDefaultLevel().ifPresent(cir::setReturnValue);
+				}
+
 			}
 
 		}
