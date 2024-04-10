@@ -21,7 +21,7 @@ public abstract class ToolMixin
 	{
 		for (ToolType toolType : ToolType.values())
 		{
-			if (stack.is(ToolTypeExtension.from(toolType).getItemCustomTag()))
+			if (ToolTypeExtension.from(toolType).isCustomTool(stack))
 			{
 				cir.getReturnValue().add(toolType.getName());
 			}
