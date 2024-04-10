@@ -16,10 +16,10 @@ import steve_gall.minecolonies_tweaks.common.tool.ToolTypeExtension;
 @Mixin(value = ItemStackUtils.class, remap = false)
 public abstract class ItemStackUtilsMixin
 {
-	@Inject(method = "isTool", at = @At(value = "TAIL"), cancellable = true)
+	@Inject(method = "isTool", at = @At(value = "HEAD"), cancellable = true)
 	private static void isTool(@Nullable final ItemStack itemStack, final IToolType toolType, CallbackInfoReturnable<Boolean> cir)
 	{
-		if (ToolTypeExtension.from(toolType).isCustomTool(itemStack))
+		if (!ItemStackUtils.isEmpty(itemStack) && ToolTypeExtension.from(toolType).isCustomTool(itemStack))
 		{
 			cir.setReturnValue(true);
 		}
@@ -45,6 +45,10 @@ public abstract class ItemStackUtilsMixin
 				if (data != null)
 				{
 					data.getDefaultLevel().ifPresent(cir::setReturnValue);
+				}
+				else
+				{
+
 				}
 
 			}
