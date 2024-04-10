@@ -11,7 +11,7 @@ import com.minecolonies.api.colony.requestsystem.requestable.Tool;
 import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.core.common.tool.ToolTypeExtension;
+import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
 
 @Mixin(value = Tool.class, remap = false)
 public abstract class ToolMixin

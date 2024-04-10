@@ -14,14 +14,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.network.chat.Component;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
-import steve_gall.minecolonies_tweaks.core.common.tool.CustomToolTypeData;
+import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeData;
 
 @Mixin(value = ToolType.class, remap = false)
 public abstract class ToolTypeMixin
@@ -36,15 +33,8 @@ public abstract class ToolTypeMixin
 
 	static
 	{
-		Gson gson = new Gson();
-
-		for (String raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
-		{
-			var json = gson.fromJson(raw, JsonObject.class);
-			CustomToolTypeData data = new CustomToolTypeData(json);
-			addValue(data);
-		}
-
+		CustomToolTypeData.init();
+		CustomToolTypeData.list().forEach(ToolTypeMixin::addValue);
 	}
 
 	@Inject(method = "<clinit>", at = @At(value = "TAIL"), cancellable = true)
@@ -71,7 +61,6 @@ public abstract class ToolTypeMixin
 		values.add(value);
 		data.pair(value);
 		ToolTypeMixin.$VALUES = values.toArray(new ToolType[0]);
-		CustomToolTypeData.register(data);
 
 		return value;
 	}

@@ -10,8 +10,8 @@ import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.core.common.tool.CustomToolTypeData;
-import steve_gall.minecolonies_tweaks.core.common.tool.ToolTypeExtension;
+import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeData;
+import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
 
 @Mixin(value = ItemStackUtils.class, remap = false)
 public abstract class ItemStackUtilsMixin
@@ -37,6 +37,7 @@ public abstract class ItemStackUtilsMixin
 			if (level != -1)
 			{
 				cir.setReturnValue(level);
+				return;
 			}
 			else
 			{
@@ -45,10 +46,6 @@ public abstract class ItemStackUtilsMixin
 				if (data != null)
 				{
 					data.getDefaultLevel().ifPresent(cir::setReturnValue);
-				}
-				else
-				{
-
 				}
 
 			}

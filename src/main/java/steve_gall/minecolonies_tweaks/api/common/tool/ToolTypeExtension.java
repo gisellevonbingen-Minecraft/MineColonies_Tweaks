@@ -1,13 +1,14 @@
-package steve_gall.minecolonies_tweaks.core.common.tool;
+package steve_gall.minecolonies_tweaks.api.common.tool;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.IToolType;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -18,17 +19,33 @@ public class ToolTypeExtension
 {
 	private static Map<IToolType, ToolTypeExtension> MAP = new HashMap<>();
 
-	public static ToolTypeExtension from(IToolType toolType)
+	@NotNull
+	public static ToolTypeExtension from(@NotNull IToolType toolType)
 	{
 		return MAP.computeIfAbsent(toolType, ToolTypeExtension::new);
 	}
 
+	@NotNull
+	public static TagKey<Item> getItemCustomTag(@NotNull String name)
+	{
+		String path = "custom_tools/" + name.toLowerCase();
+		return ItemTags.create(MineColoniesTweaks.rl(path));
+	}
+
+	@NotNull
+	public static TagKey<Item> getItemCustomLevelTag(@NotNull String name, int level)
+	{
+		String path = "custom_tools/" + name.toLowerCase() + "/" + level;
+		return ItemTags.create(MineColoniesTweaks.rl(path));
+	}
+
+	@NotNull
 	private final IToolType toolType;
 
 	private TagKey<Item> itemTag;
 	private final Int2ObjectOpenHashMap<TagKey<Item>> levelTags;
 
-	public ToolTypeExtension(IToolType toolType)
+	private ToolTypeExtension(@NotNull IToolType toolType)
 	{
 		this.toolType = toolType;
 		this.levelTags = new Int2ObjectOpenHashMap<>();
@@ -39,7 +56,7 @@ public class ToolTypeExtension
 	 * @param item
 	 * @return -1 mean be fallback level
 	 */
-	public int getCustomLevel(ItemStack item)
+	public int getCustomLevel(@NotNull ItemStack item)
 	{
 		for (var i = 0; i <= Constants.MAX_BUILDING_LEVEL; i++)
 		{
@@ -53,7 +70,7 @@ public class ToolTypeExtension
 		return -1;
 	}
 
-	public boolean isCustomTool(ItemStack itemStack)
+	public boolean isCustomTool(@NotNull ItemStack itemStack)
 	{
 		int level = this.getCustomLevel(itemStack);
 
@@ -68,29 +85,29 @@ public class ToolTypeExtension
 
 	}
 
+	@NotNull
 	public IToolType getToolType()
 	{
 		return this.toolType;
 	}
 
+	@NotNull
 	public TagKey<Item> getItemCustomTag()
 	{
 		if (this.itemTag == null)
 		{
-			String path = "custom_tools/" + this.getToolType().getName().toLowerCase();
-			this.itemTag = ItemTags.create(MineColoniesTweaks.rl(path));
+			this.itemTag = getItemCustomTag(this.getToolType().getName());
 		}
 
 		return this.itemTag;
 	}
 
+	@NotNull
 	public TagKey<Item> getItemCustomLevelTag(int level)
 	{
 		return this.levelTags.computeIfAbsent(level, l ->
 		{
-			ResourceLocation base = this.getItemCustomTag().location();
-			String path = base.getPath() + "/" + l;
-			return ItemTags.create(new ResourceLocation(base.getNamespace(), path));
+			return getItemCustomLevelTag(this.getToolType().getName(), l);
 		});
 
 	}
