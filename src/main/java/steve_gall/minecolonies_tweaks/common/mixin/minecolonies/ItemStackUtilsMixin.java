@@ -46,6 +46,10 @@ public abstract class ItemStackUtilsMixin
 				{
 					data.getDefaultLevel().ifPresent(cir::setReturnValue);
 				}
+				else
+				{
+
+				}
 
 			}
 
