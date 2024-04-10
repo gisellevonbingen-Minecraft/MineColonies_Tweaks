@@ -10,17 +10,10 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
-import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.IToolType;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.common.MineColoniesTweaks;
 
 public class CustomToolTypeData
@@ -65,8 +58,6 @@ public class CustomToolTypeData
 	private final Optional<Integer> defaultLevel;
 
 	private IToolType toolType;
-	private TagKey<Item> itemTag;
-	private final Int2ObjectOpenHashMap<TagKey<Item>> levelTags;
 
 	public CustomToolTypeData(JsonObject json)
 	{
@@ -83,7 +74,6 @@ public class CustomToolTypeData
 			this.defaultLevel = Optional.empty();
 		}
 
-		this.levelTags = new Int2ObjectOpenHashMap<>();
 	}
 
 	public JsonObject toObject()
@@ -113,61 +103,6 @@ public class CustomToolTypeData
 	public String getTranslationKey()
 	{
 		return this.translationKey;
-	}
-
-	public TagKey<Item> getItemTag()
-	{
-		if (this.itemTag == null)
-		{
-			String path = "custom_tools/" + this.getName().toLowerCase();
-			this.itemTag = ItemTags.create(MineColoniesTweaks.rl(path));
-		}
-
-		return this.itemTag;
-	}
-
-	public TagKey<Item> getLevelTag(int level)
-	{
-		return this.levelTags.computeIfAbsent(level, l ->
-		{
-			ResourceLocation base = this.getItemTag().location();
-			String path = base.getPath() + "/" + l;
-			return ItemTags.create(new ResourceLocation(base.getNamespace(), path));
-		});
-	}
-
-	/***
-	 *
-	 * @param item
-	 * @return -1 mean be fallback level
-	 */
-	public int getLevel(ItemStack item)
-	{
-		for (var i = 0; i <= Constants.MAX_BUILDING_LEVEL; i++)
-		{
-			if (item.is(this.getLevelTag(i)))
-			{
-				return i;
-			}
-
-		}
-
-		return -1;
-	}
-
-	public boolean isTool(ItemStack itemStack)
-	{
-		int level = this.getLevel(itemStack);
-
-		if (level == -1)
-		{
-			return itemStack.is(this.getItemTag());
-		}
-		else
-		{
-			return true;
-		}
-
 	}
 
 	public Optional<Integer> getDefaultLevel()
