@@ -1,0 +1,68 @@
+package steve_gall.minecolonies_tweaks.api.registries;
+
+import java.util.function.Consumer;
+
+import com.minecolonies.api.colony.guardtype.GuardType;
+import com.minecolonies.api.colony.jobs.ModJobs;
+import com.minecolonies.api.colony.jobs.registry.JobEntry;
+import com.minecolonies.api.util.constant.Constants;
+
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
+
+public class DeferredRegisterHelper
+{
+	public static DeferredRegister<JobEntry> jobs(String modid)
+	{
+		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "jobs"), modid);
+	}
+
+	public static RegistryObject<JobEntry> registerJobEntry(DeferredRegister<JobEntry> register, String name, Consumer<JobEntry.Builder> consumer)
+	{
+		ResourceLocation rl = register.createTagKey(name).location();
+		ModJobs.jobs.add(rl);
+
+		return register.register(name, () ->
+		{
+			var builder = new JobEntry.Builder();
+			builder.setRegistryName(rl);
+
+			consumer.accept(builder);
+			return builder.createJobEntry();
+		});
+
+	}
+
+	public static DeferredRegister<GuardType> guardTypes(String modid)
+	{
+		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "guardtypes"), modid);
+	}
+
+	public static RegistryObject<GuardType> registerGuardType(DeferredRegister<GuardType> register, RegistryObject<JobEntry> jobEntry, Consumer<GuardType.Builder> consumer)
+	{
+		return registerGuardType(register, jobEntry.getId().getPath(), jobEntry, consumer);
+	}
+
+	public static RegistryObject<GuardType> registerGuardType(DeferredRegister<GuardType> register, String name, RegistryObject<JobEntry> jobEntry, Consumer<GuardType.Builder> consumer)
+	{
+		ResourceLocation rl = register.createTagKey(name).location();
+		return register.register(name, () ->
+		{
+			var builder = new GuardType.Builder();
+			builder.setJobTranslationKey(rl.getNamespace() + ".job." + name);
+			builder.setButtonTranslationKey(rl.getNamespace() + ".gui.workerhuts." + name);
+			builder.setJobEntry(jobEntry);
+			builder.setRegistryName(rl);
+
+			consumer.accept(builder);
+			return builder.createGuardType();
+		});
+	}
+
+	private DeferredRegisterHelper()
+	{
+
+	}
+
+}

@@ -13,10 +13,12 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
 import net.minecraftforge.common.MinecraftForge;
+import steve_gall.minecolonies_tweaks.api.common.util.GsonHelper2;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 
@@ -32,9 +34,8 @@ public class CustomToolTypeData
 		for (String raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
 		{
 			var json = gson.fromJson(raw, JsonObject.class);
-			String name = GsonHelper.getAsString(json, "name");
-			CustomToolTypeData data = new CustomToolTypeData(name, json);
-			register(data);
+			var builder = new CustomToolTypeData.Builder(json);
+			register(builder.build());
 		}
 
 		MinecraftForge.EVENT_BUS.post(new CustomToolTypeRegisterEvent(CustomToolTypeData::register));
@@ -50,7 +51,7 @@ public class CustomToolTypeData
 		MAP.put(data.getName(), data);
 		LIST.add(data);
 
-		MineColoniesTweaks.LOGGER.info("CustomToolData Added: " + data.getName());
+		MineColoniesTweaks.LOGGER.info("CustomToolTypeData Added: " + data.getName());
 	}
 
 	@NotNull
@@ -86,15 +87,7 @@ public class CustomToolTypeData
 	@NotNull
 	private final Optional<Integer> defaultLevel;
 
-	private IToolType toolType;
-
-	public CustomToolTypeData(@NotNull String name, @NotNull JsonObject json)
-	{
-		this.name = name;
-		this.hasVariableMaterials = GsonHelper.getAsBoolean(json, "hasVariableMaterials", false);
-		this.translationKey = GsonHelper.getAsString(json, "translationKey", getFallbackTranslationKey(this.name));
-		this.defaultLevel = json.has("defaultLevel") ? Optional.of(GsonHelper.getAsInt(json, "defaultLevel")) : Optional.empty();
-	}
+	private ToolType toolType;
 
 	private CustomToolTypeData(@NotNull Builder builder)
 	{
@@ -110,16 +103,6 @@ public class CustomToolTypeData
 		return MineColoniesTweaks.MOD_ID + ".custom_tooltype." + name;
 	}
 
-	@NotNull
-	public JsonObject toObject()
-	{
-		var json = new JsonObject();
-		json.addProperty("name", this.getName());
-		json.addProperty("hasVariableMaterials", this.hasVariableMaterials());
-		json.addProperty("translationKey", this.getTranslationKey());
-		return json;
-	}
-
 	public static class Builder
 	{
 		@NotNull
@@ -133,6 +116,33 @@ public class CustomToolTypeData
 		public Builder(@NotNull String name)
 		{
 			this.name = name;
+		}
+
+		public Builder(@NotNull CustomToolTypeData data)
+		{
+			this.name = data.name;
+			this.hasVariableMaterials = data.hasVariableMaterials;
+			this.translationKey = Optional.of(data.translationKey);
+			this.defaultLevel = data.defaultLevel;
+		}
+
+		public Builder(@NotNull JsonObject json)
+		{
+			this.name = GsonHelper.getAsString(json, "name");
+			this.hasVariableMaterials = GsonHelper.getAsBoolean(json, "hasVariableMaterials", false);
+			this.translationKey = GsonHelper2.of(json, "translationKey", GsonHelper::getAsString);
+			this.defaultLevel = GsonHelper2.of(json, "defaultLevel", GsonHelper::getAsInt);
+		}
+
+		@NotNull
+		public JsonObject toObject()
+		{
+			var json = new JsonObject();
+			json.addProperty("name", this.name());
+			json.addProperty("hasVariableMaterials", this.hasVariableMaterials());
+			GsonHelper2.ifPresent("translationKey", this.translationKey(), json::addProperty);
+			GsonHelper2.ifPresent("defaultLevel", this.defaultLevel(), json::addProperty);
+			return json;
 		}
 
 		@NotNull
@@ -213,7 +223,7 @@ public class CustomToolTypeData
 		return this.defaultLevel;
 	}
 
-	public void pair(@NotNull IToolType toolType)
+	public void pair(@NotNull ToolType toolType)
 	{
 		if (this.toolType != null)
 		{
@@ -231,7 +241,7 @@ public class CustomToolTypeData
 	}
 
 	@NotNull
-	public IToolType getToolType()
+	public ToolType getToolType()
 	{
 		if (this.toolType == null)
 		{
