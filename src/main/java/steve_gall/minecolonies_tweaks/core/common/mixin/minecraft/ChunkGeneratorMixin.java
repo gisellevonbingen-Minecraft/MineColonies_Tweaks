@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common.mixin.minecraft;
+package steve_gall.minecolonies_tweaks.core.common.mixin.minecraft;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,8 +20,8 @@ import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import steve_gall.minecolonies_tweaks.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.common.config.MineColoniesTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 
 @Mixin(value = ChunkGenerator.class)
 public class ChunkGeneratorMixin

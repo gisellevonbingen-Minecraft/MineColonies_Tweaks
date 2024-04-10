@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common.tool;
+package steve_gall.minecolonies_tweaks.core.common.tool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
-import steve_gall.minecolonies_tweaks.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 public class CustomToolTypeData
 {

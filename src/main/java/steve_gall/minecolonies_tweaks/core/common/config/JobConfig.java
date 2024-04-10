@@ -1,14 +1,14 @@
-package steve_gall.minecolonies_tweaks.common.config;
+package steve_gall.minecolonies_tweaks.core.common.config;
 
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import steve_gall.minecolonies_tweaks.common.mixin.minecolonies.AbstractEntityAICraftingAccessor;
-import steve_gall.minecolonies_tweaks.common.mixin.minecolonies.AbstractEntityAIStructureAccessor;
-import steve_gall.minecolonies_tweaks.common.mixin.minecolonies.EntityAIStructureBuilderAccessor;
-import steve_gall.minecolonies_tweaks.common.mixin.minecolonies.EntityAIWorkSifterAccessor;
+import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.AbstractEntityAICraftingAccessor;
+import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.AbstractEntityAIStructureAccessor;
+import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.EntityAIStructureBuilderAccessor;
+import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.EntityAIWorkSifterAccessor;
 
 public class JobConfig
 {

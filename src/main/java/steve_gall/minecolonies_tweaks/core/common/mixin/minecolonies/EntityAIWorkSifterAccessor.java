@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.common.mixin.minecolonies;
+package steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;

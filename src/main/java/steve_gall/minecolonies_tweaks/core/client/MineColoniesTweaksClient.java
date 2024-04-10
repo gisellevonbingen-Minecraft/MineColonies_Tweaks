@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.client;
+package steve_gall.minecolonies_tweaks.core.client;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
