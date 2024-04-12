@@ -28,14 +28,14 @@ public class ToolTypeExtension
 	@NotNull
 	public static TagKey<Item> getItemCustomTag(@NotNull String name)
 	{
-		String path = "custom_tools/" + name.toLowerCase();
+		var path = "custom_tools/" + name.toLowerCase();
 		return ItemTags.create(MineColoniesTweaks.rl(path));
 	}
 
 	@NotNull
 	public static TagKey<Item> getItemCustomLevelTag(@NotNull String name, int level)
 	{
-		String path = "custom_tools/" + name.toLowerCase() + "/" + level;
+		var path = "custom_tools/" + name.toLowerCase() + "/" + level;
 		return ItemTags.create(MineColoniesTweaks.rl(path));
 	}
 
@@ -72,7 +72,7 @@ public class ToolTypeExtension
 
 	public boolean isCustomTool(@NotNull ItemStack itemStack)
 	{
-		int level = this.getCustomLevel(itemStack);
+		var level = this.getCustomLevel(itemStack);
 
 		if (level == -1)
 		{

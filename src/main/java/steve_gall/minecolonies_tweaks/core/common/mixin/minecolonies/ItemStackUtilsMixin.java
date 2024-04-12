@@ -31,8 +31,8 @@ public abstract class ItemStackUtilsMixin
 	{
 		if (ItemStackUtils.isTool(stack, toolType))
 		{
-			ToolTypeExtension extension = ToolTypeExtension.from(toolType);
-			int level = extension.getCustomLevel(stack);
+			var extension = ToolTypeExtension.from(toolType);
+			var level = extension.getCustomLevel(stack);
 
 			if (level != -1)
 			{

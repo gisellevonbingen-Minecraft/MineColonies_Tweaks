@@ -29,9 +29,9 @@ public class CustomToolTypeData
 
 	public static void init()
 	{
-		Gson gson = new Gson();
+		var gson = new Gson();
 
-		for (String raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
+		for (var raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
 		{
 			var json = gson.fromJson(raw, JsonObject.class);
 			var builder = new CustomToolTypeData.Builder(json);

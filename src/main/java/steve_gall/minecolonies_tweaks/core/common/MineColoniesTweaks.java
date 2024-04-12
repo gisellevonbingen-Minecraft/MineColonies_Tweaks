@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -27,9 +26,9 @@ public class MineColoniesTweaks
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MineColoniesTweaksConfigCommon.SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
 
-		IEventBus fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
 
-		IEventBus forge_bus = MinecraftForge.EVENT_BUS;
+		var forge_bus = MinecraftForge.EVENT_BUS;
 
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
 	}
