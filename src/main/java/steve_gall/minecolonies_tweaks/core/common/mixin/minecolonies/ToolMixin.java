@@ -19,7 +19,7 @@ public abstract class ToolMixin
 	@Inject(method = "getToolClasses", at = @At(value = "TAIL"), cancellable = true)
 	private void getToolClasses(final ItemStack stack, CallbackInfoReturnable<Set<String>> cir)
 	{
-		for (ToolType toolType : ToolType.values())
+		for (var toolType : ToolType.values())
 		{
 			if (ToolTypeExtension.from(toolType).isCustomTool(stack))
 			{

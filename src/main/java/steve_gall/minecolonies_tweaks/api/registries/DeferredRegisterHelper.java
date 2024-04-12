@@ -20,7 +20,7 @@ public class DeferredRegisterHelper
 
 	public static RegistryObject<JobEntry> registerJobEntry(DeferredRegister<JobEntry> register, String name, Consumer<JobEntry.Builder> consumer)
 	{
-		ResourceLocation rl = register.createTagKey(name).location();
+		var rl = register.createTagKey(name).location();
 		ModJobs.jobs.add(rl);
 
 		return register.register(name, () ->
@@ -46,7 +46,7 @@ public class DeferredRegisterHelper
 
 	public static RegistryObject<GuardType> registerGuardType(DeferredRegister<GuardType> register, String name, RegistryObject<JobEntry> jobEntry, Consumer<GuardType.Builder> consumer)
 	{
-		ResourceLocation rl = register.createTagKey(name).location();
+		var rl = register.createTagKey(name).location();
 		return register.register(name, () ->
 		{
 			var builder = new GuardType.Builder();

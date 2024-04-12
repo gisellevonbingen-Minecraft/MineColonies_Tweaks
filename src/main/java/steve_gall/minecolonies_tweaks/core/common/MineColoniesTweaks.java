@@ -27,9 +27,9 @@ public class MineColoniesTweaks
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MineColoniesTweaksConfigCommon.SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
 
-		IEventBus fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
 
-		IEventBus forge_bus = MinecraftForge.EVENT_BUS;
+		var forge_bus = MinecraftForge.EVENT_BUS;
 
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
 	}

@@ -40,7 +40,7 @@ public abstract class ToolTypeMixin
 	@Inject(method = "<clinit>", at = @At(value = "TAIL"), cancellable = true)
 	private static void clinit(CallbackInfo ci)
 	{
-		for (CustomToolTypeData data : CustomToolTypeData.list())
+		for (var data : CustomToolTypeData.list())
 		{
 			tools.put(data.getName(), data.getToolType());
 		}
@@ -55,8 +55,8 @@ public abstract class ToolTypeMixin
 
 	private static ToolType addValue(CustomToolTypeData data)
 	{
-		List<ToolType> values = new ArrayList<>(Arrays.asList(ToolTypeMixin.$VALUES));
-		ToolType value = init(data.getName().toUpperCase(), values.get(values.size() - 1).ordinal() + 1, data.getName(), data.hasVariableMaterials(), data.getDisplayName());
+		var values = new ArrayList<>(Arrays.asList(ToolTypeMixin.$VALUES));
+		var value = init(data.getName().toUpperCase(), values.get(values.size() - 1).ordinal() + 1, data.getName(), data.hasVariableMaterials(), data.getDisplayName());
 
 		values.add(value);
 		data.pair(value);
