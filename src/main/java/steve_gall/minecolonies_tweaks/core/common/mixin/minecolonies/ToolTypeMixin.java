@@ -2,7 +2,6 @@ package steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.spongepowered.asm.mixin.Final;
