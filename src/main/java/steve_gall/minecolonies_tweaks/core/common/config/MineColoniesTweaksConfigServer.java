@@ -14,10 +14,15 @@ public class MineColoniesTweaksConfigServer
 		SPEC = common.getRight();
 	}
 
+	public final ResearchConfig researches;
 	public final JobConfig jobs;
 
 	public MineColoniesTweaksConfigServer(ForgeConfigSpec.Builder builder)
 	{
+		builder.push("researches");
+		this.researches = new ResearchConfig(builder);
+		builder.pop();
+
 		builder.push("jobs");
 		this.jobs = new JobConfig(builder);
 		builder.pop();
