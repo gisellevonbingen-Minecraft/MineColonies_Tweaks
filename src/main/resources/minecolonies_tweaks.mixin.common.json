@@ -8,6 +8,7 @@
 		"minecolonies.AbstractEntityAICraftingMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
 		"minecolonies.EntityAIWorkSifterMixin",
+		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.ToolMixin",
 		"minecolonies.ToolTypeMixin",
