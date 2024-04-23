@@ -14,13 +14,13 @@ public class AbstractEntityAIInteractMixin
 	@ModifyConstant(method = "getBlockMiningDelay", constant = @Constant(intValue = AbstractEntityAIInteract.BLOCK_MINING_DELAY / 2))
 	private int getBlockMiningDelay0(int BLOCK_MINING_DELAY)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.commonBlockMiningDelay.get() / 2;
+		return MineColoniesTweaksConfigServer.INSTANCE.jobs.blockMiningDelay.get() / 2;
 	}
 
 	@ModifyConstant(method = "calculateWorkerMiningDelay", constant = @Constant(doubleValue = AbstractEntityAIInteract.BLOCK_MINING_DELAY))
 	private double getBlockMiningDelay1(double BLOCK_MINING_DELAY)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.commonBlockMiningDelay.get();
+		return MineColoniesTweaksConfigServer.INSTANCE.jobs.blockMiningDelay.get();
 	}
 
 }

@@ -12,8 +12,8 @@ import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.EntityAIWor
 
 public class JobConfig
 {
-	public final IntValue commonBlockMiningDelay;
-	public final IntValue commonBlockBuildingDelay;
+	public final IntValue blockMiningDelay;
+	public final IntValue blockBuildingDelay;
 
 	public final DoubleValue builderBlockMiningDelayBuff;
 	public final IntValue craftingProgressMultiplier;
@@ -22,8 +22,8 @@ public class JobConfig
 
 	public JobConfig(ForgeConfigSpec.Builder builder)
 	{
-		this.commonBlockMiningDelay = builder.defineInRange("blockMiningDelay", AbstractEntityAIInteract.BLOCK_MINING_DELAY, 0, Integer.MAX_VALUE);
-		this.commonBlockBuildingDelay = builder.defineInRange("blockBuildingDelay", AbstractEntityAIStructureAccessor.getBuildBlockDelay(), 0, Integer.MAX_VALUE);
+		this.blockMiningDelay = builder.defineInRange("blockMiningDelay", AbstractEntityAIInteract.BLOCK_MINING_DELAY, 0, Integer.MAX_VALUE);
+		this.blockBuildingDelay = builder.defineInRange("blockBuildingDelay", AbstractEntityAIStructureAccessor.getBuildBlockDelay(), 0, Integer.MAX_VALUE);
 
 		builder.push("builder");
 		builder.comment("builder's blockMiningDelay = commonBlockingMiningDelay * buff");

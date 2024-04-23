@@ -15,7 +15,7 @@ public class AbstractEntityAIStructureMixin
 	@ModifyConstant(method = "structureStep", constant = @Constant(intValue = 150))
 	private int getBuildBlockDelay0(int BUILD_BLOCK_DELAY)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.commonBlockBuildingDelay.get() * CitizenConstants.PROGRESS_MULTIPLIER;
+		return MineColoniesTweaksConfigServer.INSTANCE.jobs.blockBuildingDelay.get() * CitizenConstants.PROGRESS_MULTIPLIER;
 	}
 
 }
