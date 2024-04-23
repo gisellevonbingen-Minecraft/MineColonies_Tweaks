@@ -13,8 +13,8 @@
 		"minecolonies.EntityAIStructureBuilderMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
 		"minecolonies.EntityAIWorkSifterMixin",
-		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.GlobalResearchBranchMixin",
+		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.ToolMixin",
 		"minecolonies.ToolTypeMixin",
 		"minecraft.ChunkGeneratorMixin"
