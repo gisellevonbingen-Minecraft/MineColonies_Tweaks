@@ -13,6 +13,7 @@
 		"minecolonies.EntityAIStructureBuilderMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
 		"minecolonies.EntityAIWorkSifterMixin",
+		"minecolonies.FarmFieldMixin",
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.ToolMixin",
