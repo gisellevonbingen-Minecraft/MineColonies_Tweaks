@@ -1,0 +1,23 @@
+<minecolonies_tweaks:addition>
+
+	<buttonimage id="dir-resize-up-north" size="14 14"
+		pos="127 31" textcolor="white" textalign="MIDDLE" label="+" />
+	<buttonimage id="dir-resize-down-north" size="14 14"
+		pos="141 31" textcolor="white" textalign="MIDDLE" label="-" />
+
+	<buttonimage id="dir-resize-up-south" size="14 14"
+		pos="127 117" textcolor="white" textalign="MIDDLE" label="+" />
+	<buttonimage id="dir-resize-down-south" size="14 14"
+		pos="141 117" textcolor="white" textalign="MIDDLE" label="-" />
+
+	<buttonimage id="dir-resize-up-west" size="14 14"
+		pos="91 69" textcolor="white" textalign="MIDDLE" label="+" />
+	<buttonimage id="dir-resize-down-west" size="14 14"
+		pos="91 83" textcolor="white" textalign="MIDDLE" label="-" />
+
+	<buttonimage id="dir-resize-up-east" size="14 14"
+		pos="177 69" textcolor="white" textalign="MIDDLE" label="+" />
+	<buttonimage id="dir-resize-down-east" size="14 14"
+		pos="177 83" textcolor="white" textalign="MIDDLE" label="-" />
+
+</minecolonies_tweaks:addition>
