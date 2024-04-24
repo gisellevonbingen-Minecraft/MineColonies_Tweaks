@@ -3,7 +3,9 @@
 	"package": "steve_gall.minecolonies_tweaks.core.client.mixin",
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_17",
-	"client": [],
+	"client": [
+		"minecolonies.WindowFieldMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	},
