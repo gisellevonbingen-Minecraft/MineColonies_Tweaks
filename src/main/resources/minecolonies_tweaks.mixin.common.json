@@ -12,6 +12,8 @@
 		"minecolonies.EntityAIStructureBuilderAccessor",
 		"minecolonies.EntityAIStructureBuilderMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
+		"minecolonies.EntityAIWorkFarmerAccessor",
+		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.EntityAIWorkSifterMixin",
 		"minecolonies.FarmFieldMixin",
 		"minecolonies.GlobalResearchBranchMixin",
