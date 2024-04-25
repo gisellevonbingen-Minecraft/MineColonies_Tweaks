@@ -3,15 +3,12 @@ package steve_gall.minecolonies_tweaks.core.common.config;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.AbstractEntityAICraftingAccessor;
 import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.AbstractEntityAIStructureAccessor;
 import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.EntityAIStructureBuilderAccessor;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.AbstractEntityAICraftingAccessor;
 import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.EntityAIWorkFarmerAccessor;
 import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.EntityAIWorkSifterAccessor;
 
@@ -54,7 +51,7 @@ public class JobConfig
 		builder.push("farmer");
 		builder.comment("finalDelay = workDelay - (skillDivider * staminaLevel)");
 		this.farmerWorkDelay = builder.defineInRange("workDelay", EntityAIWorkFarmerAccessor.getStandardDelay(), 0, Integer.MAX_VALUE);
-		this.farmerSkillDivider = builder.defineInRange("farmerSkillDivider", 2.0D, 1.0D, Integer.MAX_VALUE);
+		this.farmerSkillDivider = builder.defineInRange("skillDivider", 2.0D, 1.0D, Integer.MAX_VALUE);
 		builder.comment("if havested count reached to this, farmer will go to dump");
 		this.farmerActionsDoneUntilDumping = builder.defineInRange("actionsDoneUntilDumping", EntityAIWorkFarmerAccessor.getMaxBlocksMined(), EntityAIWorkFarmerAccessor.getMaxBlocksMined(), Integer.MAX_VALUE);
 		builder.comment("whether plant seed after hoeing dirt");
