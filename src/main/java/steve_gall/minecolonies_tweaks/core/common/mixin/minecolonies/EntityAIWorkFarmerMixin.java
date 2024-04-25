@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.compatibility.Compatibility;
+import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
+import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
 import com.minecolonies.core.colony.buildings.modules.FieldsModule;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingFarmer;
 import com.minecolonies.core.colony.fields.FarmField;
@@ -24,6 +26,9 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
 public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<JobFarmer, BuildingFarmer>
 {
+	@Shadow
+	private boolean shouldDumpInventory;
+
 	@Unique
 	private BlockPos minecolonies_tweaks$workingPosition;
 
@@ -48,6 +53,21 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	private boolean harvestIfAble(BlockPos position)
 	{
 		throw new AssertionError();
+	}
+
+	@Inject(method = "workAtField", at = @At(value = "RETURN"), cancellable = true)
+	private void workAtField(CallbackInfoReturnable<IAIState> cir)
+	{
+		if (MineColoniesTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue() && cir.getReturnValue() == AIWorkerState.IDLE)
+		{
+			if (this.shouldDumpInventory)
+			{
+				this.shouldDumpInventory = false;
+				cir.setReturnValue(AIWorkerState.INVENTORY_FULL);
+			}
+
+		}
+
 	}
 
 	@Inject(method = "hoeIfAble", at = @At(value = "HEAD"), cancellable = true)
