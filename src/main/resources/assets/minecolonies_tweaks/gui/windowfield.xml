@@ -1,9 +1,9 @@
 <minecolonies_tweaks:addition>
 
 	<buttonimage id="dir-resize-up-north" size="14 14"
-		pos="127 31" textcolor="white" textalign="MIDDLE" label="+" />
+		pos="147 41" textcolor="white" textalign="MIDDLE" label="+" />
 	<buttonimage id="dir-resize-down-north" size="14 14"
-		pos="141 31" textcolor="white" textalign="MIDDLE" label="-" />
+		pos="161 41" textcolor="white" textalign="MIDDLE" label="-" />
 
 	<buttonimage id="dir-resize-up-south" size="14 14"
 		pos="127 117" textcolor="white" textalign="MIDDLE" label="+" />
