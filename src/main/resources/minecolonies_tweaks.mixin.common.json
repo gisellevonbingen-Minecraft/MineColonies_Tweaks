@@ -11,6 +11,7 @@
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.EntityAIWorkSifterMixin",
 		"minecolonies.FarmFieldMixin",
+		"minecolonies.FieldsModuleMixin",
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.ToolMixin",
