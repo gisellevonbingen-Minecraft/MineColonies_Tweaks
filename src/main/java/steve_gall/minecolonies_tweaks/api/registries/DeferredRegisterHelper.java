@@ -2,6 +2,7 @@ package steve_gall.minecolonies_tweaks.api.registries;
 
 import java.util.function.Consumer;
 
+import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.colony.jobs.ModJobs;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
@@ -13,25 +14,22 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class DeferredRegisterHelper
 {
-	public static DeferredRegister<JobEntry> jobs(String modid)
+	public static DeferredRegister<BuildingEntry> buildings(String modid)
 	{
-		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "jobs"), modid);
+		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "buildings"), modid);
 	}
 
-	public static RegistryObject<JobEntry> registerJobEntry(DeferredRegister<JobEntry> register, String name, Consumer<JobEntry.Builder> consumer)
+	public static RegistryObject<BuildingEntry> registerBuilding(DeferredRegister<BuildingEntry> register, String name, Consumer<BuildingEntry.Builder> consumer)
 	{
 		var rl = register.createTagKey(name).location();
-		ModJobs.jobs.add(rl);
-
 		return register.register(name, () ->
 		{
-			var builder = new JobEntry.Builder();
+			var builder = new BuildingEntry.Builder();
 			builder.setRegistryName(rl);
 
 			consumer.accept(builder);
-			return builder.createJobEntry();
+			return builder.createBuildingEntry();
 		});
-
 	}
 
 	public static DeferredRegister<GuardType> guardTypes(String modid)
@@ -58,6 +56,27 @@ public class DeferredRegisterHelper
 			consumer.accept(builder);
 			return builder.createGuardType();
 		});
+	}
+
+	public static DeferredRegister<JobEntry> jobs(String modid)
+	{
+		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "jobs"), modid);
+	}
+
+	public static RegistryObject<JobEntry> registerJobEntry(DeferredRegister<JobEntry> register, String name, Consumer<JobEntry.Builder> consumer)
+	{
+		var rl = register.createTagKey(name).location();
+		ModJobs.jobs.add(rl);
+
+		return register.register(name, () ->
+		{
+			var builder = new JobEntry.Builder();
+			builder.setRegistryName(rl);
+
+			consumer.accept(builder);
+			return builder.createJobEntry();
+		});
+
 	}
 
 	private DeferredRegisterHelper()
