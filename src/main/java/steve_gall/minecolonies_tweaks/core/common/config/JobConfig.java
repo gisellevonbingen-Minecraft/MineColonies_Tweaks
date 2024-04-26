@@ -52,7 +52,7 @@ public class JobConfig
 		builder.comment("finalDelay = workDelay - (skillDivider * staminaLevel)");
 		this.farmerWorkDelay = builder.defineInRange("workDelay", EntityAIWorkFarmerAccessor.getStandardDelay(), 0, Integer.MAX_VALUE);
 		this.farmerSkillDivider = builder.defineInRange("skillDivider", 2.0D, 1.0D, Integer.MAX_VALUE);
-		builder.comment("if havested count reached to this, farmer will go to dump");
+		builder.comment("if harvested count reached to this, farmer will go to dump");
 		this.farmerActionsDoneUntilDumping = builder.defineInRange("actionsDoneUntilDumping", 256, EntityAIWorkFarmerAccessor.getMaxBlocksMined(), Integer.MAX_VALUE);
 		builder.comment("whether plant seed after hoeing dirt");
 		this.farmerPlantAfterHoe = builder.define("plantAfterHoe", true);
