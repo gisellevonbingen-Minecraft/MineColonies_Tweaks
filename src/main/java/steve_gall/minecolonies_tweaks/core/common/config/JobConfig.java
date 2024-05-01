@@ -20,6 +20,7 @@ public class JobConfig
 	public final DoubleValue builderBlockMiningDelayBuff;
 	public final IntValue craftingProgressMultiplier;
 	public final IntValue craftingHittingTime;
+	public final IntValue craftingDecideDelay;
 	public final IntValue sifterProgressMultiplier;
 	public final IntValue farmerWorkDelay;
 	public final DoubleValue farmerSkillDivider;
@@ -41,6 +42,8 @@ public class JobConfig
 		builder.comment("craftingTicks = progressMultiplier / craftSkillLevel * hittingTime");
 		this.craftingProgressMultiplier = builder.defineInRange("progressMultiplier", AbstractEntityAICraftingAccessor.getProgressMultiplier(), 0, Integer.MAX_VALUE);
 		this.craftingHittingTime = builder.defineInRange("hittingTime", AbstractEntityAICraftingAccessor.getHittingTime(), 0, Integer.MAX_VALUE);
+		builder.comment("The delay ticks for go to work again after Citizen returned at hut", "This was 0 when 1.19.2");
+		this.craftingDecideDelay = builder.defineInRange("decideDelay", 400, 0, 400);
 		builder.pop();
 
 		builder.push("sifter");

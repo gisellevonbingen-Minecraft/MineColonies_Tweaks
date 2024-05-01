@@ -11,6 +11,12 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
 public class AbstractEntityAICraftingMixin
 {
+	@ModifyConstant(method = "decide", constant = @Constant(intValue = 400))
+	private int decide_setDelay(int timeout)
+	{
+		return MineColoniesTweaksConfigServer.INSTANCE.jobs.craftingDecideDelay.get();
+	}
+
 	// private int getRequiredProgressForMakingRawMaterial()
 	// {
 	// final int jobModifier = worker.getCitizenData().getCitizenSkillHandler().getLevel(((CraftingWorkerBuildingModule) getModuleForJob()).getCraftSpeedSkill()) / 2;
