@@ -1,14 +1,20 @@
 package steve_gall.minecolonies_tweaks.api.registries;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.guardtype.GuardType;
-import com.minecolonies.api.colony.jobs.ModJobs;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
+import com.minecolonies.api.sounds.EventType;
+import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -66,8 +72,6 @@ public class DeferredRegisterHelper
 	public static RegistryObject<JobEntry> registerJobEntry(DeferredRegister<JobEntry> register, String name, Consumer<JobEntry.Builder> consumer)
 	{
 		var rl = register.createTagKey(name).location();
-		ModJobs.jobs.add(rl);
-
 		return register.register(name, () ->
 		{
 			var builder = new JobEntry.Builder();
@@ -77,6 +81,34 @@ public class DeferredRegisterHelper
 			return builder.createJobEntry();
 		});
 
+	}
+
+	public static Map<EventType, List<Tuple<SoundEvent, SoundEvent>>> registerJobSoundEvents(DeferredRegister<SoundEvent> register, String name)
+	{
+		var namespace = register.createTagKey(name).location().getNamespace();
+		var map = new HashMap<EventType, List<Tuple<SoundEvent, SoundEvent>>>();
+
+		for (var event : EventType.values())
+		{
+			var individualSounds = new ArrayList<Tuple<SoundEvent, SoundEvent>>();
+
+			for (var i = 1; i <= 4; i++)
+			{
+				var prefix = "citizen." + name;
+				var suffix = i + "." + event.getId();
+
+				var maleSoundEvent = SoundEvent.createVariableRangeEvent(new ResourceLocation(namespace, prefix + ".male" + suffix));
+				var femaleSoundEvent = SoundEvent.createVariableRangeEvent(new ResourceLocation(namespace, prefix + ".female" + suffix));
+
+				register.register(maleSoundEvent.getLocation().getPath(), () -> maleSoundEvent);
+				register.register(femaleSoundEvent.getLocation().getPath(), () -> femaleSoundEvent);
+				individualSounds.add(new Tuple<>(maleSoundEvent, femaleSoundEvent));
+			}
+
+			map.put(event, individualSounds);
+		}
+
+		return map;
 	}
 
 	private DeferredRegisterHelper()
