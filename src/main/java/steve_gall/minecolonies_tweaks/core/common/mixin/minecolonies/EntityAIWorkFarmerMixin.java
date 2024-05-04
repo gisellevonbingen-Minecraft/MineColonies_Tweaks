@@ -21,6 +21,8 @@ import com.minecolonies.core.entity.ai.basic.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.ai.citizen.farmer.EntityAIWorkFarmer;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.StemBlock;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
@@ -81,6 +83,11 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	{
 		if (MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHoe.get().booleanValue())
 		{
+			if (farmField.getSeed().getItem() instanceof BlockItem item && item.getBlock() instanceof StemBlock)
+			{
+				return;
+			}
+
 			this.tryToPlant(farmField, this.minecolonies_tweaks$workingPosition);
 		}
 
@@ -101,6 +108,11 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 			{
 				if (this.building.getFirstModuleOccurance(FieldsModule.class).getCurrentField() instanceof FarmField farmField)
 				{
+					if (farmField.getSeed().getItem() instanceof BlockItem item && item.getBlock() instanceof StemBlock)
+					{
+						return;
+					}
+
 					this.tryToPlant(farmField, this.minecolonies_tweaks$workingPosition);
 				}
 
