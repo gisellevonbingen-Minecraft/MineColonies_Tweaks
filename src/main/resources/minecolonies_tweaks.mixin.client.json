@@ -5,7 +5,8 @@
 	"compatibilityLevel": "JAVA_17",
 	"client": [
 		"minecolonies.MainWindowCitizenMixin",
-		"minecolonies.WindowFieldMixin"
+		"minecolonies.WindowFieldMixin",
+		"minecolonies.WindowCraftingsMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
