@@ -1,0 +1,31 @@
+package steve_gall.minecolonies_tweaks.core.common.config;
+
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+
+public class MineColoniesTweaksConfigClient
+{
+	public static final MineColoniesTweaksConfigClient INSTANCE;
+	public static final ForgeConfigSpec SPEC;
+
+	static
+	{
+		var common = new ForgeConfigSpec.Builder().configure(MineColoniesTweaksConfigClient::new);
+		INSTANCE = common.getLeft();
+		SPEC = common.getRight();
+	}
+
+	public final BooleanValue escToReturn;
+	public final BooleanValue addReturnButton;
+
+	public MineColoniesTweaksConfigClient(ForgeConfigSpec.Builder builder)
+	{
+		builder.push("gui");
+		builder.comment("ESC key allows return to previous window.", "Applies at Hut/Citizen inventory and Recipe Teach window.");
+		this.escToReturn = builder.define("escToReturn", true);
+		builder.comment("Add close button what can return previous window.", "Applies at Hut/Citizen inventory and Recipe Teach window.");
+		this.addReturnButton = builder.define("addCloseButton", false);
+		builder.pop();
+	}
+
+}

@@ -5,7 +5,7 @@ import com.ldtteam.blockui.Loader;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import steve_gall.minecolonies_tweaks.core.client.gui.WindowCraftingExtension;
+import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
 import steve_gall.minecolonies_tweaks.core.client.view.Addition;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
@@ -23,7 +23,7 @@ public class MineColoniesTweaksClient
 
 	private void onScreenOpening(ScreenEvent.Opening event)
 	{
-		if (event.getNewScreen() instanceof WindowCraftingExtension extension)
+		if (event.getNewScreen() instanceof CloseableWindowExtension extension)
 		{
 			if (extension.minecolonies_tweaks$getParent() == null)
 			{
