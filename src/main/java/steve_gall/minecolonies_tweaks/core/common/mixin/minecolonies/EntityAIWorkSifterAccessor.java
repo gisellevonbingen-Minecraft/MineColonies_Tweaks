@@ -8,7 +8,7 @@ import com.minecolonies.core.entity.ai.citizen.sifter.EntityAIWorkSifter;
 @Mixin(value = EntityAIWorkSifter.class, remap = false)
 public interface EntityAIWorkSifterAccessor
 {
-	@Accessor("MAX_LEVEL")
+	@Accessor(value = "MAX_LEVEL", remap = false)
 	static int getMaxLevel()
 	{
 		throw new AssertionError();

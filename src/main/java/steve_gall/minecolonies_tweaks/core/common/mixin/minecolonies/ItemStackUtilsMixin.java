@@ -16,8 +16,8 @@ import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
 @Mixin(value = ItemStackUtils.class, remap = false)
 public abstract class ItemStackUtilsMixin
 {
-	@Inject(method = "isTool", at = @At(value = "HEAD"), cancellable = true)
-	private static void isTool(@Nullable final ItemStack itemStack, final IToolType toolType, CallbackInfoReturnable<Boolean> cir)
+	@Inject(method = "isTool", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	private static void isTool(@Nullable ItemStack itemStack, IToolType toolType, CallbackInfoReturnable<Boolean> cir)
 	{
 		if (!ItemStackUtils.isEmpty(itemStack) && ToolTypeExtension.from(toolType).isCustomTool(itemStack))
 		{
@@ -26,8 +26,8 @@ public abstract class ItemStackUtilsMixin
 
 	}
 
-	@Inject(method = "getMiningLevel", at = @At(value = "HEAD"), cancellable = true)
-	private static void getMiningLevel(@Nullable final ItemStack stack, @Nullable final IToolType toolType, CallbackInfoReturnable<Integer> cir)
+	@Inject(method = "getMiningLevel", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	private static void getMiningLevel(@Nullable ItemStack stack, @Nullable IToolType toolType, CallbackInfoReturnable<Integer> cir)
 	{
 		if (ItemStackUtils.isTool(stack, toolType))
 		{

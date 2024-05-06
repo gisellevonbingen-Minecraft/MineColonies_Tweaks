@@ -10,9 +10,9 @@ import com.minecolonies.core.research.GlobalResearchBranch;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mixin(value = GlobalResearchBranch.class, remap = false)
-public class GlobalResearchBranchMixin
+public abstract class GlobalResearchBranchMixin
 {
-	@Inject(method = "getBaseTime", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "getBaseTime", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void getBaseTime(int depth, CallbackInfoReturnable<Integer> cir)
 	{
 		var original = cir.getReturnValue().doubleValue();

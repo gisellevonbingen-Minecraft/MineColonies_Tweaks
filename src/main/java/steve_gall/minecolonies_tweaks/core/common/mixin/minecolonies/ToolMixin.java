@@ -16,7 +16,7 @@ import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
 @Mixin(value = Tool.class, remap = false)
 public abstract class ToolMixin
 {
-	@Inject(method = "getToolClasses", at = @At(value = "TAIL"), cancellable = true)
+	@Inject(method = "getToolClasses", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void getToolClasses(final ItemStack stack, CallbackInfoReturnable<Set<String>> cir)
 	{
 		for (var toolType : ToolType.values())

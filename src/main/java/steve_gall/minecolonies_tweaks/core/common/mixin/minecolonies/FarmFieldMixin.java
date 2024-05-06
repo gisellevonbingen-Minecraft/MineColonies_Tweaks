@@ -13,12 +13,12 @@ import net.minecraft.core.BlockPos;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mixin(value = FarmField.class, remap = false)
-public class FarmFieldMixin
+public abstract class FarmFieldMixin
 {
-	@Shadow
+	@Shadow(remap = false)
 	private int maxRadius;
 
-	@Inject(method = "<init>", at = @At(value = "TAIL"))
+	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"))
 	private void init(FieldRegistries.FieldEntry fieldType, BlockPos position, CallbackInfo ci)
 	{
 		this.maxRadius = MineColoniesTweaksConfigServer.INSTANCE.fields.farmMaxRange.get().intValue();

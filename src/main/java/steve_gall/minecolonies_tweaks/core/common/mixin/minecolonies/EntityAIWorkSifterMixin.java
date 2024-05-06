@@ -9,9 +9,9 @@ import com.minecolonies.core.entity.ai.citizen.sifter.EntityAIWorkSifter;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mixin(value = EntityAIWorkSifter.class, remap = false)
-public class EntityAIWorkSifterMixin
+public abstract class EntityAIWorkSifterMixin
 {
-	@ModifyConstant(method = "sift", constant = @Constant(intValue = 50))
+	@ModifyConstant(method = "sift", remap = false, constant = @Constant(intValue = 50))
 	private int modifyMaxLevel(int MAX_LEVEL)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.sifterProgressMultiplier.get();
