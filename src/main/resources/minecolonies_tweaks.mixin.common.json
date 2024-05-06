@@ -4,6 +4,8 @@
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"minecraft.ChunkGeneratorMixin",
+		
 		"minecolonies.AbstractEntityAICraftingAccessor",
 		"minecolonies.AbstractEntityAICraftingMixin",
 		"minecolonies.AbstractEntityAIInteractMixin",
@@ -20,8 +22,7 @@
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.ToolMixin",
-		"minecolonies.ToolTypeMixin",
-		"minecraft.ChunkGeneratorMixin"
+		"minecolonies.ToolTypeMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
