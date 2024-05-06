@@ -20,6 +20,7 @@ import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliv
 import steve_gall.minecolonies_tweaks.apiimpl.common.requestsystem.CustomizableDeliverableRequest;
 import steve_gall.minecolonies_tweaks.apiimpl.common.requestsystem.CustomizableDeliverableRequestFactory;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
+import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
@@ -31,8 +32,10 @@ public class MineColoniesTweaks
 
 	public MineColoniesTweaks()
 	{
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MineColoniesTweaksConfigCommon.SPEC);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
+		var modLoadingContext = ModLoadingContext.get();
+		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, MineColoniesTweaksConfigClient.SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.COMMON, MineColoniesTweaksConfigCommon.SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
 		fml_bus.addListener(this::onFMLCommonSetup);

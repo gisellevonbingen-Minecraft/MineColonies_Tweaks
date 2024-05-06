@@ -4,9 +4,14 @@
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
+		"minecraft.AbstractContainerScreenMixin",
+		
+		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.MainWindowCitizenMixin",
 		"minecolonies.WindowFieldMixin",
-		"minecolonies.WindowCraftingsMixin"
+		"minecolonies.WindowCraftingsMixin",
+		"minecolonies.WindowHireWorkerMixin",
+		"minecolonies.WindowInventoriesMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
