@@ -28,7 +28,7 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
 public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<JobFarmer, BuildingFarmer>
 {
-	@Shadow
+	@Shadow(remap = false)
 	private boolean shouldDumpInventory;
 
 	@Unique
@@ -39,25 +39,16 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		super(job);
 	}
 
-	@Shadow
-	private boolean hoeIfAble(BlockPos position, FarmField farmField)
-	{
-		throw new AssertionError();
-	}
+	@Shadow(remap = false)
+	public abstract boolean hoeIfAble(BlockPos position, FarmField farmField);
 
-	@Shadow
-	private boolean tryToPlant(FarmField farmField, BlockPos position)
-	{
-		throw new AssertionError();
-	}
+	@Shadow(remap = false)
+	public abstract boolean tryToPlant(FarmField farmField, BlockPos position);
 
-	@Shadow
-	private boolean harvestIfAble(BlockPos position)
-	{
-		throw new AssertionError();
-	}
+	@Shadow(remap = false)
+	public abstract boolean harvestIfAble(BlockPos position);
 
-	@Inject(method = "workAtField", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "workAtField", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void workAtField(CallbackInfoReturnable<IAIState> cir)
 	{
 		if (MineColoniesTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue() && cir.getReturnValue() == AIWorkerState.IDLE)
@@ -72,13 +63,13 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 	}
 
-	@Inject(method = "hoeIfAble", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "hoeIfAble", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void hoeIfAble_HEAD(BlockPos position, FarmField farmField, CallbackInfoReturnable<Boolean> cir)
 	{
 		this.minecolonies_tweaks$workingPosition = position;
 	}
 
-	@Inject(method = "hoeIfAble", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "hoeIfAble", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void hoeIfAble_Return(BlockPos position, FarmField farmField, CallbackInfoReturnable<Boolean> cir)
 	{
 		if (MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHoe.get().booleanValue())
@@ -93,13 +84,13 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 	}
 
-	@Inject(method = "harvestIfAble", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "harvestIfAble", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void harvestIfAble_Head(@NotNull BlockPos position, CallbackInfoReturnable<Boolean> cir)
 	{
 		this.minecolonies_tweaks$workingPosition = position;
 	}
 
-	@Inject(method = "harvestIfAble", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "harvestIfAble", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void harvestIfAble_Return(@NotNull BlockPos position, CallbackInfoReturnable<Boolean> cir)
 	{
 		if (cir.getReturnValueZ() && !Compatibility.isPamsInstalled() && position != null)
@@ -122,25 +113,25 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 	}
 
-	@ModifyConstant(method = "getLevelDelay", constant = @Constant(doubleValue = 40))
+	@ModifyConstant(method = "getLevelDelay", remap = false, constant = @Constant(doubleValue = 40))
 	private double getLevelDelay_standardDelay(double STANDARD_DELAY)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerWorkDelay.get().intValue();
 	}
 
-	@ModifyConstant(method = "getLevelDelay", constant = @Constant(doubleValue = 2.0))
+	@ModifyConstant(method = "getLevelDelay", remap = false, constant = @Constant(doubleValue = 2.0))
 	private double getLevelDelay_skillDivider(double skillDivider)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerSkillDivider.get().doubleValue();
 	}
 
-	@ModifyConstant(method = "getActionRewardForCraftingSuccess", constant = @Constant(intValue = 64))
+	@ModifyConstant(method = "getActionRewardForCraftingSuccess", remap = false, constant = @Constant(intValue = 64))
 	private int getActionRewardForCraftingSuccess(int MAX_BLOCKS_MINED)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerActionsDoneUntilDumping.get().intValue();
 	}
 
-	@ModifyConstant(method = "getActionsDoneUntilDumping", constant = @Constant(intValue = 64))
+	@ModifyConstant(method = "getActionsDoneUntilDumping", remap = false, constant = @Constant(intValue = 64))
 	private int getActionsDoneUntilDumping(int MAX_BLOCKS_MINED)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerActionsDoneUntilDumping.get().intValue();

@@ -9,36 +9,24 @@ import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
-public class AbstractEntityAICraftingMixin
+public abstract class AbstractEntityAICraftingMixin
 {
-	@ModifyConstant(method = "decide", constant = @Constant(intValue = 400))
+	@ModifyConstant(method = "decide", remap = false, constant = @Constant(intValue = 400))
 	private int decide_setDelay(int timeout)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.craftingDecideDelay.get();
 	}
 
-	// private int getRequiredProgressForMakingRawMaterial()
-	// {
-	// final int jobModifier = worker.getCitizenData().getCitizenSkillHandler().getLevel(((CraftingWorkerBuildingModule) getModuleForJob()).getCraftSpeedSkill()) / 2;
-	// return PROGRESS_MULTIPLIER / Math.min(jobModifier + 1, MAX_LEVEL) * HITTING_TIME;
-	// }
-
-	@ModifyConstant(method = "getRequiredProgressForMakingRawMaterial", constant = @Constant(intValue = 10))
+	@ModifyConstant(method = "getRequiredProgressForMakingRawMaterial", remap = false, constant = @Constant(intValue = 10))
 	private int modifyProgressMuliplier(int PROGRESS_MULTIPLIER)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.craftingProgressMultiplier.get();
 	}
 
-	@ModifyConstant(method = "getRequiredProgressForMakingRawMaterial", constant = @Constant(intValue = 3))
+	@ModifyConstant(method = "getRequiredProgressForMakingRawMaterial", remap = false, constant = @Constant(intValue = 3))
 	private int modifyHittingTime(int HITTING_TIME)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.craftingHittingTime.get();
 	}
-
-	// @Inject(method = "getRequiredProgressForMakingRawMaterial", at = @At(value = "RETURN"))
-	// private void getRequiredProgressForMakingRawMaterial(CallbackInfoReturnable<Integer> cir)
-	// {
-	// MineColoniesTweaks.LOGGER.info("getRequiredProgressForMakingRawMaterial: " + cir.getReturnValueI());
-	// }
 
 }

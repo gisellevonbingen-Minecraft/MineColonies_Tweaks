@@ -17,23 +17,20 @@ import com.minecolonies.core.colony.buildings.modules.FieldsModule;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mixin(value = FieldsModule.class, remap = false)
-public class FieldsModuleMixin
+public abstract class FieldsModuleMixin
 {
-	@Shadow
+	@Shadow(remap = false)
 	@Nullable
 	private IField currentField;
 
 	@Unique
 	private int minecolonies_tweaks$nextIndex;
 
-	@Shadow
+	@Shadow(remap = false)
 	@NotNull
-	public List<IField> getOwnedFields()
-	{
-		throw new AssertionError();
-	}
+	public abstract List<IField> getOwnedFields();
 
-	@Inject(method = "getFieldToWorkOn", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "getFieldToWorkOn", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void getFieldToWorkOn(CallbackInfoReturnable<IField> cir)
 	{
 		if (!MineColoniesTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue())

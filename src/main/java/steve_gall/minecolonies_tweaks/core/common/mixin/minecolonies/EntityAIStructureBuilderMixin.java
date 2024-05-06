@@ -9,9 +9,9 @@ import com.minecolonies.core.entity.ai.workers.builder.EntityAIStructureBuilder;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mixin(value = EntityAIStructureBuilder.class, remap = false)
-public class EntityAIStructureBuilderMixin
+public abstract class EntityAIStructureBuilderMixin
 {
-	@ModifyConstant(method = "getBlockMiningDelay", constant = @Constant(doubleValue = 0.5D))
+	@ModifyConstant(method = "getBlockMiningDelay", remap = false, constant = @Constant(doubleValue = 0.5D))
 	private double getBlockMiningDelayBuff(double SPEED_BUFF_0)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.builderBlockMiningDelayBuff.get();

@@ -8,7 +8,7 @@ import com.minecolonies.core.entity.ai.workers.AbstractEntityAIStructure;
 @Mixin(value = AbstractEntityAIStructure.class, remap = false)
 public interface AbstractEntityAIStructureAccessor
 {
-	@Accessor(value = "BUILD_BLOCK_DELAY")
+	@Accessor(value = "BUILD_BLOCK_DELAY", remap = false)
 	static int getBuildBlockDelay()
 	{
 		throw new AssertionError();

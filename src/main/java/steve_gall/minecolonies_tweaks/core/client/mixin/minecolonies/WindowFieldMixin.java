@@ -27,9 +27,9 @@ import net.minecraft.util.Mth;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 @Mixin(value = WindowField.class, remap = false)
-public class WindowFieldMixin extends AbstractWindowSkeleton
+public abstract class WindowFieldMixin extends AbstractWindowSkeleton
 {
-	@Shadow
+	@Shadow(remap = false)
 	private static String DIRECTIONAL_BUTTON_ID_PREFIX;
 
 	@Unique
@@ -39,10 +39,10 @@ public class WindowFieldMixin extends AbstractWindowSkeleton
 	@Unique
 	private static final int minecolonies_tweaks$SHIFT_MULTIPLIER = 5;
 
-	@Shadow
+	@Shadow(remap = false)
 	private FarmField farmField;
 	@NotNull
-	@Shadow
+	@Shadow(remap = false)
 	private AbstractTileEntityScarecrow tileEntityScarecrow;
 
 	public WindowFieldMixin(String resource)
@@ -50,7 +50,7 @@ public class WindowFieldMixin extends AbstractWindowSkeleton
 		super(resource);
 	}
 
-	@Inject(method = "<init>", at = @At(value = "TAIL"))
+	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"))
 	private void init(@NotNull AbstractTileEntityScarecrow tileEntityScarecrow, CallbackInfo ci)
 	{
 		for (Direction dir : Direction.Plane.HORIZONTAL)
@@ -112,13 +112,10 @@ public class WindowFieldMixin extends AbstractWindowSkeleton
 		this.minecolonies_tweaks$changRadius(button, minecolonies_tweaks$DIRECTIONAL_DOWN_BUTTON_ID_PREFIX, -1);
 	}
 
-	@Shadow
-	private void updateAll()
-	{
+	@Shadow(remap = false)
+	public abstract void updateAll();
 
-	}
-
-	@Inject(method = "updateButtons", at = @At(value = "TAIL"), cancellable = true)
+	@Inject(method = "updateButtons", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void updateButtons(CallbackInfo ci)
 	{
 		for (Direction dir : Direction.Plane.HORIZONTAL)

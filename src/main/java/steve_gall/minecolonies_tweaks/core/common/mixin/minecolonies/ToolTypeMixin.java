@@ -24,10 +24,10 @@ public abstract class ToolTypeMixin
 {
 	@Final
 	@Mutable
-	@Shadow
+	@Shadow(remap = false)
 	private static ToolType[] $VALUES;
 
-	@Shadow
+	@Shadow(remap = false)
 	private static Map<String, IToolType> tools;
 
 	static
@@ -36,7 +36,7 @@ public abstract class ToolTypeMixin
 		CustomToolTypeData.list().forEach(ToolTypeMixin::addValue);
 	}
 
-	@Inject(method = "<clinit>", at = @At(value = "TAIL"), cancellable = true)
+	@Inject(method = "<clinit>", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private static void clinit(CallbackInfo ci)
 	{
 		for (var data : CustomToolTypeData.list())
@@ -46,7 +46,7 @@ public abstract class ToolTypeMixin
 
 	}
 
-	@Invoker("<init>")
+	@Invoker(value = "<init>", remap = false)
 	private static ToolType init(String internalName, int internalId, String name, boolean variableMaterials, Component displayName)
 	{
 		throw new AssertionError();

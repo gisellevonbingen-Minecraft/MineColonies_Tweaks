@@ -8,13 +8,13 @@ import com.minecolonies.core.entity.ai.workers.production.agriculture.EntityAIWo
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
 public interface EntityAIWorkFarmerAccessor
 {
-	@Accessor("STANDARD_DELAY")
+	@Accessor(value = "STANDARD_DELAY", remap = false)
 	static int getStandardDelay()
 	{
 		throw new AssertionError();
 	}
 
-	@Accessor("MAX_BLOCKS_MINED")
+	@Accessor(value = "MAX_BLOCKS_MINED", remap = false)
 	static int getMaxBlocksMined()
 	{
 		throw new AssertionError();

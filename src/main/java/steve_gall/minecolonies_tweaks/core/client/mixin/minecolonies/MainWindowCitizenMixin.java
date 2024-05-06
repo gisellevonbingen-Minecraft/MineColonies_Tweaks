@@ -14,9 +14,9 @@ import com.minecolonies.core.network.messages.server.colony.citizen.AdjustSkillC
 import net.minecraft.client.gui.screens.Screen;
 
 @Mixin(value = MainWindowCitizen.class, remap = false)
-public class MainWindowCitizenMixin
+public abstract class MainWindowCitizenMixin
 {
-	@Redirect(method = "onButtonClicked", at = @At(value = "NEW", target = "com/minecolonies/core/network/messages/server/colony/citizen/AdjustSkillCitizenMessage"))
+	@Redirect(method = "onButtonClicked", remap = false, at = @At(value = "NEW", target = "com/minecolonies/core/network/messages/server/colony/citizen/AdjustSkillCitizenMessage"))
 	private AdjustSkillCitizenMessage onButtonClicked(IColony colony, @NotNull ICitizenDataView citizenDataView, int quantity, Skill skill)
 	{
 		if (Screen.hasControlDown())

@@ -10,9 +10,9 @@ import com.minecolonies.core.entity.ai.workers.AbstractEntityAIStructure;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
 @Mixin(value = AbstractEntityAIStructure.class, remap = false)
-public class AbstractEntityAIStructureMixin
+public abstract class AbstractEntityAIStructureMixin
 {
-	@ModifyConstant(method = "structureStep", constant = @Constant(intValue = 150))
+	@ModifyConstant(method = "structureStep", remap = false, constant = @Constant(intValue = 150))
 	private int getBuildBlockDelay0(int BUILD_BLOCK_DELAY)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.blockBuildingDelay.get() * CitizenConstants.PROGRESS_MULTIPLIER;

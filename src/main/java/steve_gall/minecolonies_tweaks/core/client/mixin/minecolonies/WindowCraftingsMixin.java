@@ -39,7 +39,7 @@ public abstract class WindowCraftingsMixin extends AbstractContainerScreen<Abstr
 		super(p_97741_, p_97742_, p_97743_);
 	}
 
-	@Inject(method = "init", at = @At(value = "TAIL"), remap = true)
+	@Inject(method = "init", remap = true, at = @At(value = "TAIL"))
 	private void init(CallbackInfo ci)
 	{
 		var closeButton = Button.builder(Component.literal("X"), this::onClosePress).bounds(this.leftPos + BUTTON_X_OFFSET + BUTTON_WIDTH + 5, this.topPos + BUTTON_Y_POS, BUTTON_HEIGHT, BUTTON_HEIGHT).build();
