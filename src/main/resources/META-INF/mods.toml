@@ -32,4 +32,3 @@ issueTrackerURL="${mod_issues}"
     versionRange="[${minecolonies_version},)"
     ordering="AFTER"
     side="BOTH"
-    
