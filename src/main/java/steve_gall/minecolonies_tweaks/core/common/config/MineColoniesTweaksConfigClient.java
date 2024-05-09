@@ -21,7 +21,7 @@ public class MineColoniesTweaksConfigClient
 	public MineColoniesTweaksConfigClient(ForgeConfigSpec.Builder builder)
 	{
 		builder.push("gui");
-		builder.comment("ESC key allows return to previous window.", "Applies at Hut/Citizen inventory and Recipe Teach window.");
+		builder.comment("ESC key allows return to previous window.", "Applies at Hut/Citizen inventory and Recipe Teach window and Hire window.");
 		this.escToReturn = builder.define("escToReturn", true);
 		builder.comment("Add close button what can return previous window.", "Applies at Hut/Citizen inventory and Recipe Teach window.");
 		this.addReturnButton = builder.define("addCloseButton", false);
