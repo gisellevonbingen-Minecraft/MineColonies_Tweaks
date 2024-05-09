@@ -10,7 +10,7 @@ import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 @Mixin(value = AbstractWindowSkeleton.class, remap = false)
 public abstract class AbstractWindowSkeletonMixin
 {
-	@Inject(method = "close", remap = true, at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "close", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	protected void close_Head(CallbackInfo ci)
 	{
 

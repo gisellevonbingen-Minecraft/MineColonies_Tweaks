@@ -48,7 +48,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	@Shadow(remap = false)
 	public abstract boolean harvestIfAble(BlockPos position);
 
-	@Inject(method = "workAtField", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "workAtField", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void workAtField(CallbackInfoReturnable<IAIState> cir)
 	{
 		if (MineColoniesTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue() && cir.getReturnValue() == AIWorkerState.IDLE)

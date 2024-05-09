@@ -22,10 +22,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 
-@Mixin(value = ChunkGenerator.class)
+@Mixin(value = ChunkGenerator.class, remap = true)
 public class ChunkGeneratorMixin
 {
-	@Inject(method = "tryGenerateStructure", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "tryGenerateStructure", remap = true, at = @At(value = "HEAD"), cancellable = true)
 	private void tryGenerateStructure(StructureSet.StructureSelectionEntry entry, StructureManager structureManager, RegistryAccess registryAccess, RandomState randomState, StructureTemplateManager structureTemplateManager, long p_223110_, ChunkAccess chunkAccess, ChunkPos chunkPos, SectionPos sectionPos, CallbackInfoReturnable<Boolean> cir)
 	{
 		Structure structure = entry.structure().value();
