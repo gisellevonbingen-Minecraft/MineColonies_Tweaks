@@ -168,6 +168,9 @@ jar {
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+    if (project.hasProperty("buildWithSource")) {
+        from sourceSets.main.java
+    }
 }
 
 jar.finalizedBy("reobfJar")

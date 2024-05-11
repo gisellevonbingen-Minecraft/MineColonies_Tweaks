@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.ldtteam.blockui.Loader;
 import com.ldtteam.blockui.PaneParams;
 import com.ldtteam.blockui.controls.Button;
+import com.ldtteam.blockui.views.View;
 import com.minecolonies.api.tileentities.AbstractTileEntityScarecrow;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
@@ -24,10 +25,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 @Mixin(value = WindowField.class, remap = false)
-public abstract class WindowFieldMixin extends AbstractWindowSkeleton
+public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements ViewOverrideExtension
 {
 	@Shadow(remap = false)
 	private static String DIRECTIONAL_BUTTON_ID_PREFIX;
@@ -63,10 +65,8 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton
 	}
 
 	@Override
-	public void parseChildren(PaneParams params)
+	public void minecolonies_tweaks$onParse(View view, PaneParams params)
 	{
-		super.parseChildren(params);
-
 		Loader.createFromXMLFile(MineColoniesTweaks.rl("gui/windowfield.xml"), this);
 	}
 
