@@ -37,7 +37,7 @@ public class JobRegister
 		this.soundEventMap = new HashMap<>();
 	}
 
-	public void register(IEventBus bus)
+	public void register(@NotNull IEventBus bus)
 	{
 		this.getJobs().register(bus);
 		this.getSounds().register(bus);
@@ -45,7 +45,7 @@ public class JobRegister
 		bus.addListener(this::onFMLCommonSetup);
 	}
 
-	public RegistryObject<JobEntry> register(String name, Consumer<JobEntry.Builder> consumer)
+	public RegistryObject<JobEntry> register(@NotNull String name, @NotNull Consumer<JobEntry.Builder> consumer)
 	{
 		var job = DeferredRegisterHelper.registerJobEntry(this.getJobs(), name, consumer);
 		var soundEvents = DeferredRegisterHelper.registerJobSoundEvents(this.getSounds(), name);

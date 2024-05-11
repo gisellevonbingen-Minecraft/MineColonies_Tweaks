@@ -12,12 +12,15 @@ import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactor
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestFactoryHelper;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.SerializationIds;
 
 public class CustomizableDeliverableRequestFactory implements IRequestFactory<CustomizableDeliverable, CustomizableDeliverableRequest>
 {
+	public static final TypeToken<CustomizableDeliverableRequest> OUPYT_TYPE = TypeToken.of(CustomizableDeliverableRequest.class);
+	public static final TypeToken<CustomizableDeliverable> INPUT_TYPE = TypeToken.of(CustomizableDeliverable.class);
+
 	@Override
 	public CustomizableDeliverableRequest getNewInstance(@NotNull CustomizableDeliverable input, @NotNull IRequester location, @NotNull IToken<?> token, @NotNull RequestState initialState)
 	{
@@ -28,14 +31,14 @@ public class CustomizableDeliverableRequestFactory implements IRequestFactory<Cu
 	@NotNull
 	public TypeToken<? extends CustomizableDeliverableRequest> getFactoryOutputType()
 	{
-		return TypeToken.of(CustomizableDeliverableRequest.class);
+		return OUPYT_TYPE;
 	}
 
 	@Override
 	@NotNull
 	public TypeToken<? extends CustomizableDeliverable> getFactoryInputType()
 	{
-		return TypeToken.of(CustomizableDeliverable.class);
+		return INPUT_TYPE;
 	}
 
 	@Override

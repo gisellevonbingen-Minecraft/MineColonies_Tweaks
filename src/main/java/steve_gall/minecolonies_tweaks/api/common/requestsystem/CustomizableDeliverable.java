@@ -18,15 +18,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import steve_gall.minecolonies_tweaks.api.common.CustomizableObjectRegistry;
 
 public class CustomizableDeliverable implements ICustomizableRequestable, IDeliverable
 {
 	public static final TypeToken<CustomizableDeliverable> TYPE_TOKEN = TypeToken.of(CustomizableDeliverable.class);
 	public static final Set<TypeToken<?>> TYPE_TOKENS = ReflectionUtils.getSuperClasses(TYPE_TOKEN).stream().filter(type -> !type.equals(TypeConstants.OBJECT)).collect(Collectors.toSet());
 
-	private static final String NBT_ID = "ID";
-	private static final String NBT_OBJECT = "Object";
-	private static final String NBT_RESULT = "Result";
+	public static final String TAG_ID = "ID";
+	public static final String TAG_OBJECT = "Object";
+	public static final String TAG_RESULT = "Result";
 
 	@NotNull
 	private final ResourceLocation id;
@@ -38,14 +39,14 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 
 	public CustomizableDeliverable(@Nullable IDeliverableObject object)
 	{
-		this.id = object != null ? object.getId() : RequestableObjectRegistry.EMPTY_ID;
+		this.id = object != null ? object.getId() : CustomizableObjectRegistry.EMPTY_ID;
 		this.object = object;
 		this.result = ItemStack.EMPTY;
 	}
 
-	public CustomizableDeliverable(@Nullable IDeliverableObject object, @NotNull ItemStack result)
+	public CustomizableDeliverable(@NotNull ResourceLocation id, @Nullable IDeliverableObject object, @NotNull ItemStack result)
 	{
-		this.id = object != null ? object.getId() : RequestableObjectRegistry.EMPTY_ID;
+		this.id = id;
 		this.object = object;
 		this.result = result;
 	}
@@ -54,25 +55,25 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	public static CompoundTag serialize(@NotNull IFactoryController controller, @NotNull CustomizableDeliverable input)
 	{
 		var compound = new CompoundTag();
-		compound.putString(NBT_ID, input.getId().toString());
-		compound.put(NBT_OBJECT, RequestableObjectRegistry.serialize(input.getObject()));
-		compound.put(NBT_RESULT, input.getResult().serializeNBT());
+		compound.putString(TAG_ID, input.getId().toString());
+		compound.put(TAG_OBJECT, DeliverableObjectRegistry.INSTANCE.serializeWithoutId(input.getObject()));
+		compound.put(TAG_RESULT, input.getResult().serializeNBT());
 		return compound;
 	}
 
 	@NotNull
 	public static CustomizableDeliverable deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag compound)
 	{
-		var id = new ResourceLocation(compound.getString(NBT_ID));
-		var request = RequestableObjectRegistry.<IDeliverableObject> deserialize(id, compound.getCompound(NBT_OBJECT));
-		var result = ItemStack.of(compound.getCompound(NBT_RESULT));
-		return new CustomizableDeliverable(request, result);
+		var id = new ResourceLocation(compound.getString(TAG_ID));
+		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(compound.getCompound(TAG_OBJECT), id);
+		var result = ItemStack.of(compound.getCompound(TAG_RESULT));
+		return new CustomizableDeliverable(id, object, result);
 	}
 
 	public static void serialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer, @NotNull CustomizableDeliverable input)
 	{
 		buffer.writeResourceLocation(input.getId());
-		buffer.writeNbt(RequestableObjectRegistry.serialize(input.getObject()));
+		buffer.writeNbt(DeliverableObjectRegistry.INSTANCE.serializeWithoutId(input.getObject()));
 		buffer.writeItem(input.getResult());
 	}
 
@@ -80,9 +81,9 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	public static CustomizableDeliverable deserialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer)
 	{
 		var id = buffer.readResourceLocation();
-		var object = RequestableObjectRegistry.<IDeliverableObject> deserialize(id, buffer.readNbt());
+		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(buffer.readNbt(), id);
 		var result = buffer.readItem();
-		return new CustomizableDeliverable(object, result);
+		return new CustomizableDeliverable(id, object, result);
 	}
 
 	@Override
@@ -115,7 +116,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	public CustomizableDeliverable copyWithCount(int newCount)
 	{
 		var object = this.getObject();
-		return new CustomizableDeliverable(object != null ? object.copyWithCount(newCount) : null, this.result);
+		return new CustomizableDeliverable(this.id, object != null ? object.copyWithCount(newCount) : null, this.result);
 	}
 
 	@Override
