@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies;
+package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
 import java.util.List;
 

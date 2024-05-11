@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.core.client.mixin.minecolonies;
+package steve_gall.minecolonies_tweaks.mixin.client.minecolonies;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -10,7 +10,7 @@ import com.minecolonies.core.client.gui.containers.WindowCitizenInventory;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
-import steve_gall.minecolonies_tweaks.core.client.mixin.minecraft.AbstractContainerScreenMixin;
+import steve_gall.minecolonies_tweaks.mixin.client.minecraft.AbstractContainerScreenMixin;
 
 @Mixin(value = {WindowCitizenInventory.class, WindowBuildingInventory.class}, remap = false)
 public abstract class WindowInventoriesMixin extends AbstractContainerScreenMixin implements CloseableWindowExtension

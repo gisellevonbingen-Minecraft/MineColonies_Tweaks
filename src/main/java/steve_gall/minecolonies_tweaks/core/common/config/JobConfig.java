@@ -4,9 +4,9 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.AbstractEntityAICraftingAccessor;
-import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.EntityAIWorkFarmerAccessor;
-import steve_gall.minecolonies_tweaks.core.common.mixin.minecolonies.EntityAIWorkSifterAccessor;
+import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.AbstractEntityAICraftingAccessor;
+import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.EntityAIWorkFarmerAccessor;
+import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.EntityAIWorkSifterAccessor;
 
 public class JobConfig
 {

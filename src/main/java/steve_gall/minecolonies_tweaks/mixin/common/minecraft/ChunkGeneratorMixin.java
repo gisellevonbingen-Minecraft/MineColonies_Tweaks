@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.core.common.mixin.minecraft;
+package steve_gall.minecolonies_tweaks.mixin.common.minecraft;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

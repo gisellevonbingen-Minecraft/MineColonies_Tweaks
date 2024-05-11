@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.core.client.mixin.blockui;
+package steve_gall.minecolonies_tweaks.mixin.client.blockui;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
