@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.crafting.registry.CraftingType;
+import com.minecolonies.api.crafting.registry.RecipeTypeEntry;
 import com.minecolonies.api.sounds.EventType;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
@@ -112,9 +115,33 @@ public class DeferredRegisterHelper
 		return map;
 	}
 
-	public static DeferredRegister<CraftingType> craftingtypes(String modid)
+	public static DeferredRegister<CraftingType> craftingTypes(String modid)
 	{
 		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "craftingtypes"), modid);
+	}
+
+	public static <T extends CraftingType> RegistryObject<T> registerCraftingType(DeferredRegister<CraftingType> register, String name, Function<ResourceLocation, T> func)
+	{
+		var id = register.createTagKey(name).location();
+		return register.register(name, () -> func.apply(id));
+	}
+
+	public static DeferredRegister<RecipeTypeEntry> recipeTypeEntries(String modid)
+	{
+		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "recipetypeentries"), modid);
+	}
+
+	public static RegistryObject<RecipeTypeEntry> registerRecipeTypeEntry(DeferredRegister<RecipeTypeEntry> register, String name, BiConsumer<ResourceLocation, RecipeTypeEntry.Builder> consumer)
+	{
+		var id = register.createTagKey(name).location();
+		return register.register(name, () ->
+		{
+			var builder = new RecipeTypeEntry.Builder();
+			builder.setRegistryName(id);
+			consumer.accept(id, builder);
+			return builder.createRecipeTypeEntry();
+		});
+
 	}
 
 	private DeferredRegisterHelper()

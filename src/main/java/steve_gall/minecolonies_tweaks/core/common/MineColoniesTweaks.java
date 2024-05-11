@@ -17,6 +17,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
+import steve_gall.minecolonies_tweaks.apiimpl.common.crafting.CustomizableRecipeStorageFactory;
 import steve_gall.minecolonies_tweaks.apiimpl.common.requestsystem.CustomizableDeliverableRequest;
 import steve_gall.minecolonies_tweaks.apiimpl.common.requestsystem.CustomizableDeliverableRequestFactory;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
@@ -48,6 +49,7 @@ public class MineColoniesTweaks
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
+		StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
 		StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
 	}
 
