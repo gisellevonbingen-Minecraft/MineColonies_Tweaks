@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
+import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.sounds.EventType;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
@@ -109,6 +110,11 @@ public class DeferredRegisterHelper
 		}
 
 		return map;
+	}
+
+	public static DeferredRegister<CraftingType> craftingtypes(String modid)
+	{
+		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "craftingtypes"), modid);
 	}
 
 	private DeferredRegisterHelper()

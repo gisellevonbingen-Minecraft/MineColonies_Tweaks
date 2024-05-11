@@ -11,7 +11,9 @@
 		"minecolonies.WindowFieldMixin",
 		"minecolonies.WindowCraftingsMixin",
 		"minecolonies.WindowHireWorkerMixin",
-		"minecolonies.WindowInventoriesMixin"
+		"minecolonies.WindowInventoriesMixin",
+		
+		"blockui.ViewMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
