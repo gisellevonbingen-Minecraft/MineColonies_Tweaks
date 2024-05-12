@@ -21,8 +21,8 @@ public class CustomizableRecipeStorageFactory implements IFactory<IToken<?>, Cus
 	public static final TypeToken<CustomizableRecipeStorage> OUTPUT_TYPE = TypeToken.of(CustomizableRecipeStorage.class);
 	public static final TypeToken<IToken<?>> INPUT_TYPE = TypeConstants.ITOKEN;
 
-	public static final String IMPL_TAG = "impl";
-	public static final String TOKEN_TAG = "token";
+	public static final String TAG_IMPL = "impl";
+	public static final String TAG_TOKEN = "token";
 
 	@NotNull
 	@Override
@@ -49,16 +49,16 @@ public class CustomizableRecipeStorageFactory implements IFactory<IToken<?>, Cus
 	public @NotNull CompoundTag serialize(@NotNull IFactoryController controller, @NotNull CustomizableRecipeStorage output)
 	{
 		var tag = new CompoundTag();
-		tag.put(IMPL_TAG, CustomizedRecipeStorageRegistry.INSTANCE.serialize(output.getImpl()));
-		tag.put(TOKEN_TAG, StandardFactoryController.getInstance().serialize(output.getToken()));
+		tag.put(TAG_IMPL, CustomizedRecipeStorageRegistry.INSTANCE.serialize(output.getImpl()));
+		tag.put(TAG_TOKEN, StandardFactoryController.getInstance().serialize(output.getToken()));
 		return tag;
 	}
 
 	@Override
 	public @NotNull CustomizableRecipeStorage deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag tag) throws Throwable
 	{
-		var impl = CustomizedRecipeStorageRegistry.INSTANCE.deserialize(tag.getCompound(IMPL_TAG));
-		IToken<?> token = StandardFactoryController.getInstance().deserialize(tag.getCompound(TOKEN_TAG));
+		var impl = CustomizedRecipeStorageRegistry.INSTANCE.deserialize(tag.getCompound(TAG_IMPL));
+		IToken<?> token = StandardFactoryController.getInstance().deserialize(tag.getCompound(TAG_TOKEN));
 		return new CustomizableRecipeStorage(token, impl);
 	}
 
