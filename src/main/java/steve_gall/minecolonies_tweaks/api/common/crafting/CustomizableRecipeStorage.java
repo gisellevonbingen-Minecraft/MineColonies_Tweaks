@@ -2,6 +2,7 @@ package steve_gall.minecolonies_tweaks.api.common.crafting;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,9 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 	@NotNull
 	private final AbstractRecipeType<IRecipeStorage> recipeType;
 
+	private boolean hasHashCode;
+	private int hashCode;
+
 	public CustomizableRecipeStorage(@NotNull IToken<?> token, @NotNull ICustomizedRecipeStorage impl)
 	{
 		this.impl = impl;
@@ -48,6 +52,33 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 			this.recipeType = recipeTypes.getValue(recipeTypes.getDefaultKey()).getHandlerProducer().apply(this);
 		}
 
+	}
+
+	@Override
+	public int hashCode()
+	{
+		if (!this.hasHashCode)
+		{
+			this.hasHashCode = true;
+			this.hashCode = Objects.hash(this.delegate, this.impl);
+		}
+
+		return this.hashCode;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o)
+		{
+			return true;
+		}
+		else if (!(o instanceof CustomizableRecipeStorage other))
+		{
+			return false;
+		}
+
+		return this.delegate.equals(other.delegate) && this.impl.equals(other.impl);
 	}
 
 	@Override
