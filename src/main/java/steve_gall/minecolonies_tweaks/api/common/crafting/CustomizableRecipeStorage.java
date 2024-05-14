@@ -75,12 +75,12 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 		{
 			return true;
 		}
-		else if (!(o instanceof CustomizableRecipeStorage other))
+		else if (o instanceof CustomizableRecipeStorage other)
 		{
-			return false;
+			return this.delegate.equals(other.delegate) && this.impl.equals(other.impl);
 		}
 
-		return this.delegate.equals(other.delegate) && this.impl.equals(other.impl);
+		return false;
 	}
 
 	@Override
