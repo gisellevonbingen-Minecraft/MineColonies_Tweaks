@@ -57,22 +57,11 @@ public abstract class AbstractContainerScreenMixin extends Screen
 		this.returnToParent(false);
 	}
 
-	protected void returnToParent(boolean isEsc)
+	private void returnToParent(boolean isEsc)
 	{
-		if (isEsc && !MineColoniesTweaksConfigClient.INSTANCE.escToReturn.get().booleanValue())
-		{
-			return;
-		}
-
 		if (this instanceof CloseableWindowExtension self)
 		{
-			var parent = self.minecolonies_tweaks$getParent();
-
-			if (parent != null)
-			{
-				this.minecraft.setScreen(parent);
-			}
-
+			self.returnToParent(isEsc);
 		}
 
 	}
