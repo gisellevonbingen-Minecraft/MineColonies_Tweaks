@@ -11,6 +11,7 @@
 		"minecolonies.WindowFieldMixin",
 		"minecolonies.WindowCraftingsMixin",
 		"minecolonies.WindowHireWorkerMixin",
+		"minecolonies.WindowHutAllInventoryMixin",
 		"minecolonies.WindowInventoriesMixin",
 		
 		"blockui.ViewMixin"
