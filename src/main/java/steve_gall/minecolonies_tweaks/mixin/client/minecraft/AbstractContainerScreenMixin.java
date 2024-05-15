@@ -53,15 +53,9 @@ public abstract class AbstractContainerScreenMixin extends Screen
 
 	private void onClosePress(Button button)
 	{
-		this.onClose();
-		this.returnToParent(false);
-	}
-
-	private void returnToParent(boolean isEsc)
-	{
 		if (this instanceof CloseableWindowExtension self)
 		{
-			self.returnToParent(isEsc);
+			self.minecolonies_tweaks$returnOrClose();
 		}
 
 	}
@@ -69,7 +63,11 @@ public abstract class AbstractContainerScreenMixin extends Screen
 	@Inject(method = "onClose", remap = true, at = @At(value = "TAIL"))
 	private void onClose(CallbackInfo ci)
 	{
-		this.returnToParent(true);
+		if (this instanceof CloseableWindowExtension self)
+		{
+			self.minecolonies_tweaks$showParent();
+		}
+
 	}
 
 }
