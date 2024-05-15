@@ -18,9 +18,9 @@ import com.minecolonies.api.util.constant.ToolType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
 import net.minecraftforge.common.MinecraftForge;
-import steve_gall.minecolonies_tweaks.api.common.util.GsonHelper2;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.util.GsonHelper2;
 
 public class CustomToolTypeData
 {
