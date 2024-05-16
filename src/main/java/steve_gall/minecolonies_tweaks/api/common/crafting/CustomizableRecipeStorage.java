@@ -52,6 +52,8 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 			this.recipeType = recipeTypes.getValue(recipeTypes.getDefaultKey()).getHandlerProducer().apply(this);
 		}
 
+		this.hasHashCode = false;
+		this.hashCode = 0;
 	}
 
 	@Override

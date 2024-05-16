@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.core.util;
+package steve_gall.minecolonies_tweaks.core.common.util;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
