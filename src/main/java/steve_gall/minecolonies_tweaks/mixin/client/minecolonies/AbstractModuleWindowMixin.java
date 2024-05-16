@@ -1,6 +1,5 @@
 package steve_gall.minecolonies_tweaks.mixin.client.minecolonies;
 
-import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil.Test;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
