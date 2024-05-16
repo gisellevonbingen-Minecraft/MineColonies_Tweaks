@@ -6,6 +6,7 @@
 	"client": [
 		"minecraft.AbstractContainerScreenMixin",
 		
+		"minecolonies.AbstractModuleWindowMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.MainWindowCitizenMixin",
 		"minecolonies.WindowFieldMixin",
@@ -14,6 +15,7 @@
 		"minecolonies.WindowHutAllInventoryMixin",
 		"minecolonies.WindowInventoriesMixin",
 		
+		"blockui.ButtonImageMixin",
 		"blockui.ViewMixin"
 	],
 	"injectors": {
