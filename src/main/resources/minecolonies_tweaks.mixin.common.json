@@ -6,6 +6,7 @@
 	"mixins": [
 		"minecraft.ChunkGeneratorMixin",
 		
+		"minecolonies.AbstractCraftingBuildingModuleMixin",
 		"minecolonies.AbstractEntityAICraftingAccessor",
 		"minecolonies.AbstractEntityAICraftingMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
@@ -16,8 +17,6 @@
 		"minecolonies.FieldsModuleMixin",
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemStackUtilsMixin",
-		"minecolonies.PrivateWorkerCraftingRequestResolverMixin",
-		"minecolonies.PublicWorkerCraftingRequestResolverMixin",
 		"minecolonies.ToolMixin",
 		"minecolonies.ToolTypeMixin"
 	],
