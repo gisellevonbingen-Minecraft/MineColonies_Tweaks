@@ -61,6 +61,8 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 			this.registerButton(minecolonies_tweaks$DIRECTIONAL_DOWN_BUTTON_ID_PREFIX + dir.getName(), this::minecolonies_tweaks$onDirectionalDownButtonClick);
 		}
 
+		this.registerButton(minecolonies_tweaks$DIRECTIONAL_UP_BUTTON_ID_PREFIX + "all", this::minecolonies_tweaks$onAllUpButtonClick);
+		this.registerButton(minecolonies_tweaks$DIRECTIONAL_DOWN_BUTTON_ID_PREFIX + "all", this::minecolonies_tweaks$onAllDownButtonClick);
 		this.updateAll();
 	}
 
@@ -81,23 +83,27 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 		var directionName = button.getID().replace(prefix, "");
 		var direction = Direction.Plane.HORIZONTAL.stream().filter(f -> f.getName().equals(directionName)).findFirst();
 
-		if (direction.isEmpty())
+		if (direction.isPresent())
 		{
-			return;
+			this.minecolonies_tweaks$changRadius(direction.get(), delta);
 		}
 
+	}
+
+	private void minecolonies_tweaks$changRadius(Direction direction, int delta)
+	{
 		if (Screen.hasShiftDown())
 		{
 			delta *= minecolonies_tweaks$SHIFT_MULTIPLIER;
 		}
 
-		var newRadius = Mth.clamp(this.farmField.getRadius(direction.get()) + delta, 1, this.farmField.getMaxRadius());
-		this.farmField.setRadius(direction.get(), newRadius);
+		var newRadius = Mth.clamp(this.farmField.getRadius(direction) + delta, 1, this.farmField.getMaxRadius());
+		this.farmField.setRadius(direction, newRadius);
 
-		var arrowButton = this.findPaneOfTypeByID(DIRECTIONAL_BUTTON_ID_PREFIX + direction.get().getName(), Button.class);
+		var arrowButton = this.findPaneOfTypeByID(DIRECTIONAL_BUTTON_ID_PREFIX + direction.getName(), Button.class);
 		arrowButton.setText(Component.literal(String.valueOf(newRadius)));
 
-		Network.getNetwork().sendToServer(new FarmFieldPlotResizeMessage(this.tileEntityScarecrow.getCurrentColony(), newRadius, direction.get(), farmField.getPosition()));
+		Network.getNetwork().sendToServer(new FarmFieldPlotResizeMessage(this.tileEntityScarecrow.getCurrentColony(), newRadius, direction, farmField.getPosition()));
 	}
 
 	@Unique
@@ -112,6 +118,18 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 		this.minecolonies_tweaks$changRadius(button, minecolonies_tweaks$DIRECTIONAL_DOWN_BUTTON_ID_PREFIX, -1);
 	}
 
+	@Unique
+	private void minecolonies_tweaks$onAllUpButtonClick(Button button)
+	{
+		Direction.Plane.HORIZONTAL.forEach(dir -> this.minecolonies_tweaks$changRadius(dir, +1));
+	}
+
+	@Unique
+	private void minecolonies_tweaks$onAllDownButtonClick(Button button)
+	{
+		Direction.Plane.HORIZONTAL.forEach(dir -> this.minecolonies_tweaks$changRadius(dir, -1));
+	}
+
 	@Shadow(remap = false)
 	public abstract void updateAll();
 
@@ -120,16 +138,18 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 	{
 		for (Direction dir : Direction.Plane.HORIZONTAL)
 		{
-			this.minecolonies_tweaks$updateButton(dir, minecolonies_tweaks$DIRECTIONAL_UP_BUTTON_ID_PREFIX, +1);
-			this.minecolonies_tweaks$updateButton(dir, minecolonies_tweaks$DIRECTIONAL_DOWN_BUTTON_ID_PREFIX, -1);
+			this.minecolonies_tweaks$updateButton(minecolonies_tweaks$DIRECTIONAL_UP_BUTTON_ID_PREFIX + dir.getName());
+			this.minecolonies_tweaks$updateButton(minecolonies_tweaks$DIRECTIONAL_DOWN_BUTTON_ID_PREFIX + dir.getName());
 		}
 
+		this.minecolonies_tweaks$updateButton(minecolonies_tweaks$DIRECTIONAL_UP_BUTTON_ID_PREFIX + "all");
+		this.minecolonies_tweaks$updateButton(minecolonies_tweaks$DIRECTIONAL_DOWN_BUTTON_ID_PREFIX + "all");
 	}
 
 	@Unique
-	private void minecolonies_tweaks$updateButton(Direction dir, String prefix, int delta)
+	private void minecolonies_tweaks$updateButton(String name)
 	{
-		var button = this.findPaneOfTypeByID(prefix + dir.getName(), Button.class);
+		var button = this.findPaneOfTypeByID(name, Button.class);
 
 		if (button == null)
 		{
