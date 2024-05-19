@@ -17,6 +17,7 @@
 		"minecolonies.FieldsModuleMixin",
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemStackUtilsMixin",
+		"minecolonies.PublicWorkerCraftingProductionResolverMixin",
 		"minecolonies.ToolMixin",
 		"minecolonies.ToolTypeMixin"
 	],
