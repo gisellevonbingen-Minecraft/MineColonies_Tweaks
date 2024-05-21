@@ -8,6 +8,7 @@
 		
 		"minecolonies.AbstractModuleWindowMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
+		"minecolonies.ItemListModuleWindowMixin",
 		"minecolonies.MainWindowCitizenMixin",
 		"minecolonies.WindowFieldMixin",
 		"minecolonies.WindowCraftingsMixin",

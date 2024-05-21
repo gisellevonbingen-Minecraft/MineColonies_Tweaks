@@ -1,4 +1,7 @@
 {
 	"minecolonies_tweaks.gui.field.up_all": "Up All",
-	"minecolonies_tweaks.gui.field.down_all": "Down All"
+	"minecolonies_tweaks.gui.field.down_all": "Down All",
+	
+	"minecolonies_tweaks.gui.workerhuts.toogle_in_current": "Toggle Filtered",
+	"minecolonies_tweaks.gui.workerhuts.reset_in_current": "Reset Filtered"
 }
