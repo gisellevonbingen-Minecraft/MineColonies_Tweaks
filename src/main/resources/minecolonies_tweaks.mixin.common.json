@@ -16,6 +16,7 @@
 		"minecolonies.FarmFieldMixin",
 		"minecolonies.FieldsModuleMixin",
 		"minecolonies.GlobalResearchBranchMixin",
+		"minecolonies.ItemListModuleViewAccessor",
 		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.PublicWorkerCraftingProductionResolverMixin",
 		"minecolonies.ToolMixin",

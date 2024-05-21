@@ -24,12 +24,15 @@ import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
 
 @Mod(MineColoniesTweaks.MOD_ID)
 public class MineColoniesTweaks
 {
 	public static final String MOD_ID = "minecolonies_tweaks";
 	public static final Logger LOGGER = LogManager.getLogger();
+
+	private static NetworkChannel NETWORK;
 
 	public MineColoniesTweaks()
 	{
@@ -44,6 +47,7 @@ public class MineColoniesTweaks
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
 
+		NETWORK = new NetworkChannel("main");
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
 	}
 
@@ -56,6 +60,11 @@ public class MineColoniesTweaks
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
 	{
 		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
+	}
+
+	public static NetworkChannel network()
+	{
+		return NETWORK;
 	}
 
 	public static ResourceLocation rl(String path)
