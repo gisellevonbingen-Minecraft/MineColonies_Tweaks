@@ -53,8 +53,11 @@ public class MineColoniesTweaks
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
-		StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
+		e.enqueueWork(() ->
+		{
+			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
+			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
+		});
 	}
 
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
