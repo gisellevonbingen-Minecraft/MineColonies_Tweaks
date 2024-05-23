@@ -14,9 +14,9 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 {
 	public enum Function
 	{
+		CLEAR,
 		ADD,
 		REMOVE,
-		TOGGLE,
 	}
 
 	private final Function function;
@@ -61,22 +61,6 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 			else if (this.function == Function.REMOVE)
 			{
 				this.storages.forEach(module::removeItem);
-			}
-			else if (this.function == Function.TOGGLE)
-			{
-				for (var storage : this.storages)
-				{
-					if (module.isItemInList(storage))
-					{
-						module.removeItem(storage);
-					}
-					else
-					{
-						module.addItem(storage);
-					}
-
-				}
-
 			}
 
 		}

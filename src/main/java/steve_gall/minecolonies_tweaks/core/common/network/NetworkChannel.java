@@ -20,6 +20,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.network.message.AssignFilterableItemsMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.AssignIdListUpdateMessage;
 
 public class NetworkChannel
 {
@@ -51,6 +52,7 @@ public class NetworkChannel
 		this.transactionId = new AtomicInteger();
 
 		this.registerMessage(AssignFilterableItemsMessage.class, AssignFilterableItemsMessage::new);
+		this.registerMessage(AssignIdListUpdateMessage.class, AssignIdListUpdateMessage::new);
 	}
 
 	public void handleSplit(AbstractMessage message, Consumer<FrameMessage> consumer)
