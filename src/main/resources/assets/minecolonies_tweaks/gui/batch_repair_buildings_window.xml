@@ -1,0 +1,100 @@
+<window xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	pause="true" lightbox="true"
+	xsi:noNamespaceSchemaLocation="file:../../../../../api/java/com/minecolonies/blockui/blockui.xsd">
+
+	<input id="input" size="135 17" pos="1 5" maxlength="25" />
+
+	<button id="exceptOpenablesOnlyChanged" size="20 17" pos="140 5" label="X"
+		source="minecolonies:textures/gui/builderhut/builder_button_small.png"
+		textcolor="black" shadow="false" />
+	<text id="exceptOpenablesChangedOnlyText" size="200 17" pos="161 5"
+		label="$(minecolonies_tweaks.gui.exceptOpenablesOnlyChanged)" textcolor="white" wrap="true" />
+
+	<view size="100% 168" pos="0 31">
+		<view size="135 100%" pos="0 0">
+			<text id="buildingsText" size="100% 8" pos="0 0"
+				label="$(minecolonies_tweaks.gui.buildings)"
+				textalign="BOTTOM_MIDDLE" wrap="true" />
+			<box size="100% 160" pos="0 10" linewidth="1">
+				<list id="buildings" size="100% 100%" pos="0 0">
+					<box size="100% 40" linewidth="1">
+						<itemicon id="buildingIcon" size="16 16" pos="2 2" />
+						<text id="buildingName" size="106 20" pos="20 0"
+							color="white" wrap="true" />
+						<text id="builderName" size="124 20" pos="2 20" color="white"
+							textalign="TOP_LEFT" />
+					</box>
+				</list>
+			</box>
+		</view>
+
+		<view size="135 100%" pos="140 0">
+			<text id="buildersText" size="100% 8" pos="0 0"
+				label="$(minecolonies_tweaks.gui.available_builders)"
+				textalign="BOTTOM_MIDDLE" wrap="true" />
+			<box size="100% 160" pos="0 10" linewidth="1">
+				<list id="builders" size="100% 100%" pos="0 0">
+					<box size="100% 30" linewidth="1">
+						<text id="builderName" size="122 20" pos="2 2" color="white"
+							textalign="TOP_LEFT" wrap="true" />
+						<text id="assignedCount" size="124 10" pos="2 20"
+							color="white"
+							label="$(minecolonies_tweaks.gui.assigned_count_with_value)"
+							wrap="true" />
+					</box>
+				</list>
+			</box>
+		</view>
+
+		<view size="135 100%" pos="280 0">
+			<text id="repairResourcesText" size="100% 8" pos="0 0"
+				label="$(minecolonies_tweaks.gui.repair_resources)"
+				textalign="BOTTOM_MIDDLE" wrap="true" />
+			<box size="100% 160" pos="0 10" linewidth="1">
+				<list id="repairResources" size="100% 100%" pos="0 0">
+					<box size="100% 24" linewidth="1">
+						<itemicon id="resourceIcon" size="16 16" pos="2 4" />
+						<text id="resourceName" size="106 24" pos="20 0"
+							color="white" wrap="true" />
+					</box>
+				</list>
+			</box>
+		</view>
+	</view>
+
+	<button id="assignAllAutomatically" align="BOTTOM_LEFT"
+		size="80 24" pos="0 0"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
+		label="$(minecolonies_tweaks.gui.assign_all_automatically)"
+		textcolor="black" wrap="true" />
+
+	<button id="clearAssignments" align="BOTTOM_LEFT" size="80 24"
+		pos="85 0"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
+		label="$(minecolonies_tweaks.gui.clear_assignments)" textcolor="black"
+		wrap="true" />
+
+	<button id="markAllDontRepair" align="BOTTOM_LEFT" size="80 24"
+		pos="170 0"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
+		label="$(minecolonies_tweaks.gui.mark_all_dont_repair)"
+		textcolor="black" wrap="true" />
+
+	<button id="clearDontRepair" align="BOTTOM_LEFT" size="80 24"
+		pos="255 0"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
+		label="$(minecolonies_tweaks.gui.clear_dont_repair)" textcolor="black"
+		wrap="true" />
+
+	<text id="selectionText" align="BOTTOM_LEFT" size="200 8"
+		pos="0 27" label="" textalign="MIDDLE_LEFT" />
+
+	<button id="repair" align="BOTTOM_RIGHT" size="70 24" pos="5 0"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
+		label="$(com.minecolonies.coremod.gui.workerhuts.repair)"
+		textcolor="black" />
+
+	<button id="cancel" align="TOP_RIGHT" size="14 15" pos="5 5"
+		source="minecolonies:textures/gui/button_x.png" textcolor="black" />
+
+</window>

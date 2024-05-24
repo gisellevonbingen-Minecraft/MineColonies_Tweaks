@@ -10,6 +10,7 @@
 		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.ItemListModuleWindowMixin",
 		"minecolonies.MainWindowCitizenMixin",
+		"minecolonies.TownhallWindowMainPageMixin",
 		"minecolonies.WindowBuildBuildingMixin",
 		"minecolonies.WindowFieldMixin",
 		"minecolonies.WindowCraftingsMixin",
