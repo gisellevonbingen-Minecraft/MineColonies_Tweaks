@@ -7,19 +7,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.core.client.gui.WindowBuildBuilding;
 
+import steve_gall.minecolonies_tweaks.core.client.gui.WindowSkeletonExtension;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 
 @Mixin(value = WindowBuildBuilding.class, remap = false)
-public abstract class WindowBuildBuildingMixin extends AbstractWindowSkeletonMixin
+public abstract class WindowBuildBuildingMixin implements WindowSkeletonExtension
 {
 	@Shadow(remap = false)
 	private IBuildingView building;
 
 	@Override
-	protected void close_Head(CallbackInfo ci)
+	public void minecolonies_tweaks$onCloseHead(CallbackInfo ci)
 	{
-		super.close_Head(ci);
-
 		if (MineColoniesTweaksConfigClient.INSTANCE.escToReturn.get().booleanValue())
 		{
 			ci.cancel();
