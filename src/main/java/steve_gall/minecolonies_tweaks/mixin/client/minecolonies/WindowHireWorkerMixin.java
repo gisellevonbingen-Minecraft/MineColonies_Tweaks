@@ -8,10 +8,11 @@ import com.minecolonies.api.colony.IColonyView;
 import com.minecolonies.core.client.gui.WindowHireWorker;
 import com.minecolonies.core.colony.buildings.views.AbstractBuildingView;
 
+import steve_gall.minecolonies_tweaks.core.client.gui.WindowSkeletonExtension;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 
 @Mixin(value = WindowHireWorker.class, remap = false)
-public abstract class WindowHireWorkerMixin extends AbstractWindowSkeletonMixin
+public abstract class WindowHireWorkerMixin implements WindowSkeletonExtension
 {
 	@Shadow(remap = false)
 	protected AbstractBuildingView building;
@@ -20,10 +21,8 @@ public abstract class WindowHireWorkerMixin extends AbstractWindowSkeletonMixin
 	protected IColonyView colony;
 
 	@Override
-	protected void close_Head(CallbackInfo ci)
+	public void minecolonies_tweaks$onCloseHead(CallbackInfo ci)
 	{
-		super.close_Head(ci);
-
 		if (this.colony.getTownHall() != null && MineColoniesTweaksConfigClient.INSTANCE.escToReturn.get().booleanValue())
 		{
 			ci.cancel();

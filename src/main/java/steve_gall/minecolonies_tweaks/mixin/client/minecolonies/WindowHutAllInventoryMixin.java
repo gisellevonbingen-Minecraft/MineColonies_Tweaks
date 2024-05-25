@@ -7,19 +7,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.ldtteam.blockui.views.BOWindow;
 import com.minecolonies.core.client.gui.WindowHutAllInventory;
 
+import steve_gall.minecolonies_tweaks.core.client.gui.WindowSkeletonExtension;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 
 @Mixin(value = WindowHutAllInventory.class, remap = false)
-public abstract class WindowHutAllInventoryMixin extends AbstractWindowSkeletonMixin
+public abstract class WindowHutAllInventoryMixin implements WindowSkeletonExtension
 {
 	@Shadow(remap = false)
 	private BOWindow prev;
 
 	@Override
-	protected void close_Head(CallbackInfo ci)
+	public void minecolonies_tweaks$onCloseHead(CallbackInfo ci)
 	{
-		super.close_Head(ci);
-
 		if (this.prev != null && MineColoniesTweaksConfigClient.INSTANCE.escToReturn.get().booleanValue())
 		{
 			ci.cancel();
