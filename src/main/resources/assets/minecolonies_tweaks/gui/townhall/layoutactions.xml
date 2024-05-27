@@ -1,0 +1,8 @@
+<minecolonies_tweaks:addition>
+
+	<buttonimage id="batchRepair" size="129 17" pos="110 217"
+		textcolor="black"
+		label="$(minecolonies_tweaks.gui.townhall.batch_repair)"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium_large_build.png" />
+
+</minecolonies_tweaks:addition>

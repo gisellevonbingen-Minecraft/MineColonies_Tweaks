@@ -22,9 +22,9 @@
 
 	<buttonimage id="dir-resize-up-all" size="14 14"
 		pos="163 103" textcolor="white" textalign="MIDDLE" label="+"
-		tooltip="$(minecolonies_tweaks.gui.field.up_all)" />
+		tooltip="$(minecolonies_tweaks.gui.up_all)" />
 	<buttonimage id="dir-resize-down-all" size="14 14"
 		pos="177 103" textcolor="white" textalign="MIDDLE" label="-"
-		tooltip="$(minecolonies_tweaks.gui.field.down_all)" />
+		tooltip="$(minecolonies_tweaks.gui.down_all)" />
 
 </minecolonies_tweaks:addition>

@@ -1,7 +1,22 @@
 {
-	"minecolonies_tweaks.gui.field.up_all": "Up All",
-	"minecolonies_tweaks.gui.field.down_all": "Down All",
-	
-	"minecolonies_tweaks.gui.workerhuts.toogle_in_current": "Toggle Filtered",
-	"minecolonies_tweaks.gui.workerhuts.reset_in_current": "Reset Filtered"
+	"minecolonies_tweaks.gui.updating": "Updating",
+	"minecolonies_tweaks.gui.assigned_counts": "Assignees: %1$s / %2$s",
+	"minecolonies_tweaks.gui.up_all": "Up All",
+	"minecolonies_tweaks.gui.down_all": "Down All",
+	"minecolonies_tweaks.gui.assign_all_automatically": "Assign All Automatically",
+	"minecolonies_tweaks.gui.clear_assignments": "Clear Assignments",
+	"minecolonies_tweaks.gui.dont_repair": "Don't Repair",
+	"minecolonies_tweaks.gui.mark_all_dont_repair": "Mark All as 'Don't Repair'",
+	"minecolonies_tweaks.gui.clear_dont_repair": "Clear\n'Don't Repair'",
+	"minecolonies_tweaks.gui.toogle_in_current": "Toggle Filtered",
+	"minecolonies_tweaks.gui.reset_in_current": "Reset Filtered",
+	"minecolonies_tweaks.gui.buildings": "Buildings",
+	"minecolonies_tweaks.gui.assigned_builder_name": "Builder: %s",
+	"minecolonies_tweaks.gui.builder_name_with_level": "Lv. %2$s - %1$s",
+	"minecolonies_tweaks.gui.builder_no_assigned": "Not Assigned",
+	"minecolonies_tweaks.gui.assigned_count_with_value": "Assigned Count: %s",
+	"minecolonies_tweaks.gui.exceptOpenablesOnlyChanged": "Except buildings what Doors and Trapdoors only changed",
+	"minecolonies_tweaks.gui.available_builders": "Available Builders",
+	"minecolonies_tweaks.gui.repair_resources": "Repair Resources",
+	"minecolonies_tweaks.gui.townhall.batch_repair": "Repair All Buildings"
 }
