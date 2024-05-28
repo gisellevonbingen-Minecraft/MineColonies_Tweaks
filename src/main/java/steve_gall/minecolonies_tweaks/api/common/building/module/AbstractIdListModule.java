@@ -35,7 +35,7 @@ public abstract class AbstractIdListModule extends AbstractBuildingModule implem
 	public void deserializeNBT(@NotNull CompoundTag compound)
 	{
 		this.ids.clear();
-		var idsTag = compound.getList(TAG_IDS, Tag.TAG_LIST);
+		var idsTag = compound.getList(TAG_IDS, Tag.TAG_STRING);
 
 		for (var i = 0; i < idsTag.size(); i++)
 		{
