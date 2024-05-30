@@ -28,6 +28,7 @@ public class ConfigToolType extends CustomToolType
 		this.defaultLevel = builder.defaultLevel;
 	}
 
+	@Override
 	public boolean hasVariableMaterials()
 	{
 		return this.hasVariableMaterials;
@@ -39,6 +40,7 @@ public class ConfigToolType extends CustomToolType
 		return Component.translatable(this.translationKey);
 	}
 
+	@Override
 	@NotNull
 	public Optional<Integer> getDefaultLevel()
 	{
