@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.IToolType;
@@ -41,6 +42,8 @@ public class ToolTypeExtension
 
 	@NotNull
 	private final IToolType toolType;
+	@Nullable
+	private final CustomToolType customToolType;
 
 	private TagKey<Item> itemTag;
 	private final Int2ObjectOpenHashMap<TagKey<Item>> levelTags;
@@ -48,6 +51,7 @@ public class ToolTypeExtension
 	private ToolTypeExtension(@NotNull IToolType toolType)
 	{
 		this.toolType = toolType;
+		this.customToolType = CustomToolType.find(toolType.getName());
 		this.levelTags = new Int2ObjectOpenHashMap<>();
 	}
 
@@ -58,6 +62,19 @@ public class ToolTypeExtension
 	 */
 	public int getCustomLevel(@NotNull ItemStack item)
 	{
+		var custom = this.getCustomToolType();
+
+		if (custom != null)
+		{
+			var level = custom.getToolLevel(item);
+
+			if (level > -1)
+			{
+				return level;
+			}
+
+		}
+
 		for (var i = 0; i <= Constants.MAX_BUILDING_LEVEL; i++)
 		{
 			if (item.is(this.getItemCustomLevelTag(i)))
@@ -72,6 +89,17 @@ public class ToolTypeExtension
 
 	public boolean isCustomTool(@NotNull ItemStack itemStack)
 	{
+		var custom = this.getCustomToolType();
+
+		if (custom != null)
+		{
+			if (custom.isTool(itemStack))
+			{
+				return true;
+			}
+
+		}
+
 		var level = this.getCustomLevel(itemStack);
 
 		if (level == -1)
@@ -89,6 +117,12 @@ public class ToolTypeExtension
 	public IToolType getToolType()
 	{
 		return this.toolType;
+	}
+
+	@Nullable
+	public CustomToolType getCustomToolType()
+	{
+		return this.customToolType;
 	}
 
 	@NotNull
