@@ -12,14 +12,14 @@ import net.minecraftforge.eventbus.api.Event;
  */
 public class CustomToolTypeRegisterEvent extends Event
 {
-	private final Consumer<CustomToolTypeData> register;
+	private final Consumer<CustomToolType> register;
 
-	public CustomToolTypeRegisterEvent(@NotNull Consumer<CustomToolTypeData> register)
+	public CustomToolTypeRegisterEvent(@NotNull Consumer<CustomToolType> register)
 	{
 		this.register = register;
 	}
 
-	public void register(@NotNull CustomToolTypeData data)
+	public void register(@NotNull CustomToolType data)
 	{
 		this.register.accept(data);
 	}
