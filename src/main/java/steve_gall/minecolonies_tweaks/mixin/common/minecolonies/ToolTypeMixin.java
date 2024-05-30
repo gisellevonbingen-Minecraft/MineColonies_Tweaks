@@ -17,7 +17,7 @@ import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.network.chat.Component;
-import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeData;
+import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 
 @Mixin(value = ToolType.class, remap = false)
 public abstract class ToolTypeMixin
@@ -32,16 +32,16 @@ public abstract class ToolTypeMixin
 
 	static
 	{
-		CustomToolTypeData.init();
-		CustomToolTypeData.list().forEach(ToolTypeMixin::addValue);
+		CustomToolType.init();
+		CustomToolType.list().forEach(ToolTypeMixin::addValue);
 	}
 
 	@Inject(method = "<clinit>", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private static void clinit(CallbackInfo ci)
 	{
-		for (var data : CustomToolTypeData.list())
+		for (var data : CustomToolType.list())
 		{
-			tools.put(data.getName(), data.getToolType());
+			tools.put(data.getName().getPath(), data.getToolType());
 		}
 
 	}
@@ -52,10 +52,11 @@ public abstract class ToolTypeMixin
 		throw new AssertionError();
 	}
 
-	private static ToolType addValue(CustomToolTypeData data)
+	private static ToolType addValue(CustomToolType data)
 	{
 		var values = new ArrayList<>(Arrays.asList(ToolTypeMixin.$VALUES));
-		var value = init(data.getName().toUpperCase(), values.get(values.size() - 1).ordinal() + 1, data.getName(), data.hasVariableMaterials(), data.getDisplayName());
+		var path = data.getName().getPath();
+		var value = init(path.toUpperCase(), values.get(values.size() - 1).ordinal() + 1, path, data.hasVariableMaterials(), data.getDisplayName());
 
 		values.add(value);
 		data.pair(value);

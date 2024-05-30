@@ -10,7 +10,7 @@ import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeData;
+import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
 
 @Mixin(value = ItemStackUtils.class, remap = false)
@@ -41,7 +41,7 @@ public abstract class ItemStackUtilsMixin
 			}
 			else
 			{
-				var data = CustomToolTypeData.find(toolType.getName());
+				var data = CustomToolType.find(toolType.getName());
 
 				if (data != null)
 				{
