@@ -1,6 +1,5 @@
 package steve_gall.minecolonies_tweaks.api.common.tool;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
@@ -21,13 +20,18 @@ public class OrToolType extends CustomToolType
 	{
 		super(name);
 
-		this.toolTypes = new ArrayList<>(toolTypes);
+		this.toolTypes = toolTypes.stream().toList();
+	}
+
+	public List<Supplier<IToolType>> getToolTypes()
+	{
+		return this.toolTypes;
 	}
 
 	@Override
 	protected int getToolLevel(@NotNull ItemStack stack)
 	{
-		for (var supplier : this.toolTypes)
+		for (var supplier : this.getToolTypes())
 		{
 			var toolType = supplier.get();
 			var level = ItemStackUtils.getMiningLevel(stack, toolType);
@@ -45,7 +49,7 @@ public class OrToolType extends CustomToolType
 	@Override
 	protected boolean isTool(@NotNull ItemStack stack)
 	{
-		for (var supplier : this.toolTypes)
+		for (var supplier : this.getToolTypes())
 		{
 			var toolType = supplier.get();
 
