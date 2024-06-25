@@ -17,6 +17,7 @@ public class MineColoniesTweaksConfigServer
 	public final ResearchConfig researches;
 	public final FieldConfig fields;
 	public final JobConfig jobs;
+	public final CitizenConfig citizens;
 
 	public MineColoniesTweaksConfigServer(ForgeConfigSpec.Builder builder)
 	{
@@ -30,6 +31,10 @@ public class MineColoniesTweaksConfigServer
 
 		builder.push("jobs");
 		this.jobs = new JobConfig(builder);
+		builder.pop();
+
+		builder.push("citizens");
+		this.citizens = new CitizenConfig(builder);
 		builder.pop();
 	}
 
