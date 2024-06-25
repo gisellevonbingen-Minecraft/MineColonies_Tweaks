@@ -9,6 +9,7 @@
 		"minecolonies.AbstractCraftingBuildingModuleMixin",
 		"minecolonies.AbstractEntityAICraftingAccessor",
 		"minecolonies.AbstractEntityAICraftingMixin",
+		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
 		"minecolonies.EntityAIWorkFarmerAccessor",
 		"minecolonies.EntityAIWorkFarmerMixin",
