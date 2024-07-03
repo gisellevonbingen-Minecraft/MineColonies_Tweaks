@@ -10,7 +10,7 @@ import com.minecolonies.api.util.constant.IToolType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import steve_gall.minecolonies_tweaks.apiimpl.common.crafting.CustomizableRecipeStorageFactory;
+import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
 
 public interface ICustomizedRecipeStorage
 {
