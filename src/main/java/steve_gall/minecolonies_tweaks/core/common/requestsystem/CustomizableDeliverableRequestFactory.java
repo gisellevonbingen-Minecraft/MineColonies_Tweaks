@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.apiimpl.common.requestsystem;
+package steve_gall.minecolonies_tweaks.core.common.requestsystem;
 
 import org.jetbrains.annotations.NotNull;
 
