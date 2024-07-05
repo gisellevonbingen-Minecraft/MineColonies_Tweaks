@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.apiimpl.common.crafting;
+package steve_gall.minecolonies_tweaks.core.common.crafting;
 
 import org.jetbrains.annotations.NotNull;
 
