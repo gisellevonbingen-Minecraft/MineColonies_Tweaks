@@ -9,6 +9,7 @@ import com.minecolonies.core.entity.pathfinding.pathjobs.AbstractPathJob;
 import com.minecolonies.core.entity.pathfinding.pathresults.PathResult;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -20,6 +21,8 @@ public abstract class SimplePathJob<RESULT extends PathResult> extends AbstractP
 	private final BlockPos home;
 	@Nullable
 	private final BoundingBox restrictionBox;
+	@NotNull
+	private final MutableBlockPos temp = new MutableBlockPos();
 
 	public SimplePathJob(@NotNull Level level, @NotNull BlockPos start, @NotNull BlockPos home, int range, @Nullable Mob entity, @NotNull RESULT result)
 	{
@@ -96,31 +99,36 @@ public abstract class SimplePathJob<RESULT extends PathResult> extends AbstractP
 		if (n.x == n.parent.x)
 		{
 			var dz = n.z > n.parent.z ? 1 : -1;
-			return this.test(n.x, n.y, n.z + dz) || this.test(n.x - 1, n.y, n.z) || this.test(n.x + 1, n.y, n.z);
+			return this.isTarget(n.x, n.y, n.z + dz) || this.isTarget(n.x - 1, n.y, n.z) || this.isTarget(n.x + 1, n.y, n.z);
 		}
 		else
 		{
 			var dx = n.x > n.parent.x ? 1 : -1;
-			return this.test(n.x + dx, n.y, n.z) || this.test(n.x, n.y, n.z - 1) || this.test(n.x, n.y, n.z + 1);
+			return this.isTarget(n.x + dx, n.y, n.z) || this.isTarget(n.x, n.y, n.z - 1) || this.isTarget(n.x, n.y, n.z + 1);
 		}
 
 	}
 
-	protected boolean test(int x, int y, int z)
+	private boolean isTarget(int x, int y, int z)
 	{
-		return this.testRestrictionBox(x, y, z) && this.testTarget(x, y, z);
+		return this.isTarget(this.temp.set(x, y, z));
 	}
 
-	protected boolean testRestrictionBox(int x, int y, int z)
+	protected boolean isTarget(@NotNull MutableBlockPos pos)
+	{
+		return this.testRestrictionBox(pos) && this.testPos(pos);
+	}
+
+	protected boolean testRestrictionBox(@NotNull MutableBlockPos pos)
 	{
 		if (this.restrictionBox == null)
 		{
 			return true;
 		}
 
-		return this.restrictionBox.minX() <= x && x <= this.restrictionBox.maxX() && //
-				this.restrictionBox.minY() <= y && y <= this.restrictionBox.maxY() && //
-				this.restrictionBox.minZ() <= z && z <= this.restrictionBox.maxZ();
+		return this.restrictionBox.minX() <= pos.getX() && pos.getX() <= this.restrictionBox.maxX() && //
+				this.restrictionBox.minY() <= pos.getY() && pos.getY() <= this.restrictionBox.maxY() && //
+				this.restrictionBox.minZ() <= pos.getZ() && pos.getZ() <= this.restrictionBox.maxZ();
 	}
 
 	@Override
@@ -129,5 +137,5 @@ public abstract class SimplePathJob<RESULT extends PathResult> extends AbstractP
 		return 0.0D;
 	}
 
-	protected abstract boolean testTarget(int x, int y, int z);
+	protected abstract boolean testPos(@NotNull MutableBlockPos pos);
 }
