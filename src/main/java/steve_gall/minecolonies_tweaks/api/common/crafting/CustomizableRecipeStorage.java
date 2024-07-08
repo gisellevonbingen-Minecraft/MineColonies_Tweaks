@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_tweaks.api.common.crafting;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.ldtteam.structurize.items.ModItems;
 import com.minecolonies.api.MinecoloniesAPIProxy;
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.colony.requestsystem.token.IToken;
@@ -38,7 +40,7 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 	public CustomizableRecipeStorage(@NotNull IToken<?> token, @NotNull ICustomizedRecipeStorage impl)
 	{
 		this.impl = impl;
-		this.delegate = new DelegateRecipeStorage(this, token, impl.getInput(), impl.getGridSize(), impl.getPrimaryOutput(), impl.getIntermediate(), impl.getRecipeSource(), impl.getRecipeType(), impl.getAlternateOutputs(), impl.getSecondaryOutputs(), impl.getLootTable(), impl.getRequiredTool());
+		this.delegate = new DelegateRecipeStorage(this, token, impl.getInput(), impl.getGridSize(), impl.getPrimaryOutput(), impl.getIntermediate(), impl.getRecipeSource(), impl.getRecipeType(), impl.getAlternateOutputs(), getSecondaryOutputs(impl), impl.getLootTable(), impl.getRequiredTool());
 
 		var type = impl.getRecipeType();
 		var recipeTypes = MinecoloniesAPIProxy.getInstance().getRecipeTypeRegistry();
@@ -54,6 +56,14 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 
 		this.hasHashCode = false;
 		this.hashCode = 0;
+	}
+
+	private List<ItemStack> getSecondaryOutputs(ICustomizedRecipeStorage recipeStorage)
+	{
+		var secondaryOutputs = new ArrayList<ItemStack>();
+		secondaryOutputs.add(new ItemStack(ModItems.buildTool.get()));
+		secondaryOutputs.addAll(recipeStorage.getSecondaryOutputs());
+		return secondaryOutputs;
 	}
 
 	@Override
