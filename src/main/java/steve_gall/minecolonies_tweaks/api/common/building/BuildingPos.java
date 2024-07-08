@@ -154,4 +154,19 @@ public class BuildingPos
 		return this.buildingId;
 	}
 
+	public int getX()
+	{
+		return this.getBuildingId().getX();
+	}
+
+	public int getY()
+	{
+		return this.getBuildingId().getY();
+	}
+
+	public int getZ()
+	{
+		return this.getBuildingId().getZ();
+	}
+
 }

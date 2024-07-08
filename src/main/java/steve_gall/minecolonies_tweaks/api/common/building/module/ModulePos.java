@@ -163,4 +163,19 @@ public class ModulePos
 		return this.moduleName;
 	}
 
+	public int getX()
+	{
+		return this.getBuildingId().getX();
+	}
+
+	public int getY()
+	{
+		return this.getBuildingId().getY();
+	}
+
+	public int getZ()
+	{
+		return this.getBuildingId().getZ();
+	}
+
 }
