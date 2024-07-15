@@ -35,7 +35,7 @@ public class BuildingPos
 	{
 		this.dimensionId = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(tag.getString(TAG_DIMENSION_ID)));
 		this.colonyId = tag.getInt(TAG_COLONY_ID);
-		this.buildingId = tag.contains(TAG_BUILDING_ID) ? BlockPosUtil.read(tag, TAG_BUILDING_ID) : null;
+		this.buildingId = BlockPosUtil.read(tag, TAG_BUILDING_ID);
 	}
 
 	public BuildingPos(@NotNull FriendlyByteBuf buffer)
