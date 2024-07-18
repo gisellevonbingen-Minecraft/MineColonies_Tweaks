@@ -52,7 +52,7 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 	{
 		super.handle(context);
 
-		if (this.getModule() instanceof ItemListModule module)
+		if (this.getModulePos().getModule() instanceof ItemListModule module)
 		{
 			if (this.function == Function.ADD)
 			{

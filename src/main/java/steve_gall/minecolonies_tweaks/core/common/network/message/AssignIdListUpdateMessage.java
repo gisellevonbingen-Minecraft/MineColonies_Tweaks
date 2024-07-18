@@ -23,6 +23,7 @@ public class AssignIdListUpdateMessage extends BuildingModuleMessage
 	public AssignIdListUpdateMessage(IIdListModuleView module, Function function, Collection<ResourceLocation> ids)
 	{
 		super(module);
+
 		this.function = function;
 		this.ids = ids.stream().toList();
 	}
@@ -30,6 +31,7 @@ public class AssignIdListUpdateMessage extends BuildingModuleMessage
 	public AssignIdListUpdateMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
+
 		this.function = buffer.readEnum(Function.class);
 		this.ids = buffer.readList(FriendlyByteBuf::readResourceLocation);
 	}
@@ -48,7 +50,7 @@ public class AssignIdListUpdateMessage extends BuildingModuleMessage
 	{
 		super.handle(context);
 
-		if (this.getModule() instanceof IIdListModule module)
+		if (this.getModulePos().getModule() instanceof IIdListModule module)
 		{
 			if (this.function == Function.CLEAR)
 			{
@@ -69,7 +71,7 @@ public class AssignIdListUpdateMessage extends BuildingModuleMessage
 
 	public Function getFunction()
 	{
-		return function;
+		return this.function;
 	}
 
 	public Collection<ResourceLocation> getIds()
