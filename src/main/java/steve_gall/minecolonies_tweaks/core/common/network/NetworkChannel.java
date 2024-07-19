@@ -21,6 +21,8 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.network.message.AssignFilterableItemsMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.AssignIdListUpdateMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataLoadMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
 
 public class NetworkChannel
 {
@@ -53,6 +55,8 @@ public class NetworkChannel
 
 		this.registerMessage(AssignFilterableItemsMessage.class, AssignFilterableItemsMessage::new);
 		this.registerMessage(AssignIdListUpdateMessage.class, AssignIdListUpdateMessage::new);
+		this.registerMessage(BatchRepairDataLoadMessage.class, BatchRepairDataLoadMessage::new);
+		this.registerMessage(BatchRepairDataSaveMessage.class, BatchRepairDataSaveMessage::new);
 	}
 
 	public void handleSplit(AbstractMessage message, Consumer<FrameMessage> consumer)
