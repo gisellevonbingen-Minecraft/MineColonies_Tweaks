@@ -4,11 +4,14 @@
 
 	<input id="input" size="135 17" pos="1 5" maxlength="25" />
 
-	<button id="exceptOpenablesOnlyChanged" size="20 17" pos="140 5" label="X"
+	<button id="exceptOpenablesOnlyChanged" size="20 17" pos="140 5"
+		label="X"
 		source="minecolonies:textures/gui/builderhut/builder_button_small.png"
 		textcolor="black" shadow="false" />
-	<text id="exceptOpenablesChangedOnlyText" size="200 17" pos="161 5"
-		label="$(minecolonies_tweaks.gui.exceptOpenablesOnlyChanged)" textcolor="white" wrap="true" />
+	<text id="exceptOpenablesChangedOnlyText" size="200 17"
+		pos="161 5"
+		label="$(minecolonies_tweaks.gui.exceptOpenablesOnlyChanged)"
+		textcolor="white" wrap="true" />
 
 	<view size="100% 168" pos="0 31">
 		<view size="135 100%" pos="0 0">
@@ -20,9 +23,9 @@
 					<box size="100% 40" linewidth="1">
 						<itemicon id="buildingIcon" size="16 16" pos="2 2" />
 						<text id="buildingName" size="106 20" pos="20 0"
-							color="white" wrap="true" />
+							color="white" wrap="true" tooltip="" />
 						<text id="builderName" size="124 20" pos="2 20" color="white"
-							textalign="TOP_LEFT" />
+							textalign="TOP_LEFT" tooltip="" />
 					</box>
 				</list>
 			</box>
@@ -91,7 +94,7 @@
 
 	<button id="repair" align="BOTTOM_RIGHT" size="70 24" pos="5 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		label="$(com.minecolonies.coremod.gui.workerhuts.repair)"
+		label="$(minecolonies_tweaks.gui.repair_and_save)" wrap="true"
 		textcolor="black" />
 
 	<button id="cancel" align="TOP_RIGHT" size="14 15" pos="5 5"

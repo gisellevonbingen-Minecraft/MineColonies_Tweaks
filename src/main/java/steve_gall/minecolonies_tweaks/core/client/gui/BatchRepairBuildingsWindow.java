@@ -2,12 +2,15 @@ package steve_gall.minecolonies_tweaks.core.client.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,6 +24,7 @@ import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.controls.ItemIcon;
 import com.ldtteam.blockui.controls.Text;
 import com.ldtteam.blockui.controls.TextField;
+import com.ldtteam.blockui.controls.Tooltip;
 import com.ldtteam.blockui.controls.Tooltip.AutomaticTooltip;
 import com.ldtteam.blockui.views.BOWindow;
 import com.ldtteam.blockui.views.ScrollingList;
@@ -46,7 +50,9 @@ import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.network.messages.server.colony.building.BuildRequestMessage;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -54,12 +60,17 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.colony.BatchRepairData;
+import steve_gall.minecolonies_tweaks.core.common.colony.BuildingCost;
+import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataLoadMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
 
 @SuppressWarnings("removal")
 public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 {
 	public static final Component O = Component.literal("O");
 	public static final Component X = Component.literal("X");
+	public static final Component RESOURCES_CHANGED_SUFFIX = Component.literal("*").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
 
 	public static final String LIST_BUILDINGS = "buildings";
 	public static final String LIST_BUILDERS = "builders";
@@ -85,11 +96,15 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 	private final ScrollingList repairResourceList;
 	private final Text selectionText;
 
-	private final List<BuildingInfo> buildings;
+	private final Map<BlockPos, BuildingCost> savedCosts;
+	private final Set<BlockPos> savedDontRepairs;
+
+	private final List<BuildingInfo> updatingBuildings;
+	private final Map<BlockPos, BuildingInfo> buildings;
 	private final List<BuildingInfo> filteredBuildings;
 	private final List<BuilderInfo> builders;
 	private final List<BuilderInfo> filteredBuilders;
-	private final List<ItemStack> repairResources;
+	private final List<ItemStorage> repairResources;
 	private final Map<BuildingInfo, BuilderInfo> assignments;
 
 	private boolean requested = false;
@@ -116,7 +131,11 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		this.repairResourceList = this.window.findPaneOfTypeByID(LIST_REPAIR_RESOURCES, ScrollingList.class);
 		this.selectionText = this.window.findPaneOfTypeByID(TEXT_SELECTION, Text.class);
 
-		this.buildings = new ArrayList<>();
+		this.savedCosts = new HashMap<>();
+		this.savedDontRepairs = new HashSet<>();
+
+		this.updatingBuildings = new ArrayList<>();
+		this.buildings = new HashMap<>();
 		this.filteredBuildings = new ArrayList<>();
 		this.builders = new ArrayList<>();
 		this.filteredBuilders = new ArrayList<>();
@@ -127,6 +146,83 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		this.buildingList.setDataProvider(this.filteredBuildings::size, this::updateBuildingRow);
 		this.builderList.setDataProvider(this.filteredBuilders::size, this::updateBuilderRow);
 		this.repairResourceList.setDataProvider(this.repairResources::size, this::updateRepairResourceRow);
+	}
+
+	public void setSavedBuildings(BatchRepairData data)
+	{
+		this.savedCosts.clear();
+		this.savedDontRepairs.clear();
+
+		for (var building : data.getCosts())
+		{
+			this.savedCosts.put(building.id(), building);
+		}
+
+		for (var building : data.getMarkAsDontRepairs())
+		{
+			this.savedDontRepairs.add(building);
+		}
+
+		if (!this.updating)
+		{
+			for (var building : this.buildings.values())
+			{
+				this.applySavedData(building);
+			}
+
+			this.updateBuildingList();
+			this.onBuildingCountsChanged();
+		}
+
+	}
+
+	private void applySavedData(BuildingInfo building)
+	{
+		var id = building.building.getID();
+
+		if (this.savedDontRepairs.contains(id))
+		{
+			this.savedDontRepairs.remove(id);
+			this.markAsDontRepair(building);
+		}
+
+		var buildingCosts = this.savedCosts.get(id);
+
+		if (buildingCosts != null)
+		{
+			var prevCosts = buildingCosts.costs();
+			var nextCosts = building.repairResources;
+			building.repairResourcesChanged = !this.equalsCosts(prevCosts, nextCosts);
+		}
+
+	}
+
+	private boolean equalsCosts(List<ItemStorage> prev, List<ItemStorage> next)
+	{
+		var size = next.size();
+
+		if (prev.size() != size)
+		{
+			return false;
+		}
+
+		for (var i = 0; i < size; i++)
+		{
+			var prevStorage = prev.get(i);
+			var nextStorage = next.get(i);
+
+			if (prevStorage.getAmount() != nextStorage.getAmount())
+			{
+				return false;
+			}
+			else if (!prevStorage.equals(nextStorage))
+			{
+				return false;
+			}
+
+		}
+
+		return true;
 	}
 
 	@Override
@@ -158,6 +254,8 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		this.requested = true;
 		this.nameField.setFocus();
 		this.onExceptOpenablesOnlyChangedChanged();
+
+		MineColoniesTweaks.network().sendToServer(new BatchRepairDataLoadMessage(this.colony));
 	}
 
 	@Override
@@ -167,17 +265,24 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 		if (this.updating)
 		{
-			synchronized (this.buildings)
+			synchronized (this.updatingBuildings)
 			{
 				if (this.updateProgress >= this.updateCount)
 				{
 					this.updating = false;
 				}
 
-				this.nameFilterRequested = 0;
-				this.updateBuildingList();
+				for (var building : this.updatingBuildings)
+				{
+					this.buildings.put(building.building.getID(), building);
+					this.applySavedData(building);
+				}
+
+				this.updatingBuildings.clear();
 			}
 
+			this.nameFilterRequested = 0;
+			this.updateBuildingList();
 			this.onBuildingCountsChanged();
 		}
 
@@ -252,13 +357,13 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 					var buildingInfo = new BuildingInfo(building, repairResources);
 
-					synchronized (this.buildings)
+					synchronized (this.updatingBuildings)
 					{
 						this.updateProgress++;
 
 						if (repairResources.size() > 0)
 						{
-							this.buildings.add(buildingInfo);
+							this.updatingBuildings.add(buildingInfo);
 						}
 
 					}
@@ -444,10 +549,31 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		}
 		else if (Objects.equals(button.getID(), WindowConstants.BUTTON_REPAIR))
 		{
+			if (this.updating)
+			{
+				return;
+			}
+
 			for (var entry : this.assignments.entrySet())
 			{
 				Network.getNetwork().sendToServer(new BuildRequestMessage(entry.getKey().building, BuildRequestMessage.Mode.REPAIR, entry.getValue().building.getPosition()));
 			}
+
+			var data = new BatchRepairData();
+
+			for (var building : this.buildings.values())
+			{
+				data.getCosts().add(building.toCost());
+
+				if (building.dontRepair)
+				{
+					this.savedDontRepairs.add(building.building.getID());
+				}
+
+			}
+
+			this.savedDontRepairs.forEach(data.getMarkAsDontRepairs()::add);
+			MineColoniesTweaks.network().sendToServer(new BatchRepairDataSaveMessage(this.colony, data));
 
 			this.close();
 		}
@@ -464,7 +590,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		this.exceptButton.setText(excpet ? O : X);
 		this.exceptButton.setColors((excpet ? ChatFormatting.BLACK : ChatFormatting.RED).getColor());
 
-		this.buildings.stream().filter(building -> !this.testBuildingForList(building)).forEach(this::unassign);
+		this.buildings.values().stream().filter(building -> !this.testBuildingForList(building)).forEach(this::unassign);
 		this.updateBuildingList();
 		this.onBuildingCountsChanged();
 	}
@@ -494,7 +620,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		}
 		else
 		{
-			this.selectionText.setText(Component.translatable("minecolonies_tweaks.gui.assigned_counts", this.assignments.size(), this.buildings.stream().filter(this::testBuildingForCount).count()));
+			this.selectionText.setText(Component.translatable("minecolonies_tweaks.gui.assigned_counts", this.assignments.size(), this.buildings.values().stream().filter(this::testBuildingForCount).count()));
 		}
 
 	}
@@ -515,12 +641,9 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		this.selectedBuilderIndex = -1;
 		this.filteredBuildings.clear();
 
-		synchronized (this.buildings)
-		{
-			var field = this.nameField.getText().toLowerCase(Locale.ENGLISH);
-			this.buildings.stream().filter(this::testBuildingForList).filter(i -> this.filterBuilding(field, i)).forEach(this.filteredBuildings::add);
-			this.filteredBuildings.sort(this::compareBuilding);
-		}
+		var field = this.nameField.getText().toLowerCase(Locale.ENGLISH);
+		this.buildings.values().stream().filter(this::testBuildingForList).filter(i -> this.filterBuilding(field, i)).forEach(this.filteredBuildings::add);
+		this.filteredBuildings.sort(this::compareBuilding);
 
 		this.buildingList.refreshElementPanes();
 
@@ -530,8 +653,8 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 	protected int compareBuilding(BuildingInfo building1, BuildingInfo building2)
 	{
-		var dontRepair1 = building1.dontRepair;
-		var dontRepair2 = building2.dontRepair;
+		var dontRepair1 = building1.dontRepair && !building1.repairResourcesChanged;
+		var dontRepair2 = building2.dontRepair && !building2.repairResourcesChanged;
 
 		if (dontRepair1 != dontRepair2)
 		{
@@ -564,18 +687,41 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		buildingIcon.setItem(building.icon);
 
 		var buildingLabel = row.findPaneOfTypeByID(TEXT_BUILDING_NAME, Text.class);
-		buildingLabel.setText(building.name);
+		List<MutableComponent> buildingTooltip = null;
+		MutableComponent buildingText = Component.empty().append(building.name);
+
+		if (building.repairResourcesChanged)
+		{
+			buildingText = buildingText.append(RESOURCES_CHANGED_SUFFIX);
+			buildingTooltip = Collections.singletonList(Component.literal("Repair resources are changed from before."));
+		}
+
+		buildingLabel.setText(buildingText);
 		buildingLabel.setColors(this.getBuildingLabelColor(building, index).getColor());
 
+		if (buildingLabel.getHoverPane() instanceof Tooltip tooltip)
+		{
+			tooltip.setText(buildingTooltip);
+		}
+
 		var builderLabel = row.findPaneOfTypeByID(TEXT_BUILDER_NAME, Text.class);
+		List<MutableComponent> builderTooltip = null;
+		MutableComponent builderText = null;
 
 		if (building.dontRepair)
 		{
-			builderLabel.setText(Component.translatable("minecolonies_tweaks.gui.dont_repair").withStyle(ChatFormatting.GRAY));
+			builderText = Component.translatable("minecolonies_tweaks.gui.dont_repair").withStyle(ChatFormatting.GRAY);
 		}
 		else
 		{
-			builderLabel.setText(Component.translatable("minecolonies_tweaks.gui.assigned_builder_name", builder != null ? (Component.translatable("minecolonies_tweaks.gui.builder_name_with_level", builder.name, builder.building.getBuildingLevel())) : Component.translatable("minecolonies_tweaks.gui.builder_no_assigned").withStyle(ChatFormatting.RED)));
+			builderText = Component.translatable("minecolonies_tweaks.gui.assigned_builder_name", builder != null ? (Component.translatable("minecolonies_tweaks.gui.builder_name_with_level", builder.name, builder.building.getBuildingLevel())) : Component.translatable("minecolonies_tweaks.gui.builder_no_assigned").withStyle(ChatFormatting.RED));
+		}
+
+		builderLabel.setText(builderText);
+
+		if (builderLabel.getHoverPane() instanceof Tooltip tooltip)
+		{
+			tooltip.setText(builderTooltip);
 		}
 
 	}
@@ -729,7 +875,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 	}
 
-	protected int compareResource(ItemStack stack1, ItemStack stack2)
+	protected int compareResource(ItemStorage stack1, ItemStorage stack2)
 	{
 		var id1 = Item.getId(stack1.getItem());
 		var id2 = Item.getId(stack2.getItem());
@@ -738,7 +884,9 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 	protected void updateRepairResourceRow(int index, Pane row)
 	{
-		var stack = this.repairResources.get(index);
+		var storage = this.repairResources.get(index);
+		var stack = storage.getItemStack();
+		stack.setCount(storage.getAmount());
 
 		var icon = row.findPaneOfTypeByID(WindowConstants.RESOURCE_ICON, ItemIcon.class);
 		icon.setItem(stack);
@@ -774,6 +922,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 	protected void assign(BuildingInfo building, BuilderInfo builder)
 	{
 		building.dontRepair = false;
+		building.repairResourcesChanged = false;
 		var prevBuilder = this.assignments.put(building, builder);
 
 		if (prevBuilder != builder)
@@ -803,6 +952,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 	protected void markAsDontRepair(BuildingInfo building)
 	{
 		building.dontRepair = true;
+		building.repairResourcesChanged = false;
 		this.unassign(building);
 	}
 
@@ -820,10 +970,11 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		public final ItemStack icon;
 		public final int itemId;
 
-		public final List<ItemStack> repairResources;
+		public final List<ItemStorage> repairResources;
 		public final boolean openableOnlyChanged;
 
 		public boolean dontRepair = false;
+		public boolean repairResourcesChanged = false;
 
 		public BuildingInfo(IBuildingView building, Map<ItemStorage, AtomicInteger> repairResources)
 		{
@@ -839,14 +990,19 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 			this.icon = new ItemStack(buildingEntry.getBuildingBlock());
 			this.itemId = Item.getId(this.icon.getItem());
 
-			this.repairResources = repairResources.entrySet().stream().map(this::toItemStack).toList();
+			this.repairResources = repairResources.entrySet().stream().map(this::toItemStorage).toList();
 			this.openableOnlyChanged = repairResources.keySet().stream().map(ItemStorage::getItem).allMatch(this::testExceptable);
 		}
 
-		private ItemStack toItemStack(Entry<ItemStorage, AtomicInteger> entry)
+		public BuildingCost toCost()
 		{
-			var stack = entry.getKey().getItemStack().copy();
-			stack.setCount(entry.getValue().get());
+			return new BuildingCost(this.building.getID(), this.repairResources);
+		}
+
+		private ItemStorage toItemStorage(Entry<ItemStorage, AtomicInteger> entry)
+		{
+			var stack = entry.getKey().copy();
+			stack.setAmount(entry.getValue().get());
 			return stack;
 		}
 
