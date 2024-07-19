@@ -322,6 +322,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 				if (buildingName.isEmpty())
 				{
+					this.updateProgress++;
 					return;
 				}
 
