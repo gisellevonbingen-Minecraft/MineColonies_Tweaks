@@ -58,7 +58,7 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 		this.hashCode = 0;
 	}
 
-	private ArrayList<ItemStack> getSecondaryOutputs(ICustomizedRecipeStorage recipeStorage)
+	private List<ItemStack> getSecondaryOutputs(ICustomizedRecipeStorage recipeStorage)
 	{
 		var secondaryOutputs = new ArrayList<ItemStack>();
 		secondaryOutputs.add(new ItemStack(ModItems.buildTool.get()));
