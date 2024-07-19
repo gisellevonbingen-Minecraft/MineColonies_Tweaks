@@ -29,13 +29,21 @@ public class CustomToolType
 
 	public static void init()
 	{
-		var gson = new Gson();
-
-		for (var raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
+		try
 		{
-			var json = gson.fromJson(raw, JsonObject.class);
-			var builder = new ConfigToolType.Builder(json);
-			register(new ConfigToolType(builder, MineColoniesTweaks.MOD_ID));
+			var gson = new Gson();
+
+			for (var raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
+			{
+				var json = gson.fromJson(raw, JsonObject.class);
+				var builder = new ConfigToolType.Builder(json);
+				register(new ConfigToolType(builder, MineColoniesTweaks.MOD_ID));
+			}
+
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException("Exception during load CustomToolType", e);
 		}
 
 		MinecraftForge.EVENT_BUS.post(new CustomToolTypeRegisterEvent(CustomToolType::register));
