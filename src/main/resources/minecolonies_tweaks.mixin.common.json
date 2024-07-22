@@ -6,7 +6,6 @@
 	"mixins": [
 		"minecraft.ChunkGeneratorMixin",
 		
-		"minecolonies.AbstractCraftingBuildingModuleMixin",
 		"minecolonies.AbstractEntityAICraftingAccessor",
 		"minecolonies.AbstractEntityAICraftingMixin",
 		"minecolonies.CitizenMournHandlerMixin",
@@ -20,7 +19,6 @@
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemListModuleViewAccessor",
 		"minecolonies.ItemStackUtilsMixin",
-		"minecolonies.PublicWorkerCraftingProductionResolverMixin",
 		"minecolonies.ToolMixin",
 		"minecolonies.ToolTypeMixin"
 	],
