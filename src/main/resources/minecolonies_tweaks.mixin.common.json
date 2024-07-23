@@ -13,6 +13,7 @@
 		"minecolonies.AbstractEntityAIStructureMixin",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
+		"minecolonies.EntityAIEatTaskMixin",
 		"minecolonies.EntityAIStructureBuilderAccessor",
 		"minecolonies.EntityAIStructureBuilderMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
