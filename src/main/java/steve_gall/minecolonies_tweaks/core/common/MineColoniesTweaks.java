@@ -9,6 +9,7 @@ import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
+import steve_gall.minecolonies_tweaks.core.common.command.ModCommands;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
@@ -47,6 +49,7 @@ public class MineColoniesTweaks
 		fml_bus.addListener(this::onFMLLoadComplete);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
+		forge_bus.addListener((RegisterCommandsEvent e) -> ModCommands.register(e.getDispatcher()));
 
 		NETWORK = new NetworkChannel("main");
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
