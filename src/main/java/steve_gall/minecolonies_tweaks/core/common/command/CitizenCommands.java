@@ -39,7 +39,7 @@ public class CitizenCommands
 
 		private static LiteralArgumentBuilder<CommandSourceStack> full()
 		{
-			return literal("full", (context, citizen) ->
+			return literal("full", true, (context, citizen) ->
 			{
 				citizen.getCitizenData().setSaturation(ICitizenData.MAX_SATURATION);
 				context.getSource().sendSuccess(() -> Component.literal("Done"), true);
@@ -49,7 +49,7 @@ public class CitizenCommands
 
 		private static LiteralArgumentBuilder<CommandSourceStack> empty()
 		{
-			return literal("empty", (context, citizen) ->
+			return literal("empty", true, (context, citizen) ->
 			{
 				citizen.getCitizenData().setSaturation(0.0D);
 				citizen.getCitizenData().setJustAte(false);
@@ -60,17 +60,23 @@ public class CitizenCommands
 
 	}
 
-	public static LiteralArgumentBuilder<CommandSourceStack> literal(String name, ToIntBiFunction<CommandContext<CommandSourceStack>, AbstractEntityCitizen> func)
+	public static LiteralArgumentBuilder<CommandSourceStack> literal(String name, boolean needPermission, ToIntBiFunction<CommandContext<CommandSourceStack>, AbstractEntityCitizen> func)
 	{
 		return Commands.literal(name)//
 				.then(IMCCommand.newArgument(CommandArgumentNames.COLONYID_ARG, IntegerArgumentType.integer(1))//
 						.then(IMCCommand.newArgument(CommandArgumentNames.CITIZENID_ARG, IntegerArgumentType.integer(1))//
-								.executes(context -> run(context, func))))//
+								.executes(context -> run(context, needPermission, func))))//
 		;
 	}
 
-	public static int run(CommandContext<CommandSourceStack> context, ToIntBiFunction<CommandContext<CommandSourceStack>, AbstractEntityCitizen> func)
+	public static int run(CommandContext<CommandSourceStack> context, boolean needPermission, ToIntBiFunction<CommandContext<CommandSourceStack>, AbstractEntityCitizen> func)
 	{
+		if (needPermission && !context.getSource().hasPermission(Commands.LEVEL_GAMEMASTERS))
+		{
+			context.getSource().sendSuccess(() -> Component.translatable(CommandTranslationConstants.COMMAND_REQUIRES_OP), true);
+			return 0;
+		}
+
 		var colonyID = IntegerArgumentType.getInteger(context, CommandArgumentNames.COLONYID_ARG);
 		var colony = IColonyManager.getInstance().getColonyByDimension(colonyID, context.getSource().getLevel().dimension());
 
