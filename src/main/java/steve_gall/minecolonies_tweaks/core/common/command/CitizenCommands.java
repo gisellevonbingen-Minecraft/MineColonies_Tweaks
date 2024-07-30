@@ -52,6 +52,7 @@ public class CitizenCommands
 			return literal("empty", (context, citizen) ->
 			{
 				citizen.getCitizenData().setSaturation(0.0D);
+				citizen.getCitizenData().setJustAte(false);
 				context.getSource().sendSuccess(Component.literal("Done"), true);
 				return 1;
 			});

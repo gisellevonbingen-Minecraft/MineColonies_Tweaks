@@ -11,7 +11,7 @@ public class ModCommands
 {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher)
 	{
-		var roots = new String[]{MineColoniesTweaks.MOD_ID, "mc_tweaks"};
+		var roots = new String[]{MineColoniesTweaks.MOD_ID, "tweaks_mc"};
 
 		for (var root : roots)
 		{
