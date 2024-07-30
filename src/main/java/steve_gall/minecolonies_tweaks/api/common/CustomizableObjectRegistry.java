@@ -27,7 +27,7 @@ public abstract class CustomizableObjectRegistry<OBJECT>
 
 	}
 
-	public <TYPED_OBJECT extends OBJECT> void register(@NotNull ResourceLocation id, @NotNull BiConsumer<CompoundTag, TYPED_OBJECT> serializer, @NotNull Function<CompoundTag, TYPED_OBJECT> desrializer)
+	public <TYPED_OBJECT extends OBJECT> void register(@NotNull ResourceLocation id, @NotNull BiConsumer<TYPED_OBJECT, CompoundTag> serializer, @NotNull Function<CompoundTag, TYPED_OBJECT> desrializer)
 	{
 		if (this.map.containsKey(id))
 		{
@@ -89,8 +89,8 @@ public abstract class CustomizableObjectRegistry<OBJECT>
 		}
 
 		@SuppressWarnings("unchecked")
-		var serializer = (BiConsumer<CompoundTag, OBJECT>) supplier.serializer;
-		serializer.accept(tag, object);
+		var serializer = (BiConsumer<OBJECT, CompoundTag>) supplier.serializer;
+		serializer.accept(object, tag);
 	}
 
 	@Nullable
@@ -118,11 +118,11 @@ public abstract class CustomizableObjectRegistry<OBJECT>
 		@NotNull
 		private ResourceLocation id;
 		@NotNull
-		private BiConsumer<CompoundTag, OBJECT> serializer;
+		private BiConsumer<OBJECT, CompoundTag> serializer;
 		@NotNull
 		private Function<CompoundTag, OBJECT> deserializer;
 
-		public Entry(@NotNull ResourceLocation id, @NotNull BiConsumer<CompoundTag, OBJECT> serializer, @NotNull Function<CompoundTag, OBJECT> deserializer)
+		public Entry(@NotNull ResourceLocation id, @NotNull BiConsumer<OBJECT, CompoundTag> serializer, @NotNull Function<CompoundTag, OBJECT> deserializer)
 		{
 			this.id = id;
 			this.serializer = serializer;
