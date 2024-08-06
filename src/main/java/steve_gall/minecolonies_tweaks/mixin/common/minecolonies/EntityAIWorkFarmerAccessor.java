@@ -8,7 +8,7 @@ import com.minecolonies.core.entity.ai.workers.production.agriculture.EntityAIWo
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
 public interface EntityAIWorkFarmerAccessor
 {
-	@Accessor(value = "STANDARD_DELAY", remap = false)
+	@Accessor(value = "DEFAULT_DELAY", remap = false)
 	static int getStandardDelay()
 	{
 		throw new AssertionError();

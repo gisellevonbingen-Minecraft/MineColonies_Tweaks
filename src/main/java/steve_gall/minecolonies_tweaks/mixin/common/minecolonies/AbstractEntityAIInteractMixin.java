@@ -11,8 +11,8 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 @Mixin(value = AbstractEntityAIInteract.class, remap = false)
 public abstract class AbstractEntityAIInteractMixin
 {
-	@ModifyConstant(method = "getBlockMiningDelay", remap = false, constant = @Constant(intValue = AbstractEntityAIInteract.BLOCK_MINING_DELAY / 2))
-	private int getBlockMiningDelay0(int BLOCK_MINING_DELAY)
+	@ModifyConstant(method = "getBlockMiningTime", remap = false, constant = @Constant(intValue = AbstractEntityAIInteract.BLOCK_MINING_DELAY / 2))
+	private int getBlockMiningTime0(int BLOCK_MINING_DELAY)
 	{
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.blockMiningDelay.get() / 2;
 	}
