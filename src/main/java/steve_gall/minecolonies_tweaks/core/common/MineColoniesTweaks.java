@@ -14,17 +14,21 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
+import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
 import steve_gall.minecolonies_tweaks.core.common.command.ModCommands;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
 import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequest;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequestFactory;
@@ -47,6 +51,8 @@ public class MineColoniesTweaks
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
+		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
+		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener((RegisterCommandsEvent e) -> ModCommands.register(e.getDispatcher()));
@@ -70,6 +76,32 @@ public class MineColoniesTweaks
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
 	{
 		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
+	}
+
+	private void onConfigReload(ModConfigEvent e)
+	{
+		if (e.getConfig().getSpec() == MineColoniesTweaksConfigServer.SPEC)
+		{
+			for (var block : ForgeRegistries.BLOCKS.getValues())
+			{
+				if (block instanceof MinecoloniesCropBlockExtension extension)
+				{
+					extension.minecolonies_tweaks$onServerConfigReloaded();
+				}
+
+			}
+
+			for (var item : ForgeRegistries.ITEMS.getValues())
+			{
+				if (item instanceof ItemCropExtension extension)
+				{
+					extension.minecolonies_tweaks$onServerConfigReloaded();
+				}
+
+			}
+
+		}
+
 	}
 
 	public static NetworkChannel network()

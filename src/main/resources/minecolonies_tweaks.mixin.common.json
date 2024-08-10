@@ -23,8 +23,10 @@
 		"minecolonies.FarmFieldMixin",
 		"minecolonies.FieldsModuleMixin",
 		"minecolonies.GlobalResearchBranchMixin",
+		"minecolonies.ItemCropMixin",
 		"minecolonies.ItemListModuleViewAccessor",
 		"minecolonies.ItemStackUtilsMixin",
+		"minecolonies.MinecoloniesCropBlockMixin",
 		"minecolonies.ToolMixin",
 		"minecolonies.ToolTypeMixin"
 	],
