@@ -88,7 +88,7 @@ public abstract class ItemCropMixin extends BlockItem implements ItemCropExtensi
 	private boolean testForRemove(Component line)
 	{
 		var config = MineColoniesTweaksConfigServer.INSTANCE.blocks;
-		
+
 		if (config.cropCanPlayerPlant.get().booleanValue() && config.cropVanillaFarmland.get().booleanValue())
 		{
 			return line.getContents() instanceof TranslatableContents contents && contents.getKey().equals(TranslationConstants.CROP_TOOLTIP);
