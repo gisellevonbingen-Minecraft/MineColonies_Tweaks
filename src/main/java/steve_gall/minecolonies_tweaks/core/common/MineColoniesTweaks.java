@@ -5,8 +5,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
+import com.minecolonies.api.items.ModItems;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -28,6 +30,7 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
+import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavior;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
 import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequest;
@@ -70,6 +73,8 @@ public class MineColoniesTweaks
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
 
 			CustomCraftingModule.loadCustomCraftingModules();
+
+			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
 		});
 	}
 
