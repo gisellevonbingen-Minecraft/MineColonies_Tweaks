@@ -27,6 +27,7 @@ import com.ldtteam.blockui.controls.TextField;
 import com.ldtteam.blockui.controls.Tooltip;
 import com.ldtteam.blockui.controls.Tooltip.AutomaticTooltip;
 import com.ldtteam.blockui.views.BOWindow;
+import com.ldtteam.blockui.views.Box;
 import com.ldtteam.blockui.views.ScrollingList;
 import com.ldtteam.structurize.placement.AbstractBlueprintIterator;
 import com.ldtteam.structurize.placement.BlockPlacementResult;
@@ -446,7 +447,9 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 		for (var i = 0; i < children.size(); i++)
 		{
-			if (children.get(i).wasCursorInPane())
+			var pane = children.get(i);
+
+			if (pane instanceof Box && pane.wasCursorInPane())
 			{
 				return i;
 			}
