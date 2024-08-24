@@ -53,19 +53,35 @@ public abstract class AbstractContainerScreenMixin extends Screen
 
 	private void onClosePress(Button button)
 	{
-		if (this instanceof CloseableWindowExtension self)
-		{
-			self.minecolonies_tweaks$returnOrClose();
-		}
-
+		CloseableWindowExtension.find(this).ifPresent(this::returnOrClose);
 	}
 
-	@Inject(method = "onClose", remap = true, at = @At(value = "TAIL"))
-	private void onClose(CallbackInfo ci)
+	private boolean returnOrClose(CloseableWindowExtension extension)
 	{
-		if (this instanceof CloseableWindowExtension self)
+		if (extension instanceof Screen screen)
 		{
-			self.minecolonies_tweaks$showParent();
+			var closed = false;
+
+			if (screen instanceof AbstractContainerScreen<?> containerScreen)
+			{
+				containerScreen.onClose();
+				closed = true;
+			}
+
+			if (!extension.minecolonies_tweaks$showParent(false))
+			{
+				if (!closed)
+				{
+					screen.onClose();
+				}
+
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 
 	}
