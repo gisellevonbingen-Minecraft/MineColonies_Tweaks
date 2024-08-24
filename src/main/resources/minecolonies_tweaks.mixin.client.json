@@ -5,17 +5,16 @@
 	"compatibilityLevel": "JAVA_17",
 	"client": [
 		"minecraft.AbstractContainerScreenMixin",
+		"minecraft.ScreenMixin",
 		
 		"minecolonies.AbstractModuleWindowMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
+		"minecolonies.AbstractWindowSkeletonsMixin",
 		"minecolonies.ItemListModuleWindowMixin",
 		"minecolonies.MainWindowCitizenMixin",
 		"minecolonies.TownhallWindowMainPageMixin",
-		"minecolonies.WindowBuildBuildingMixin",
 		"minecolonies.WindowFieldMixin",
 		"minecolonies.WindowCraftingsMixin",
-		"minecolonies.WindowHireWorkerMixin",
-		"minecolonies.WindowHutAllInventoryMixin",
 		"minecolonies.WindowInventoriesMixin",
 		
 		"blockui.ButtonImageMixin",

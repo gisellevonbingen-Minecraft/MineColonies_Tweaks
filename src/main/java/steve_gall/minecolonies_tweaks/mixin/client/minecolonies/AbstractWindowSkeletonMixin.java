@@ -7,19 +7,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 
-import steve_gall.minecolonies_tweaks.core.client.gui.WindowSkeletonExtension;
+import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
 
 @Mixin(value = AbstractWindowSkeleton.class, remap = false)
 public abstract class AbstractWindowSkeletonMixin
 {
 	@Inject(method = "close", remap = false, at = @At(value = "HEAD"), cancellable = true)
-	protected void close_Head(CallbackInfo ci)
+	private void close_Head(CallbackInfo ci)
 	{
-		if (this instanceof WindowSkeletonExtension extension)
+		CloseableWindowExtension.find(this).ifPresent(t ->
 		{
-			extension.minecolonies_tweaks$onCloseHead(ci);
-		}
-
+			ci.cancel();
+			t.minecolonies_tweaks$showParent();
+		});
 	}
 
 }

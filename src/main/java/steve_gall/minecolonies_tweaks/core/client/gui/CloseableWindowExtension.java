@@ -1,45 +1,32 @@
 package steve_gall.minecolonies_tweaks.core.client.gui;
 
+import java.util.Optional;
+
+import com.ldtteam.blockui.BOScreen;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 
 public interface CloseableWindowExtension
 {
+	public static Optional<CloseableWindowExtension> find(Object screen)
+	{
+		if (screen instanceof BOScreen boScreen && boScreen.getWindow() instanceof CloseableWindowExtension extension)
+		{
+			return Optional.of(extension);
+		}
+		else if (screen instanceof CloseableWindowExtension extension)
+		{
+			return Optional.of(extension);
+		}
+
+		return Optional.empty();
+	}
+
 	void minecolonies_tweaks$setParent(Screen screen);
 
 	Screen minecolonies_tweaks$getParent();
-
-	default boolean minecolonies_tweaks$returnOrClose()
-	{
-		if (this instanceof Screen screen)
-		{
-			var closed = false;
-
-			if (screen instanceof AbstractContainerScreen<?> containerScreen)
-			{
-				containerScreen.onClose();
-				closed = true;
-			}
-
-			if (!this.minecolonies_tweaks$showParent(false))
-			{
-				if (!closed)
-				{
-					screen.onClose();
-				}
-
-			}
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-
-	}
 
 	default boolean minecolonies_tweaks$showParent()
 	{

@@ -25,14 +25,13 @@ public class MineColoniesTweaksClient
 
 	private void onScreenOpening(ScreenEvent.Opening event)
 	{
-		if (event.getNewScreen() instanceof CloseableWindowExtension extension)
+		CloseableWindowExtension.find(event.getNewScreen()).ifPresent(extension ->
 		{
 			if (extension.minecolonies_tweaks$getParent() == null)
 			{
 				extension.minecolonies_tweaks$setParent(event.getCurrentScreen());
 			}
-
-		}
+		});
 
 	}
 
