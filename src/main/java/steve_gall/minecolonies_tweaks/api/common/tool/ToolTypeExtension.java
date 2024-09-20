@@ -55,26 +55,8 @@ public class ToolTypeExtension
 		this.levelTags = new Int2ObjectOpenHashMap<>();
 	}
 
-	/***
-	 *
-	 * @param item
-	 * @return -1 mean be fallback level
-	 */
-	public int getCustomLevel(@NotNull ItemStack item)
+	private int getTagLevel(@NotNull ItemStack item)
 	{
-		var custom = this.getCustomToolType();
-
-		if (custom != null)
-		{
-			var level = custom.getToolLevel(item);
-
-			if (level > -1)
-			{
-				return level;
-			}
-
-		}
-
 		for (var i = 0; i <= Constants.MAX_BUILDING_LEVEL; i++)
 		{
 			if (item.is(this.getItemCustomLevelTag(i)))
@@ -87,30 +69,58 @@ public class ToolTypeExtension
 		return -1;
 	}
 
-	public boolean isCustomTool(@NotNull ItemStack itemStack)
+	/***
+	 *
+	 * @param item
+	 * @return -1 mean be fallback level
+	 */
+	public int getCustomLevel(@NotNull ItemStack item)
 	{
+		var tagLevel = this.getTagLevel(item);
+
+		if (tagLevel > -1)
+		{
+			return tagLevel;
+		}
+
 		var custom = this.getCustomToolType();
 
 		if (custom != null)
 		{
-			if (custom.isTool(itemStack))
+			var customLevel = custom.getToolLevel(item);
+
+			if (customLevel > -1)
 			{
-				return true;
+				return customLevel;
 			}
 
 		}
 
-		var level = this.getCustomLevel(itemStack);
+		return -1;
+	}
 
-		if (level == -1)
-		{
-			return itemStack.is(this.getItemCustomTag());
-		}
-		else
+	public boolean isCustomTool(@NotNull ItemStack itemStack)
+	{
+		if (itemStack.is(this.getItemCustomTag()))
 		{
 			return true;
 		}
 
+		var tagLevel = this.getTagLevel(itemStack);
+
+		if (tagLevel > -1)
+		{
+			return true;
+		}
+
+		var custom = this.getCustomToolType();
+
+		if (custom != null && custom.isTool(itemStack))
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	@NotNull
