@@ -6,35 +6,34 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.util.ItemStackUtils;
-import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public class OrToolType extends CustomToolType
 {
-	private final List<Supplier<IToolType>> toolTypes;
+	private final List<Supplier<EquipmentTypeEntry>> toolTypes;
 
-	public OrToolType(ResourceLocation name, Collection<Supplier<IToolType>> toolTypes)
+	public OrToolType(ResourceLocation name, Collection<Supplier<EquipmentTypeEntry>> toolTypes)
 	{
 		super(name);
 
 		this.toolTypes = toolTypes.stream().toList();
 	}
 
-	public List<Supplier<IToolType>> getToolTypes()
+	public List<Supplier<EquipmentTypeEntry>> getToolTypes()
 	{
 		return this.toolTypes;
 	}
 
 	@Override
-	protected int getToolLevel(@NotNull ItemStack stack)
+	public int getToolLevel(@NotNull ItemStack stack)
 	{
 		for (var supplier : this.getToolTypes())
 		{
 			var toolType = supplier.get();
-			var level = ItemStackUtils.getMiningLevel(stack, toolType);
+			var level = toolType.getMiningLevel(stack);
 
 			if (level > -1)
 			{
@@ -47,13 +46,13 @@ public class OrToolType extends CustomToolType
 	}
 
 	@Override
-	protected boolean isTool(@NotNull ItemStack stack)
+	public boolean isTool(@NotNull ItemStack stack)
 	{
 		for (var supplier : this.getToolTypes())
 		{
 			var toolType = supplier.get();
 
-			if (ItemStackUtils.isTool(stack, toolType))
+			if (toolType.checkIsEquipment(stack))
 			{
 				return true;
 			}

@@ -1,24 +1,24 @@
 package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.ItemStackUtils;
-import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
 
-@Mixin(value = ItemStackUtils.class, remap = false)
-public abstract class ItemStackUtilsMixin
+@Mixin(value = EquipmentTypeEntry.class, remap = false)
+public abstract class EquipmentTypeEntryMixin
 {
-	@Inject(method = "isTool", remap = false, at = @At(value = "HEAD"), cancellable = true)
-	private static void isTool(@Nullable ItemStack itemStack, IToolType toolType, CallbackInfoReturnable<Boolean> cir)
+	@Inject(method = "checkIsEquipment", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	private void checkIsEquipment(ItemStack itemStack, CallbackInfoReturnable<Boolean> cir)
 	{
+		var toolType = (EquipmentTypeEntry) (Object) this;
+
 		if (!ItemStackUtils.isEmpty(itemStack) && ToolTypeExtension.from(toolType).isCustomTool(itemStack))
 		{
 			cir.setReturnValue(true);
@@ -27,12 +27,14 @@ public abstract class ItemStackUtilsMixin
 	}
 
 	@Inject(method = "getMiningLevel", remap = false, at = @At(value = "HEAD"), cancellable = true)
-	private static void getMiningLevel(@Nullable ItemStack stack, @Nullable IToolType toolType, CallbackInfoReturnable<Integer> cir)
+	private void getMiningLevel(ItemStack itemStack, CallbackInfoReturnable<Integer> cir)
 	{
-		if (ItemStackUtils.isTool(stack, toolType))
+		var toolType = (EquipmentTypeEntry) (Object) this;
+
+		if (toolType.checkIsEquipment(itemStack))
 		{
 			var extension = ToolTypeExtension.from(toolType);
-			var level = extension.getCustomLevel(stack);
+			var level = extension.getCustomLevel(itemStack);
 
 			if (level != -1)
 			{
@@ -41,11 +43,12 @@ public abstract class ItemStackUtilsMixin
 			}
 			else
 			{
-				var data = CustomToolType.find(toolType.getName());
+				var data = extension.getCustomToolType();
 
 				if (data != null)
 				{
-					data.getDefaultLevel().ifPresent(cir::setReturnValue);
+					cir.setReturnValue(data.getDefaultLevel());
+					return;
 				}
 
 			}

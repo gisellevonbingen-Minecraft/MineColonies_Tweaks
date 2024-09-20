@@ -17,7 +17,7 @@ import com.minecolonies.api.crafting.AbstractRecipeType;
 import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.RecipeStorage;
-import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -197,7 +197,7 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 	}
 
 	@Override
-	public IToolType getRequiredTool()
+	public EquipmentTypeEntry getRequiredTool()
 	{
 		return this.delegate.getRequiredTool();
 	}

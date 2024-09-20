@@ -20,15 +20,13 @@
 		"minecolonies.EntityAIWorkFarmerAccessor",
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.EntityAIWorkSifterMixin",
+		"minecolonies.EquipmentTypeEntryMixin",
 		"minecolonies.FarmFieldMixin",
 		"minecolonies.FieldsModuleMixin",
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemCropMixin",
 		"minecolonies.ItemListModuleViewAccessor",
-		"minecolonies.ItemStackUtilsMixin",
-		"minecolonies.MinecoloniesCropBlockMixin",
-		"minecolonies.ToolMixin",
-		"minecolonies.ToolTypeMixin"
+		"minecolonies.MinecoloniesCropBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -5,7 +5,7 @@ import java.util.List;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.crafting.ItemStorage;
-import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +34,7 @@ public interface ICustomizedRecipeStorage
 
 	ResourceLocation getLootTable();
 
-	IToolType getRequiredTool();
+	EquipmentTypeEntry getRequiredTool();
 
 	default IRecipeStorage wrap()
 	{

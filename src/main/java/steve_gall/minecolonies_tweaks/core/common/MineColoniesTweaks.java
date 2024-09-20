@@ -5,8 +5,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.items.ModItems;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,7 +24,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
+import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
@@ -30,6 +35,7 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
+import steve_gall.minecolonies_tweaks.core.common.init.ModEquipmentTypes;
 import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavior;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
 import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
@@ -52,8 +58,10 @@ public class MineColoniesTweaks
 		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		ModEquipmentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
+		fml_bus.addListener(this::onRegister);
 		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
 
@@ -81,6 +89,34 @@ public class MineColoniesTweaks
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
 	{
 		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
+	}
+
+	private void onRegister(RegisterEvent e)
+	{
+		if (e.getRegistryKey() == ModEquipmentTypes.REGISTER.getRegistryKey())
+		{
+			CustomToolType.init();
+			@SuppressWarnings("unchecked")
+			var registryKey = (ResourceKey<? extends Registry<EquipmentTypeEntry>>) e.getRegistryKey();
+
+			for (var type : CustomToolType.list())
+			{
+				e.register(registryKey, type.getName(), () ->
+				{
+					var builder = new EquipmentTypeEntry.Builder();
+					builder.setRegistryName(type.getName());
+					builder.setDisplayName(type.getDisplayName());
+					builder.setIsEquipment((stack, b) -> false);
+					builder.setEquipmentLevel((stack, b) -> -1);
+
+					var build = builder.build();
+					type.pair(build);
+					return build;
+				});
+			}
+
+		}
+
 	}
 
 	private void onConfigReload(ModConfigEvent e)

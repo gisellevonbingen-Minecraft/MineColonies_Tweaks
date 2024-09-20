@@ -1,43 +1,62 @@
 package steve_gall.minecolonies_tweaks.api.common.tool;
 
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.loading.FMLPaths;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 
 public class CustomToolType
 {
-	private static final Map<String, CustomToolType> MAP = new HashMap<>();
+	private static boolean INITIALIZED = false;
+	private static final Map<ResourceLocation, CustomToolType> MAP = new HashMap<>();
 	private static final List<CustomToolType> LIST = new ArrayList<>();
 
 	public static void init()
 	{
+		if (INITIALIZED)
+		{
+			return;
+		}
+
+		INITIALIZED = true;
+
 		try
 		{
-			var gson = new Gson();
+			var path = FMLPaths.CONFIGDIR.get().resolve(MineColoniesTweaks.MOD_ID + "-custom_tools.json");
 
-			for (var raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
+			if (Files.exists(path))
 			{
-				var json = gson.fromJson(raw, JsonObject.class);
-				var builder = new ConfigToolType.Builder(json);
-				register(new ConfigToolType(builder, MineColoniesTweaks.MOD_ID));
+				var gson = new Gson();
+				var raws = gson.fromJson(Files.readString(path), JsonArray.class);
+
+				for (var raw : raws)
+				{
+					var json = gson.fromJson(raw, JsonObject.class);
+					var builder = new ConfigToolType.Builder(json);
+					register(new ConfigToolType(builder, MineColoniesTweaks.MOD_ID));
+				}
+
+			}
+			else
+			{
+				Files.writeString(path, new JsonArray().toString());
 			}
 
 		}
@@ -57,22 +76,15 @@ public class CustomToolType
 		}
 
 		var name = data.getName();
-		var path = name.getPath();
-		var prev = MAP.get(path);
 
-		if (prev != null)
-		{
-			throw new IllegalArgumentException("Name '" + path + "' is already registered from: " + prev.getName().getNamespace());
-		}
-
-		MAP.put(path, data);
+		MAP.put(name, data);
 		LIST.add(data);
 
 		MineColoniesTweaks.LOGGER.info("CustomToolTypeData Added: " + name);
 	}
 
 	@NotNull
-	public static Map<String, CustomToolType> map()
+	public static Map<ResourceLocation, CustomToolType> map()
 	{
 		return Collections.unmodifiableMap(MAP);
 	}
@@ -84,13 +96,13 @@ public class CustomToolType
 	}
 
 	@Nullable
-	public static CustomToolType find(@Nullable IToolType toolType)
+	public static CustomToolType find(@Nullable EquipmentTypeEntry toolType)
 	{
-		return toolType != null ? find(toolType.getName()) : null;
+		return toolType != null ? find(toolType.getRegistryName()) : null;
 	}
 
 	@Nullable
-	public static CustomToolType find(@NotNull String name)
+	public static CustomToolType find(@NotNull ResourceLocation name)
 	{
 		return MAP.get(name);
 	}
@@ -102,7 +114,7 @@ public class CustomToolType
 	private Component displayName;
 
 	@Nullable
-	private ToolType toolType;
+	private EquipmentTypeEntry toolType;
 
 	public CustomToolType(@NotNull ResourceLocation name)
 	{
@@ -110,9 +122,9 @@ public class CustomToolType
 	}
 
 	@NotNull
-	public static String getFallbackTranslationKey(@NotNull String name)
+	public static String getFallbackTranslationKey(@NotNull ResourceLocation name)
 	{
-		return MineColoniesTweaks.MOD_ID + ".custom_tooltype." + name;
+		return ToolTypeExtension.getTagNamespace(name) + ".custom_tooltype." + name.getPath();
 	}
 
 	@NotNull
@@ -121,14 +133,9 @@ public class CustomToolType
 		return this.name;
 	}
 
-	public boolean hasVariableMaterials()
-	{
-		return false;
-	}
-
 	protected Component createDisplayName()
 	{
-		return Component.translatable(getFallbackTranslationKey(this.getName().getPath()));
+		return Component.translatable(getFallbackTranslationKey(this.getName()));
 	}
 
 	@NotNull
@@ -142,13 +149,12 @@ public class CustomToolType
 		return this.displayName;
 	}
 
-	@NotNull
-	public Optional<Integer> getDefaultLevel()
+	public int getDefaultLevel()
 	{
-		return Optional.empty();
+		return 0;
 	}
 
-	public final void pair(@NotNull ToolType toolType)
+	public final void pair(@NotNull EquipmentTypeEntry toolType)
 	{
 		if (this.toolType != null)
 		{
@@ -166,7 +172,7 @@ public class CustomToolType
 	}
 
 	@NotNull
-	public final ToolType getToolType()
+	public final EquipmentTypeEntry getToolType()
 	{
 		if (this.toolType == null)
 		{

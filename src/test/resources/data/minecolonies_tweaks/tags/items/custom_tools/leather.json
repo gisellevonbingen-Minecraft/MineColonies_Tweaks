@@ -1,5 +1,10 @@
 {
 	"values": [
-		"minecraft:leather"
+		"minecraft:leather",
+		"minecraft:leather_horse_armor",
+		"minecraft:leather_helmet",
+		"minecraft:leather_chestplate",
+		"minecraft:leather_leggings",
+		"minecraft:leather_boots"
 	]
 }

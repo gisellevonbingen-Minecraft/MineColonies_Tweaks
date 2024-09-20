@@ -5,33 +5,44 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.JsonObject;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.core.common.util.GsonHelper2;
 
 public class ConfigToolType extends CustomToolType
 {
-	private final boolean hasVariableMaterials;
+	@NotNull
+	private final AutoLevelType autoLevelType;
 	@NotNull
 	private final String translationKey;
 	@NotNull
-	private final Optional<Integer> defaultLevel;
+	private final int defaultLevel;
+	@NotNull
+	private final int durabilityBase;
 
 	public ConfigToolType(Builder builder, String namespace)
 	{
 		super(new ResourceLocation(namespace, builder.name));
 
-		this.hasVariableMaterials = builder.hasVariableMaterials;
-		this.translationKey = builder.translationKey.orElseGet(() -> getFallbackTranslationKey(this.getName().getPath()));
+		this.autoLevelType = builder.autoLevelType;
+		this.translationKey = builder.translationKey.orElseGet(() -> getFallbackTranslationKey(this.getName()));
 		this.defaultLevel = builder.defaultLevel;
+		this.durabilityBase = builder.durabilityBase;
 	}
 
-	@Override
-	public boolean hasVariableMaterials()
+	@NotNull
+	public AutoLevelType getAutoLevelType()
 	{
-		return this.hasVariableMaterials;
+		return this.autoLevelType;
+	}
+
+	public int getDurabilityBase()
+	{
+		return this.durabilityBase;
 	}
 
 	@Override
@@ -41,10 +52,68 @@ public class ConfigToolType extends CustomToolType
 	}
 
 	@Override
-	@NotNull
-	public Optional<Integer> getDefaultLevel()
+	protected boolean isTool(@NotNull ItemStack stack)
+	{
+		return super.isTool(stack);
+	}
+
+	@Override
+	protected int getToolLevel(@NotNull ItemStack stack)
+	{
+		var autoLevelType = this.getAutoLevelType();
+		return autoLevelType.getToolLevel(stack, this);
+	}
+
+	@Override
+	public int getDefaultLevel()
 	{
 		return this.defaultLevel;
+	}
+
+	public static enum AutoLevelType
+	{
+		NONE()
+			{
+				@Override
+				public int getToolLevel(@NotNull ItemStack stack, @NotNull ConfigToolType toolType)
+				{
+					return -1;
+				}
+			},
+		VANILLA_ARMOR()
+			{
+				@Override
+				public int getToolLevel(@NotNull ItemStack stack, @NotNull ConfigToolType toolType)
+				{
+					return ModEquipmentTypes.armorLevel(stack);
+				}
+			},
+		VANILLA_TOOL()
+			{
+				@Override
+				public int getToolLevel(@NotNull ItemStack stack, @NotNull ConfigToolType toolType)
+				{
+					return ModEquipmentTypes.vanillaToolLevel(stack, toolType.getToolType());
+				}
+
+			},
+		DURABILITY_BASE()
+			{
+				@Override
+				public int getToolLevel(@NotNull ItemStack stack, @NotNull ConfigToolType toolType)
+				{
+					return ModEquipmentTypes.durabilityBasedLevel(stack, toolType.getDurabilityBase());
+				}
+
+			},
+		// EOL
+		;
+
+		public int getToolLevel(@NotNull ItemStack stack, @NotNull ConfigToolType toolType)
+		{
+			return -1;
+		}
+
 	}
 
 	public static class Builder
@@ -52,10 +121,12 @@ public class ConfigToolType extends CustomToolType
 		@NotNull
 		private final String name;
 
-		private boolean hasVariableMaterials = false;
+		@NotNull
+		private AutoLevelType autoLevelType = AutoLevelType.NONE;
 		@NotNull
 		private Optional<String> translationKey = Optional.empty();
-		private Optional<Integer> defaultLevel = Optional.empty();
+		private int defaultLevel = 0;
+		private int durabilityBase = 0;
 
 		public Builder(@NotNull String name)
 		{
@@ -65,17 +136,19 @@ public class ConfigToolType extends CustomToolType
 		public Builder(@NotNull ConfigToolType data)
 		{
 			this.name = data.getName().getPath();
-			this.hasVariableMaterials = data.hasVariableMaterials;
+			this.autoLevelType = data.autoLevelType;
 			this.translationKey = Optional.of(data.translationKey);
 			this.defaultLevel = data.defaultLevel;
+			this.durabilityBase = data.durabilityBase;
 		}
 
 		public Builder(@NotNull JsonObject json)
 		{
 			this.name = GsonHelper.getAsString(json, "name");
-			this.hasVariableMaterials = GsonHelper.getAsBoolean(json, "hasVariableMaterials", false);
+			this.autoLevelType = AutoLevelType.valueOf(GsonHelper.getAsString(json, "autoLevelType", AutoLevelType.NONE.name()));
 			this.translationKey = GsonHelper2.of(json, "translationKey", GsonHelper::getAsString);
-			this.defaultLevel = GsonHelper2.of(json, "defaultLevel", GsonHelper::getAsInt);
+			this.defaultLevel = GsonHelper.getAsInt(json, "defaultLevel", 0);
+			this.durabilityBase = GsonHelper.getAsInt(json, "durabilityBase", Integer.MAX_VALUE);
 		}
 
 		@NotNull
@@ -83,9 +156,10 @@ public class ConfigToolType extends CustomToolType
 		{
 			var json = new JsonObject();
 			json.addProperty("name", this.name());
-			json.addProperty("hasVariableMaterials", this.hasVariableMaterials());
+			json.addProperty("autoLevelType", this.autoLevelType().name());
 			GsonHelper2.ifPresent("translationKey", this.translationKey(), json::addProperty);
-			GsonHelper2.ifPresent("defaultLevel", this.defaultLevel(), json::addProperty);
+			json.addProperty("defaultLevel", this.defaultLevel());
+			json.addProperty("durabilityBase", this.durabilityBase());
 			return json;
 		}
 
@@ -95,15 +169,16 @@ public class ConfigToolType extends CustomToolType
 			return this.name;
 		}
 
-		public boolean hasVariableMaterials()
+		@NotNull
+		public AutoLevelType autoLevelType()
 		{
-			return this.hasVariableMaterials;
+			return this.autoLevelType;
 		}
 
 		@NotNull
-		public Builder hasVariableMaterials(boolean hasVariableMaterials)
+		public Builder autoLevelType(@NotNull AutoLevelType autoLevelType)
 		{
-			this.hasVariableMaterials = hasVariableMaterials;
+			this.autoLevelType = autoLevelType;
 			return this;
 		}
 
@@ -121,15 +196,27 @@ public class ConfigToolType extends CustomToolType
 		}
 
 		@NotNull
-		public Optional<Integer> defaultLevel()
+		public int defaultLevel()
 		{
 			return this.defaultLevel;
 		}
 
 		@NotNull
-		public Builder defaultLevel(@NotNull Optional<Integer> defaultLevel)
+		public Builder defaultLevel(int defaultLevel)
 		{
 			this.defaultLevel = defaultLevel;
+			return this;
+		}
+
+		public int durabilityBase()
+		{
+			return this.durabilityBase;
+		}
+
+		@NotNull
+		public Builder durabilityBase(int durabilityBase)
+		{
+			this.durabilityBase = durabilityBase;
 			return this;
 		}
 

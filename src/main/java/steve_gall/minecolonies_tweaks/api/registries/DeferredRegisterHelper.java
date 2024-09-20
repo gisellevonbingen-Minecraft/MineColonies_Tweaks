@@ -13,6 +13,7 @@ import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.crafting.registry.RecipeTypeEntry;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.sounds.EventType;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
@@ -142,6 +143,11 @@ public class DeferredRegisterHelper
 			return builder.createRecipeTypeEntry();
 		});
 
+	}
+
+	public static DeferredRegister<EquipmentTypeEntry> equipmentTypes(String modid)
+	{
+		return DeferredRegister.create(new ResourceLocation(Constants.MOD_ID, "equipmenttypes"), modid);
 	}
 
 	private DeferredRegisterHelper()
