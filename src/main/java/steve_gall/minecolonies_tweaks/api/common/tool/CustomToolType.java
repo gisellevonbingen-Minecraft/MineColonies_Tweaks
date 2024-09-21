@@ -18,7 +18,7 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
@@ -65,7 +65,7 @@ public class CustomToolType
 			throw new RuntimeException("Exception during load CustomToolType", e);
 		}
 
-		MinecraftForge.EVENT_BUS.post(new CustomToolTypeRegisterEvent(CustomToolType::register));
+		ModLoader.get().postEvent(new CustomToolTypeRegisterEvent(CustomToolType::register));
 	}
 
 	private static void register(CustomToolType data)

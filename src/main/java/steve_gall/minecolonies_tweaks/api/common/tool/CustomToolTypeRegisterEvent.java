@@ -4,13 +4,13 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.IModBusEvent;
 
 /**
- * {@link MinecraftForge#EVENT_BUS}
+ * {@link FMLJavaModLoadingContext.get().getModEventBus()}
  */
-public class CustomToolTypeRegisterEvent extends Event
+public class CustomToolTypeRegisterEvent extends Event implements IModBusEvent
 {
 	private final Consumer<CustomToolType> register;
 
