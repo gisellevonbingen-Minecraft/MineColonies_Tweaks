@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -46,7 +48,7 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 	}
 
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"))
-	private void init(String blockName, Block preferredFarmland, TagKey<Biome> preferredBiome, CallbackInfo ci)
+	private void init(String blockName, Block preferredFarmland, List<Block> droppedFrom, TagKey<Biome> preferredBiome, CallbackInfo ci)
 	{
 		this.minecolonies_tweaks$preferredFarmland = preferredFarmland;
 		this.minecolonies_tweaks$preferredBiome = preferredBiome;
