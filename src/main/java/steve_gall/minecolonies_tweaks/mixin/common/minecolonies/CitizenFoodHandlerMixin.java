@@ -25,7 +25,11 @@ public abstract class CitizenFoodHandlerMixin
 	{
 		for (var foodItem : this.lastEatenFoods)
 		{
-			if ((!(foodItem instanceof IMinecoloniesFoodItem) && foodItem.builtInRegistryHolder().is(ModTags.Items.DECENT_FOOD)))
+			if (foodItem instanceof IMinecoloniesFoodItem)
+			{
+				continue;
+			}
+			else if (ModTags.Items.isFood(foodItem.builtInRegistryHolder()::is))
 			{
 				diversity++;
 			}

@@ -22,13 +22,9 @@ public abstract class EntityAIEatTaskMixin
 	@Redirect(method = "eat", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/ItemStackUtils.consumeFood"))
 	private void eat_consumeFood(ItemStack foodStack, AbstractEntityCitizen citizen, Inventory inventory)
 	{
-		if (foodStack.is(ModTags.Items.DECENT_FOOD))
+		if (foodStack.is(ModTags.Items.GREAT_FOOD))
 		{
-			if (foodStack.is(ModTags.Items.GREAT_FOOD))
-			{
-				citizen.getCitizenData().getCitizenHappinessHandler().addModifier(new ExpirationBasedHappinessModifier(HADGREATFOOD, 2.0, new StaticHappinessSupplier(2.0), 5));
-			}
-
+			citizen.getCitizenData().getCitizenHappinessHandler().addModifier(new ExpirationBasedHappinessModifier(HADGREATFOOD, 2.0, new StaticHappinessSupplier(2.0), 5));
 		}
 
 		ItemStackUtils.consumeFood(foodStack, citizen, inventory);
