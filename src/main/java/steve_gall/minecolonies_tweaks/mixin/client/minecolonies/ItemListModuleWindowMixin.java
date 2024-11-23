@@ -2,9 +2,7 @@ package steve_gall.minecolonies_tweaks.mixin.client.minecolonies;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,6 +15,7 @@ import com.ldtteam.blockui.PaneParams;
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.views.ScrollingList;
 import com.ldtteam.blockui.views.View;
+import com.minecolonies.api.colony.buildings.modules.IItemListModuleView;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
@@ -51,48 +50,49 @@ public abstract class ItemListModuleWindowMixin extends AbstractModuleWindow imp
 		super(building, res);
 	}
 
-	@Inject(method = "onButtonClicked", remap = false, at = @At(value = "TAIL"))
-	private void onButtonClicked(@NotNull Button button, CallbackInfo ci)
+	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"))
+	private void init(String res, IBuildingView building, IItemListModuleView moduleView, CallbackInfo ci)
 	{
-		var buttonId = button.getID();
+		this.registerButton(minecolonies_tweaks$BUTTON_TOGGLE_IN_CURRENT, this::minecolonies_tweaks$toggleClick);
+		this.registerButton(minecolonies_tweaks$BUTTON_RESET_IN_CURRENT, this::minecolonies_tweaks$resetClick);
+	}
 
-		if (Objects.equals(buttonId, minecolonies_tweaks$BUTTON_TOGGLE_IN_CURRENT))
+	private void minecolonies_tweaks$toggleClick(Button button)
+	{
+		var module = this.building.getModuleViewMatching(ItemListModuleView.class, view -> view.getId().equals(this.id));
+		var list = ((ItemListModuleViewAccessor) module).getListsOfItems();
+		var toRemoves = new ArrayList<ItemStorage>();
+		var toAdds = new ArrayList<ItemStorage>();
+
+		for (var storage : this.currentDisplayedList)
 		{
-			var module = this.building.getModuleViewMatching(ItemListModuleView.class, view -> view.getId().equals(this.id));
-			var list = ((ItemListModuleViewAccessor) module).getListsOfItems();
-			var toRemoves = new ArrayList<ItemStorage>();
-			var toAdds = new ArrayList<ItemStorage>();
-
-			for (var storage : this.currentDisplayedList)
+			if (list.contains(storage))
 			{
-				if (list.contains(storage))
-				{
-					toRemoves.add(storage);
-					list.remove(storage);
-				}
-				else
-				{
-					toAdds.add(storage);
-					list.add(storage);
-				}
-
+				toRemoves.add(storage);
+				list.remove(storage);
+			}
+			else
+			{
+				toAdds.add(storage);
+				list.add(storage);
 			}
 
-			MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.REMOVE, toRemoves));
-			MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.ADD, toAdds));
-			this.resourceList.refreshElementPanes();
-		}
-		else if (Objects.equals(buttonId, minecolonies_tweaks$BUTTON_RESET_IN_CURRENT))
-		{
-			var module = this.building.getModuleViewMatching(ItemListModuleView.class, view -> view.getId().equals(this.id));
-			var list = ((ItemListModuleViewAccessor) module).getListsOfItems();
-
-			list.removeAll(this.currentDisplayedList);
-
-			MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.REMOVE, this.currentDisplayedList));
-			this.resourceList.refreshElementPanes();
 		}
 
+		MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.REMOVE, toRemoves));
+		MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.ADD, toAdds));
+		this.resourceList.refreshElementPanes();
+	}
+
+	private void minecolonies_tweaks$resetClick(Button button)
+	{
+		var module = this.building.getModuleViewMatching(ItemListModuleView.class, view -> view.getId().equals(this.id));
+		var list = ((ItemListModuleViewAccessor) module).getListsOfItems();
+
+		list.removeAll(this.currentDisplayedList);
+
+		MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.REMOVE, this.currentDisplayedList));
+		this.resourceList.refreshElementPanes();
 	}
 
 	@Override
