@@ -1,6 +1,5 @@
 package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
-import static com.minecolonies.api.util.constant.HappinessConstants.HADDECENTFOOD;
 import static com.minecolonies.api.util.constant.HappinessConstants.HADGREATFOOD;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,7 +29,6 @@ public abstract class EntityAIEatTaskMixin
 				citizen.getCitizenData().getCitizenHappinessHandler().addModifier(new ExpirationBasedHappinessModifier(HADGREATFOOD, 2.0, new StaticHappinessSupplier(2.0), 5));
 			}
 
-			citizen.getCitizenData().getCitizenHappinessHandler().resetModifier(HADDECENTFOOD);
 		}
 
 		ItemStackUtils.consumeFood(foodStack, citizen, inventory);
