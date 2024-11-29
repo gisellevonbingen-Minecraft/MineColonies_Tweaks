@@ -3,6 +3,7 @@ package steve_gall.minecolonies_tweaks.core.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.minecolonies.api.blocks.ModBlocks;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
@@ -11,6 +12,8 @@ import com.minecolonies.api.items.ModItems;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -83,7 +86,37 @@ public class MineColoniesTweaks
 			CustomCraftingModule.loadCustomCraftingModules();
 
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
+
+			this.registerCompostables();
 		});
+	}
+
+	private void registerCompostables()
+	{
+		var crop = 0.65F;
+		this.registerCompostable(ModBlocks.blockBellPepper, crop);
+		this.registerCompostable(ModBlocks.blockCabbage, crop);
+		this.registerCompostable(ModBlocks.blockChickpea, crop);
+		this.registerCompostable(ModBlocks.blockDurum, crop);
+		this.registerCompostable(ModBlocks.blockEggplant, crop);
+		this.registerCompostable(ModBlocks.blockGarlic, crop);
+		this.registerCompostable(ModBlocks.blockSoyBean, crop);
+		this.registerCompostable(ModBlocks.blockTomato, crop);
+		this.registerCompostable(ModBlocks.blockRice, crop);
+		this.registerCompostable(ModBlocks.blockButternutSquash, crop);
+		this.registerCompostable(ModBlocks.blockCorn, crop);
+		this.registerCompostable(ModBlocks.blockMint, crop);
+		this.registerCompostable(ModBlocks.blockNetherPepper, crop);
+		this.registerCompostable(ModBlocks.blockPeas, crop);
+
+		var food = 0.85F;
+		this.registerCompostable(ModItems.manchet_bread, food);
+		this.registerCompostable(ModItems.muffin, food);
+	}
+
+	private void registerCompostable(ItemLike itemLike, float chance)
+	{
+		ComposterBlock.COMPOSTABLES.put(itemLike.asItem(), chance);
 	}
 
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
