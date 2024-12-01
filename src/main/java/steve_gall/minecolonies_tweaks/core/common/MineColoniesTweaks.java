@@ -112,6 +112,7 @@ public class MineColoniesTweaks
 		var food = 0.85F;
 		this.registerCompostable(ModItems.manchet_bread, food);
 		this.registerCompostable(ModItems.muffin, food);
+		this.registerCompostable(ModItems.lembas_scone, food);
 	}
 
 	private void registerCompostable(ItemLike itemLike, float chance)
