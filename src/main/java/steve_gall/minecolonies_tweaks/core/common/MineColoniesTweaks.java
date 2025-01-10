@@ -8,6 +8,8 @@ import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
 import com.minecolonies.api.items.ModItems;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -68,7 +70,20 @@ public class MineColoniesTweaks
 			CustomCraftingModule.loadCustomCraftingModules();
 
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
+
+			this.registerCompostables();
 		});
+	}
+
+	private void registerCompostables()
+	{
+		var crop = 0.65F;
+		this.registerCompostable(ModItems.mistletoe, crop);
+	}
+
+	private void registerCompostable(ItemLike itemLike, float chance)
+	{
+		ComposterBlock.COMPOSTABLES.put(itemLike.asItem(), chance);
 	}
 
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
