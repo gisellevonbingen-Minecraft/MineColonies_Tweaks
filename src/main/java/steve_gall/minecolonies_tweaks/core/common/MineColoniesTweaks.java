@@ -93,8 +93,10 @@ public class MineColoniesTweaks
 
 	private void registerCompostables()
 	{
+		var leave = 0.30F;
+		this.registerCompostable(ModItems.mistletoe, leave);
+		
 		var crop = 0.65F;
-		this.registerCompostable(ModItems.mistletoe, crop);
 		this.registerCompostable(ModBlocks.blockBellPepper, crop);
 		this.registerCompostable(ModBlocks.blockCabbage, crop);
 		this.registerCompostable(ModBlocks.blockChickpea, crop);
