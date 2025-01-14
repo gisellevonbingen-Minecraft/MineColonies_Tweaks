@@ -77,8 +77,8 @@ public class MineColoniesTweaks
 
 	private void registerCompostables()
 	{
-		var crop = 0.65F;
-		this.registerCompostable(ModItems.mistletoe, crop);
+		var leave = 0.30F;
+		this.registerCompostable(ModItems.mistletoe, leave);
 	}
 
 	private void registerCompostable(ItemLike itemLike, float chance)
