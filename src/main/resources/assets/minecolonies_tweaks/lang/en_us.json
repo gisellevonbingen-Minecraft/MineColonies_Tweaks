@@ -12,6 +12,7 @@
 	"minecolonies_tweaks.gui.toogle_in_current": "Toggle Filtered",
 	"minecolonies_tweaks.gui.reset_in_current": "Reset Filtered",
 	"minecolonies_tweaks.gui.buildings": "Buildings",
+	"minecolonies_tweaks.gui.resources_changed": "Repair resources are changed from before.",
 	"minecolonies_tweaks.gui.assigned_builder_name": "Builder: %s",
 	"minecolonies_tweaks.gui.builder_name_with_level": "Lv. %2$s - %1$s",
 	"minecolonies_tweaks.gui.builder_no_assigned": "Not Assigned",

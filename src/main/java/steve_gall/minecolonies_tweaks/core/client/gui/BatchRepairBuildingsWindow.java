@@ -694,7 +694,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		if (building.repairResourcesChanged)
 		{
 			buildingText = buildingText.append(RESOURCES_CHANGED_SUFFIX);
-			buildingTooltip = Collections.singletonList(Component.literal("Repair resources are changed from before."));
+			buildingTooltip = Collections.singletonList(Component.translatable("minecolonies_tweaks.gui.resources_changed"));
 		}
 
 		buildingLabel.setText(buildingText);
