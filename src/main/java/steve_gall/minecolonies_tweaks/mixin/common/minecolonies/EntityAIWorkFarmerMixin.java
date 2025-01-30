@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.minecolonies.api.compatibility.Compatibility;
 import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
 import com.minecolonies.core.colony.buildings.modules.FieldsModule;
@@ -93,7 +92,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	@Inject(method = "harvestIfAble", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void harvestIfAble_Return(@NotNull BlockPos position, CallbackInfoReturnable<Boolean> cir)
 	{
-		if (cir.getReturnValueZ() && !Compatibility.isPamsInstalled() && position != null)
+		if (cir.getReturnValueZ() && position != null)
 		{
 			if (MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHarvest.get().booleanValue())
 			{
