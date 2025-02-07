@@ -516,16 +516,16 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 					continue;
 				}
 
-				var builders = this.streamWorkableBuilders(buildingLevel).collect(Collectors.toList());
-
-				if (builders.size() == 0)
-				{
-					continue;
-				}
-
 				for (var building : buildings)
 				{
-					builders.sort((o1, o2) -> Integer.compare(o1.cachedAssignedCount, o2.cachedAssignedCount));
+					var builders = this.streamWorkableBuilders(building).collect(Collectors.toList());
+
+					if (builders.size() == 0)
+					{
+						continue;
+					}
+
+					builders.sort(this::compareBuilderForAssign);
 					var builder = builders.get(0);
 					this.assign(building, builder);
 				}
@@ -588,6 +588,16 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 	}
 
+	protected int compareBuilderForAssign(BuilderInfo o1, BuilderInfo o2)
+	{
+		if (o1.cachedAssignedCount != o2.cachedAssignedCount)
+		{
+			return Integer.compare(o1.cachedAssignedCount, o2.cachedAssignedCount);
+		}
+
+		return Integer.compare(o1.building.getBuildingLevel(), o2.building.getBuildingLevel());
+	}
+
 	protected void onExceptOpenablesOnlyChangedChanged()
 	{
 		var excpet = this.exceptOpenablesOnlyChanged;
@@ -606,14 +616,14 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		this.onBuildingCountsChanged();
 	}
 
-	protected Stream<BuilderInfo> streamWorkableBuilders(int buildingLevel)
+	protected Stream<BuilderInfo> streamWorkableBuilders(BuildingInfo building)
 	{
-		return this.builders.stream().filter(builder -> this.testWorkable(buildingLevel, builder));
+		return this.builders.stream().filter(builder -> this.testWorkable(building, builder));
 	}
 
-	protected boolean testWorkable(int buildingLevel, BuilderInfo builder)
+	protected boolean testWorkable(BuildingInfo building, BuilderInfo builder)
 	{
-		return builder.building.getBuildingLevel() >= buildingLevel;
+		return builder.building.getBuildingLevel() >= building.building.getBuildingLevel();
 	}
 
 	protected void onBuildingCountsChanged()
@@ -797,9 +807,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		if (buildingIndex > -1)
 		{
 			var building = this.filteredBuildings.get(buildingIndex);
-			var buildingLevel = building.building.getBuildingLevel();
-
-			this.builders.stream().filter(builder -> this.testWorkable(buildingLevel, builder)).forEach(this.filteredBuilders::add);
+			this.builders.stream().filter(builder -> this.testWorkable(building, builder)).forEach(this.filteredBuilders::add);
 			this.filteredBuilders.sort(this::compareBuilder);
 		}
 
