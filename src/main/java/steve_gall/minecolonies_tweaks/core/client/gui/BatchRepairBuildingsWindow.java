@@ -759,7 +759,6 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 	protected boolean filterBuilding(String filter, BuildingInfo building)
 	{
-
 		if (filter.isEmpty())
 		{
 			return true;
