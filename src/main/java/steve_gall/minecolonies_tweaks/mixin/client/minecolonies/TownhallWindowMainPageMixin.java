@@ -13,6 +13,7 @@ import com.minecolonies.core.client.gui.townhall.WindowMainPage;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingTownHall;
 
 import steve_gall.minecolonies_tweaks.core.client.gui.BatchRepairBuildingsWindow;
+import steve_gall.minecolonies_tweaks.core.client.gui.BatchUpgradeBuildingsWindow;
 import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
@@ -28,11 +29,17 @@ public abstract class TownhallWindowMainPageMixin extends AbstractWindowTownHall
 	private void init(BuildingTownHall.View building, CallbackInfo ci)
 	{
 		this.registerButton("batchRepair", this::onBatchRepairClick);
+		this.registerButton("batchUpgrade", this::onBatchUpgradeClick);
 	}
 
 	private void onBatchRepairClick()
 	{
 		new BatchRepairBuildingsWindow(this.building.getColony(), this).open();
+	}
+
+	private void onBatchUpgradeClick()
+	{
+		new BatchUpgradeBuildingsWindow(this.building.getColony(), this).open();
 	}
 
 	@Override

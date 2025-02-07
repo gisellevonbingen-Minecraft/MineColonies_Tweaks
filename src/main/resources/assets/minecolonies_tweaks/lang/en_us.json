@@ -6,9 +6,13 @@
 	"minecolonies_tweaks.gui.assign_all_automatically": "Assign All Automatically",
 	"minecolonies_tweaks.gui.clear_assignments": "Clear Assignments",
 	"minecolonies_tweaks.gui.dont_repair": "Don't Repair",
+	"minecolonies_tweaks.gui.dont_upgrade": "Don't Upgrade",
 	"minecolonies_tweaks.gui.mark_all_dont_repair": "Mark All as 'Don't Repair'",
+	"minecolonies_tweaks.gui.mark_all_dont_upgrade": "Mark All as 'Don't Upgrade'",
 	"minecolonies_tweaks.gui.clear_dont_repair": "Clear\n'Don't Repair'",
+	"minecolonies_tweaks.gui.clear_dont_upgrade": "Clear\n'Don't Upgrade'",
 	"minecolonies_tweaks.gui.repair_and_save": "Repair\n& Save",
+	"minecolonies_tweaks.gui.upgrade_and_save": "Upgrade\n& Save",
 	"minecolonies_tweaks.gui.toogle_in_current": "Toggle Filtered",
 	"minecolonies_tweaks.gui.reset_in_current": "Reset Filtered",
 	"minecolonies_tweaks.gui.buildings": "Buildings",
@@ -20,5 +24,7 @@
 	"minecolonies_tweaks.gui.exceptOpenablesOnlyChanged": "Except buildings what Doors and Trapdoors only changed",
 	"minecolonies_tweaks.gui.available_builders": "Available Builders",
 	"minecolonies_tweaks.gui.repair_resources": "Repair Resources",
-	"minecolonies_tweaks.gui.townhall.batch_repair": "Repair All Buildings"
+	"minecolonies_tweaks.gui.upgrade_resources": "Upgrade Resources",
+	"minecolonies_tweaks.gui.townhall.batch_repair": "Repair Buildings",
+	"minecolonies_tweaks.gui.townhall.batch_upgrade": "Upgrade Buildings"
 }

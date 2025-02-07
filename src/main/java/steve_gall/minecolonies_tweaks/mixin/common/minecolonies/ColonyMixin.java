@@ -12,6 +12,7 @@ import com.minecolonies.core.colony.Colony;
 import net.minecraft.nbt.CompoundTag;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchRepairData;
+import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
 import steve_gall.minecolonies_tweaks.core.common.colony.ColonyExtension;
 
 @Mixin(value = Colony.class, remap = false)
@@ -19,23 +20,33 @@ public abstract class ColonyMixin implements ColonyExtension
 {
 	@Unique
 	private final BatchRepairData minecolonies_tweaks$batchRepair = new BatchRepairData();
+	@Unique
+	private final BatchUpgradeData minecolonies_tweaks$batchUpgrade = new BatchUpgradeData();
 
 	@Inject(method = "read", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	public void read(CompoundTag compound, CallbackInfo ci)
 	{
 		this.minecolonies_tweaks$batchRepair.deserializeNBT(compound.getCompound(MineColoniesTweaks.rl("batch_repair").toString()));
+		this.minecolonies_tweaks$batchUpgrade.deserializeNBT(compound.getCompound(MineColoniesTweaks.rl("batch_upgrade").toString()));
 	}
 
 	@Inject(method = "write", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	public void write(CompoundTag compound, CallbackInfoReturnable<CompoundTag> cir)
 	{
 		compound.put(MineColoniesTweaks.rl("batch_repair").toString(), this.minecolonies_tweaks$batchRepair.serializeNBT());
+		compound.put(MineColoniesTweaks.rl("batch_upgrade").toString(), this.minecolonies_tweaks$batchUpgrade.serializeNBT());
 	}
 
 	@Override
 	public BatchRepairData minecolonies_tweaks$getBatchRepair()
 	{
 		return this.minecolonies_tweaks$batchRepair;
+	}
+
+	@Override
+	public BatchUpgradeData minecolonies_tweaks$getBatchUpgrade()
+	{
+		return this.minecolonies_tweaks$batchUpgrade;
 	}
 
 }
