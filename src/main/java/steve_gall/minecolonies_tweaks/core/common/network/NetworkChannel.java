@@ -23,6 +23,8 @@ import steve_gall.minecolonies_tweaks.core.common.network.message.AssignFilterab
 import steve_gall.minecolonies_tweaks.core.common.network.message.AssignIdListUpdateMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataLoadMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataSaveMessage;
 
 public class NetworkChannel
 {
@@ -57,6 +59,8 @@ public class NetworkChannel
 		this.registerMessage(AssignIdListUpdateMessage.class, AssignIdListUpdateMessage::new);
 		this.registerMessage(BatchRepairDataLoadMessage.class, BatchRepairDataLoadMessage::new);
 		this.registerMessage(BatchRepairDataSaveMessage.class, BatchRepairDataSaveMessage::new);
+		this.registerMessage(BatchUpgradeDataLoadMessage.class, BatchUpgradeDataLoadMessage::new);
+		this.registerMessage(BatchUpgradeDataSaveMessage.class, BatchUpgradeDataSaveMessage::new);
 	}
 
 	public void handleSplit(AbstractMessage message, Consumer<FrameMessage> consumer)
