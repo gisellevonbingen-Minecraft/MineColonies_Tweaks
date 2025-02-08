@@ -11,8 +11,10 @@
 		"minecolonies.AbstractEntityAIInteractMixin",
 		"minecolonies.AbstractEntityAIStructureAccessor",
 		"minecolonies.AbstractEntityAIStructureMixin",
+		"minecolonies.BuildingStructureHandlerMixin",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
+		"minecolonies.CreativeBuildingStructureHandlerMixin",
 		"minecolonies.CitizenFoodHandlerMixin",
 		"minecolonies.EntityAIEatTaskMixin",
 		"minecolonies.EntityAIStructureBuilderAccessor",
@@ -27,6 +29,7 @@
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemCropMixin",
 		"minecolonies.ItemListModuleViewAccessor",
+		"minecolonies.LoadOnlyStructureHandlerMixin",
 		"minecolonies.MinecoloniesCropBlockMixin"
 	],
 	"injectors": {

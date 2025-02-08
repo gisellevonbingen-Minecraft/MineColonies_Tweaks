@@ -27,6 +27,7 @@ public class JobConfig
 	public final IntValue farmerActionsDoneUntilDumping;
 	public final BooleanValue farmerPlantAfterHoe;
 	public final BooleanValue farmerPlantAfterHarvest;
+	public final BooleanValue structureLeavesFree;
 
 	public JobConfig(ForgeConfigSpec.Builder builder)
 	{
@@ -61,6 +62,10 @@ public class JobConfig
 		this.farmerPlantAfterHoe = builder.define("plantAfterHoe", true);
 		builder.comment("whether plant seed after harvest crop");
 		this.farmerPlantAfterHarvest = builder.define("plantAfterHarvest", true);
+		builder.pop();
+
+		builder.push("structure");
+		this.structureLeavesFree = builder.define("leavesFree", true);
 		builder.pop();
 	}
 
