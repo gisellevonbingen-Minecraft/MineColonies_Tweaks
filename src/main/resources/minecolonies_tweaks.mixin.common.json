@@ -14,6 +14,7 @@
 		"minecolonies.BuildingStructureHandlerMixin",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
+		"minecolonies.CompatibilityManagerMixin",
 		"minecolonies.CreativeBuildingStructureHandlerMixin",
 		"minecolonies.CitizenFoodHandlerMixin",
 		"minecolonies.EntityAIEatTaskMixin",
@@ -22,6 +23,7 @@
 		"minecolonies.EntityAIWorkSifterAccessor",
 		"minecolonies.EntityAIWorkFarmerAccessor",
 		"minecolonies.EntityAIWorkFarmerMixin",
+		"minecolonies.EntityAIWorkLumberjackMixin",
 		"minecolonies.EntityAIWorkSifterMixin",
 		"minecolonies.EquipmentTypeEntryMixin",
 		"minecolonies.FarmFieldMixin",
@@ -30,7 +32,8 @@
 		"minecolonies.ItemCropMixin",
 		"minecolonies.ItemListModuleViewAccessor",
 		"minecolonies.LoadOnlyStructureHandlerMixin",
-		"minecolonies.MinecoloniesCropBlockMixin"
+		"minecolonies.MinecoloniesCropBlockMixin",
+		"minecolonies.TreeMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
