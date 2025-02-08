@@ -8,8 +8,11 @@
 		
 		"minecolonies.AbstractEntityAICraftingAccessor",
 		"minecolonies.AbstractEntityAICraftingMixin",
+		"minecolonies.AbstractEntityAIStructureMixin",
+		"minecolonies.BuildingStructureHandlerMixin",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
+		"minecolonies.CreativeBuildingStructureHandlerMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
 		"minecolonies.EntityAIWorkFarmerAccessor",
 		"minecolonies.EntityAIWorkFarmerMixin",
@@ -19,6 +22,7 @@
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.ItemListModuleViewAccessor",
 		"minecolonies.ItemStackUtilsMixin",
+		"minecolonies.LoadOnlyStructureHandlerMixin",
 		"minecolonies.ToolMixin",
 		"minecolonies.ToolTypeMixin"
 	],
