@@ -65,6 +65,7 @@ public class JobConfig
 		builder.pop();
 
 		builder.push("structure");
+		builder.comment("If this is off, Builders will requests 'Leaves' on needed it when build.");
 		this.structureLeavesFree = builder.define("leavesFree", true);
 		builder.pop();
 	}
