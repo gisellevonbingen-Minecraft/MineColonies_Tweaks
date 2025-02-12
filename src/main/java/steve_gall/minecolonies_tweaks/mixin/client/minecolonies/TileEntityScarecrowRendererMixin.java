@@ -38,7 +38,12 @@ public abstract class TileEntityScarecrowRendererMixin
 	{
 		if (te.getCurrentColony() instanceof IColonyViewExtension colonyView && colonyView.minecolonies_tweaks$getField(te.getBlockPos()) instanceof FarmField field)
 		{
-			var facing = te.getLevel().getBlockState(te.getBlockPos()).getValue(AbstractBlockMinecoloniesDefault.FACING);
+			var facing = te.getLevel().getBlockState(te.getBlockPos()).getOptionalValue(AbstractBlockMinecoloniesDefault.FACING).orElse(null);
+
+			if (facing == null)
+			{
+				return;
+			}
 
 			matrixStack.pushPose();
 			matrixStack.translate(0.5D, 2.5D, 0.5D);
