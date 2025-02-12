@@ -17,6 +17,7 @@ public class MineColoniesTweaksConfigClient
 
 	public final BooleanValue escToReturn;
 	public final BooleanValue addReturnButton;
+	public final BooleanValue renderFieldSeed;
 
 	public MineColoniesTweaksConfigClient(ForgeConfigSpec.Builder builder)
 	{
@@ -25,6 +26,11 @@ public class MineColoniesTweaksConfigClient
 		this.escToReturn = builder.define("escToReturn", true);
 		builder.comment("Add close button what can return previous window.", "Applies at Hut/Citizen inventory and Recipe Teach window.");
 		this.addReturnButton = builder.define("addCloseButton", false);
+		builder.pop();
+
+		builder.push("fields");
+		builder.comment("Render selected seed item above field's head.");
+		this.renderFieldSeed = builder.define("renderSeed", true);
 		builder.pop();
 	}
 
