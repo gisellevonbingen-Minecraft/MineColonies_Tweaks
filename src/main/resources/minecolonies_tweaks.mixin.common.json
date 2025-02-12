@@ -14,6 +14,7 @@
 		"minecolonies.BuildingStructureHandlerMixin",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
+		"minecolonies.ColonyViewMixin",
 		"minecolonies.CompatibilityManagerMixin",
 		"minecolonies.CreativeBuildingStructureHandlerMixin",
 		"minecolonies.CitizenFoodHandlerMixin",

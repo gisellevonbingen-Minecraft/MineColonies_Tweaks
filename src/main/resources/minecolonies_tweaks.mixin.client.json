@@ -12,6 +12,7 @@
 		"minecolonies.AbstractWindowSkeletonsMixin",
 		"minecolonies.ItemListModuleWindowMixin",
 		"minecolonies.MainWindowCitizenMixin",
+		"minecolonies.TileEntityScarecrowRendererMixin",
 		"minecolonies.TownhallWindowMainPageMixin",
 		"minecolonies.WindowFieldMixin",
 		"minecolonies.WindowCraftingsMixin",
