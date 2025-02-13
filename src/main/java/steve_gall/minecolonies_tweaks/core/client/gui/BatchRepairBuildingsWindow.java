@@ -316,19 +316,16 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 					continue;
 				}
 
-				var buildingStyle = building.getStructurePack();
 				var buildingName = building.getStructurePath().replace(".blueprint", "");
-
-				this.updateCount++;
 
 				if (buildingName.isEmpty())
 				{
-					this.updateProgress++;
-					return;
+					continue;
 				}
 
+				this.updateCount++;
 				buildingName = buildingName.substring(0, buildingName.length() - 1) + building.getBuildingLevel() + ".blueprint";
-				ClientFutureProcessor.queueBlueprint(new ClientFutureProcessor.BlueprintProcessingData(StructurePacks.getBlueprintFuture(buildingStyle, buildingName), blueprint ->
+				ClientFutureProcessor.queueBlueprint(new ClientFutureProcessor.BlueprintProcessingData(StructurePacks.getBlueprintFuture(building.getStructurePack(), buildingName), blueprint ->
 				{
 					var repairResources = new HashMap<ItemStorage, AtomicInteger>();
 

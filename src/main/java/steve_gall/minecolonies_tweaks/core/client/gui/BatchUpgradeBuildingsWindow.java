@@ -261,19 +261,16 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 					continue;
 				}
 
-				var buildingStyle = building.getStructurePack();
 				var buildingName = building.getStructurePath().replace(".blueprint", "");
-
-				this.updateCount++;
 
 				if (buildingName.isEmpty())
 				{
-					this.updateProgress++;
-					return;
+					continue;
 				}
 
+				this.updateCount++;
 				buildingName = buildingName.substring(0, buildingName.length() - 1) + (building.getBuildingLevel() + 1) + ".blueprint";
-				ClientFutureProcessor.queueBlueprint(new ClientFutureProcessor.BlueprintProcessingData(StructurePacks.getBlueprintFuture(buildingStyle, buildingName), blueprint ->
+				ClientFutureProcessor.queueBlueprint(new ClientFutureProcessor.BlueprintProcessingData(StructurePacks.getBlueprintFuture(building.getStructurePack(), buildingName), blueprint ->
 				{
 					var upgradeResources = new HashMap<ItemStorage, AtomicInteger>();
 
