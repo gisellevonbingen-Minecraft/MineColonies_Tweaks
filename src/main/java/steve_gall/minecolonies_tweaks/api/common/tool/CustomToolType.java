@@ -43,7 +43,7 @@ public class CustomToolType
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("Exception during load CustomToolType", e);
+			MineColoniesTweaks.LOGGER.error("Exception during load CustomToolType", e);
 		}
 
 		MinecraftForge.EVENT_BUS.post(new CustomToolTypeRegisterEvent(CustomToolType::register));

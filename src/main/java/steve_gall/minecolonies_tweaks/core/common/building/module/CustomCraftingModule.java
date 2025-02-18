@@ -38,7 +38,7 @@ public class CustomCraftingModule extends AbstractCraftingBuildingModule.Custom
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("Exception during load CustomCraftingModule", e);
+			MineColoniesTweaks.LOGGER.error("Exception during load CustomCraftingModule", e);
 		}
 
 	}
