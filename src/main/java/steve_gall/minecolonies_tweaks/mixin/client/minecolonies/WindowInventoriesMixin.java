@@ -2,33 +2,23 @@ package steve_gall.minecolonies_tweaks.mixin.client.minecolonies;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.core.client.gui.containers.WindowBuildingInventory;
 import com.minecolonies.core.client.gui.containers.WindowCitizenInventory;
 
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
-import steve_gall.minecolonies_tweaks.mixin.client.minecraft.AbstractContainerScreenMixin;
+import steve_gall.minecolonies_tweaks.core.client.gui.CloseableContainerScreenExtension;
 
 @Mixin(value = {WindowCitizenInventory.class, WindowBuildingInventory.class}, remap = false)
-public abstract class WindowInventoriesMixin extends AbstractContainerScreenMixin implements CloseableWindowExtension
+public abstract class WindowInventoriesMixin implements CloseableContainerScreenExtension
 {
 	@Unique
 	private Screen minecolonies_tweaks$parent;
 
-	protected WindowInventoriesMixin(Component p_96550_)
-	{
-		super(p_96550_);
-	}
-
 	@Override
-	protected void init(CallbackInfo ci)
+	public void minecolonies_tweaks$onInit(int leftPos, int topPos, int imageWidth, int imageHeight, addCloseButton addCloseButton)
 	{
-		super.init(ci);
-
-		this.addCloseButton(this.leftPos + this.imageWidth - 20, this.topPos - 5, 20, 20);
+		addCloseButton.invoke(leftPos + imageWidth - 20, topPos - 5, 20, 20);
 	}
 
 	@Override
