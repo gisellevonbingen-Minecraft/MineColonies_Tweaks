@@ -10,13 +10,13 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 
 public interface CloseableWindowExtension
 {
-	public static Optional<CloseableWindowExtension> find(Object screen)
+	public static Optional<CloseableWindowExtension> find(Object object)
 	{
-		if (screen instanceof BOScreen boScreen && boScreen.getWindow() instanceof CloseableWindowExtension extension)
+		if (object instanceof BOScreen boScreen && boScreen.getWindow() instanceof CloseableWindowExtension extension)
 		{
 			return Optional.of(extension);
 		}
-		else if (screen instanceof CloseableWindowExtension extension)
+		else if (object instanceof CloseableWindowExtension extension)
 		{
 			return Optional.of(extension);
 		}
