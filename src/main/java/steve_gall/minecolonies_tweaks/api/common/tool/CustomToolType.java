@@ -62,7 +62,7 @@ public class CustomToolType
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("Exception during load CustomToolType", e);
+			MineColoniesTweaks.LOGGER.error("Exception during load CustomToolType", e);
 		}
 
 		ModLoader.get().postEvent(new CustomToolTypeRegisterEvent(CustomToolType::register));
