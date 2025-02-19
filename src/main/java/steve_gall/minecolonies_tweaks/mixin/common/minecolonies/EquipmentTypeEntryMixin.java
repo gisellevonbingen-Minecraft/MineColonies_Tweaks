@@ -9,8 +9,8 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.ItemStackUtils;
 
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeTags;
 import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
+import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeTags;
 
 @Mixin(value = EquipmentTypeEntry.class, remap = false)
 public abstract class EquipmentTypeEntryMixin
