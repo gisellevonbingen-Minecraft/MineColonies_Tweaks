@@ -52,13 +52,13 @@ public class ConfigToolType extends CustomToolType
 	}
 
 	@Override
-	protected boolean isTool(@NotNull ItemStack stack)
+	public boolean isTool(@NotNull ItemStack stack)
 	{
 		return super.isTool(stack);
 	}
 
 	@Override
-	protected int getToolLevel(@NotNull ItemStack stack)
+	public int getToolLevel(@NotNull ItemStack stack)
 	{
 		var autoLevelType = this.getAutoLevelType();
 		return autoLevelType.getToolLevel(stack, this);

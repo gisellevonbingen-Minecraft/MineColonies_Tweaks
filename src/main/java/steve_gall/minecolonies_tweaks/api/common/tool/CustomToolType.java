@@ -76,6 +76,12 @@ public class CustomToolType
 		}
 
 		var name = data.getName();
+		var prev = MAP.get(name);
+
+		if (prev != null)
+		{
+			throw new IllegalArgumentException("Name '" + name + "' is already registered");
+		}
 
 		MAP.put(name, data);
 		LIST.add(data);
@@ -182,12 +188,12 @@ public class CustomToolType
 		return this.toolType;
 	}
 
-	protected int getToolLevel(@NotNull ItemStack stack)
+	public int getToolLevel(@NotNull ItemStack stack)
 	{
 		return -1;
 	}
 
-	protected boolean isTool(@NotNull ItemStack stack)
+	public boolean isTool(@NotNull ItemStack stack)
 	{
 		return false;
 	}

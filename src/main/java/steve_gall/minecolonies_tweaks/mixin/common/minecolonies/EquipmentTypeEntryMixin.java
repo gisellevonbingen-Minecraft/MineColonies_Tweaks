@@ -48,7 +48,6 @@ public abstract class EquipmentTypeEntryMixin
 			if (level != -1)
 			{
 				cir.setReturnValue(level);
-				return;
 			}
 			else
 			{
@@ -57,7 +56,6 @@ public abstract class EquipmentTypeEntryMixin
 				if (data != null)
 				{
 					cir.setReturnValue(data.getDefaultLevel());
-					return;
 				}
 
 			}
