@@ -21,13 +21,13 @@ public abstract class ItemStackUtilsMixin
 	{
 		if (!ItemStackUtils.isEmpty(itemStack))
 		{
-			if (ToolTypeExtension.from(toolType).isCustomTool(itemStack))
-			{
-				cir.setReturnValue(true);
-			}
-			else if (itemStack.is(ToolTypeTags.getBlacklist(toolType.getName())))
+			if (ToolTypeTags.isInBlacklist(itemStack, toolType.getName()))
 			{
 				cir.setReturnValue(false);
+			}
+			else if (ToolTypeExtension.from(toolType).isCustomTool(itemStack))
+			{
+				cir.setReturnValue(true);
 			}
 
 		}
