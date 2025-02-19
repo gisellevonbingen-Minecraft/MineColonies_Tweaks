@@ -9,6 +9,7 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.ItemStackUtils;
 
 import net.minecraft.world.item.ItemStack;
+import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeTags;
 import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
 
 @Mixin(value = EquipmentTypeEntry.class, remap = false)
@@ -19,9 +20,17 @@ public abstract class EquipmentTypeEntryMixin
 	{
 		var toolType = (EquipmentTypeEntry) (Object) this;
 
-		if (!ItemStackUtils.isEmpty(itemStack) && ToolTypeExtension.from(toolType).isCustomTool(itemStack))
+		if (!ItemStackUtils.isEmpty(itemStack))
 		{
-			cir.setReturnValue(true);
+			if (ToolTypeExtension.from(toolType).isCustomTool(itemStack))
+			{
+				cir.setReturnValue(true);
+			}
+			else if (itemStack.is(ToolTypeTags.getBlacklist(toolType.getRegistryName())))
+			{
+				cir.setReturnValue(false);
+			}
+
 		}
 
 	}
