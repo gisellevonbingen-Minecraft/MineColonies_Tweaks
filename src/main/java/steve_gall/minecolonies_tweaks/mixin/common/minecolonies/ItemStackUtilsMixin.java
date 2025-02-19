@@ -10,6 +10,7 @@ import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.item.ItemStack;
+import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeTags;
 import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
 
 @Mixin(value = ItemStackUtils.class, remap = false)
@@ -18,9 +19,17 @@ public abstract class ItemStackUtilsMixin
 	@Inject(method = "isTool", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private static void isTool(@Nullable ItemStack itemStack, IToolType toolType, CallbackInfoReturnable<Boolean> cir)
 	{
-		if (!ItemStackUtils.isEmpty(itemStack) && ToolTypeExtension.from(toolType).isCustomTool(itemStack))
+		if (!ItemStackUtils.isEmpty(itemStack))
 		{
-			cir.setReturnValue(true);
+			if (ToolTypeExtension.from(toolType).isCustomTool(itemStack))
+			{
+				cir.setReturnValue(true);
+			}
+			else if (itemStack.is(ToolTypeTags.getBlacklist(toolType.getName())))
+			{
+				cir.setReturnValue(false);
+			}
+
 		}
 
 	}
