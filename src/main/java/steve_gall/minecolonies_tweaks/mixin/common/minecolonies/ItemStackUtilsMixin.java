@@ -10,8 +10,8 @@ import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeTags;
 import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeExtension;
+import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeTags;
 
 @Mixin(value = ItemStackUtils.class, remap = false)
 public abstract class ItemStackUtilsMixin
