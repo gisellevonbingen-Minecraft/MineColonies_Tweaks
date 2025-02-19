@@ -22,13 +22,13 @@ public abstract class EquipmentTypeEntryMixin
 
 		if (!ItemStackUtils.isEmpty(itemStack))
 		{
-			if (ToolTypeExtension.from(toolType).isCustomTool(itemStack))
-			{
-				cir.setReturnValue(true);
-			}
-			else if (itemStack.is(ToolTypeTags.getBlacklist(toolType.getRegistryName())))
+			if (ToolTypeTags.isInBlacklist(itemStack, toolType.getRegistryName()))
 			{
 				cir.setReturnValue(false);
+			}
+			else if (ToolTypeExtension.from(toolType).isCustomTool(itemStack))
+			{
+				cir.setReturnValue(true);
 			}
 
 		}

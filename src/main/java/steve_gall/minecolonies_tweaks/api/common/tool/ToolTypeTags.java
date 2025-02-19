@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 public class ToolTypeTags
@@ -19,6 +20,10 @@ public class ToolTypeTags
 	private static final Map<ResourceLocation, TagKey<Item>> CUSTOM_ITEMS = new HashMap<>();
 	private static final Map<ResourceLocation, Int2ObjectOpenHashMap<TagKey<Item>>> CUSTOM_LEVELS = new HashMap<>();
 	private static final Map<ResourceLocation, TagKey<Item>> BLACKLISTS = new HashMap<>();
+
+	public static final String CUSTOM_PREFIX = "custom_tools";
+	public static final String BLACKLIST_PREFIX = "tool_blacklists";
+	public static final TagKey<Item> BLACKLIST_ALL = getBlacklist(MineColoniesTweaks.rl("all"));
 
 	@NotNull
 	public static String getTagPath(@NotNull ResourceLocation toolTypeId)
@@ -41,7 +46,7 @@ public class ToolTypeTags
 	{
 		return CUSTOM_ITEMS.computeIfAbsent(toolTypeId, n ->
 		{
-			var path = "custom_tools/" + getTagPath(n);
+			var path = CUSTOM_PREFIX + "/" + getTagPath(n);
 			return ItemTags.create(MineColoniesTweaks.rl(path));
 		});
 	}
@@ -51,9 +56,14 @@ public class ToolTypeTags
 	{
 		return CUSTOM_LEVELS.computeIfAbsent(toolTypeId, p -> new Int2ObjectOpenHashMap<>()).computeIfAbsent(level, l ->
 		{
-			var path = "custom_tools/" + getTagPath(toolTypeId) + "/" + l;
+			var path = CUSTOM_PREFIX + "/" + getTagPath(toolTypeId) + "/" + l;
 			return ItemTags.create(MineColoniesTweaks.rl(path));
 		});
+	}
+
+	public static boolean isInBlacklist(@NotNull ItemStack stack, @NotNull ResourceLocation toolTypeId)
+	{
+		return stack.is(BLACKLIST_ALL) || stack.is(getBlacklist(toolTypeId));
 	}
 
 	@NotNull
@@ -61,7 +71,7 @@ public class ToolTypeTags
 	{
 		return BLACKLISTS.computeIfAbsent(toolTypeId, n ->
 		{
-			var path = "tool_blacklists/" + getTagPath(n);
+			var path = BLACKLIST_PREFIX + "/" + getTagPath(n);
 			return ItemTags.create(MineColoniesTweaks.rl(path));
 		});
 	}
