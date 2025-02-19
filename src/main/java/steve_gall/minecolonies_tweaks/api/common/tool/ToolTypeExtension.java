@@ -18,7 +18,9 @@ import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 public class ToolTypeExtension
 {
-	private static Map<IToolType, ToolTypeExtension> MAP = new HashMap<>();
+	private static final Map<IToolType, ToolTypeExtension> MAP = new HashMap<>();
+	private static final Map<String, TagKey<Item>> ITEM_TAGS = new HashMap<>();
+	private static final Map<String, Int2ObjectOpenHashMap<TagKey<Item>>> LEVEL_TAGS = new HashMap<>();
 
 	@NotNull
 	public static ToolTypeExtension from(@NotNull IToolType toolType)
@@ -27,17 +29,23 @@ public class ToolTypeExtension
 	}
 
 	@NotNull
-	public static TagKey<Item> getItemCustomTag(@NotNull String name)
+	public static TagKey<Item> getItemCustomTag(@NotNull String toolTypeName)
 	{
-		var path = "custom_tools/" + name.toLowerCase();
-		return ItemTags.create(MineColoniesTweaks.rl(path));
+		return ITEM_TAGS.computeIfAbsent(toolTypeName, n ->
+		{
+			var path = "custom_tools/" + n.toLowerCase();
+			return ItemTags.create(MineColoniesTweaks.rl(path));
+		});
 	}
 
 	@NotNull
-	public static TagKey<Item> getItemCustomLevelTag(@NotNull String name, int level)
+	public static TagKey<Item> getItemCustomLevelTag(@NotNull String toolTypeName, int level)
 	{
-		var path = "custom_tools/" + name.toLowerCase() + "/" + level;
-		return ItemTags.create(MineColoniesTweaks.rl(path));
+		return LEVEL_TAGS.computeIfAbsent(toolTypeName, n -> new Int2ObjectOpenHashMap<>()).computeIfAbsent(level, l ->
+		{
+			var path = "custom_tools/" + toolTypeName.toLowerCase() + "/" + l;
+			return ItemTags.create(MineColoniesTweaks.rl(path));
+		});
 	}
 
 	@NotNull
