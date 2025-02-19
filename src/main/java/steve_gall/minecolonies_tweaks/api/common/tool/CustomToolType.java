@@ -43,9 +43,17 @@ public class CustomToolType
 
 			for (var raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
 			{
-				var json = gson.fromJson(raw, JsonObject.class);
-				var builder = new ConfigToolType.Builder(json);
-				register(new ConfigToolType(builder, MineColoniesTweaks.MOD_ID));
+				try
+				{
+					var json = gson.fromJson(raw, JsonObject.class);
+					var builder = new ConfigToolType.Builder(json);
+					register(new ConfigToolType(builder, MineColoniesTweaks.MOD_ID));
+				}
+				catch (Exception e)
+				{
+					MineColoniesTweaks.LOGGER.error("Exception during load CustomToolType: " + raw, e);
+				}
+
 			}
 
 		}

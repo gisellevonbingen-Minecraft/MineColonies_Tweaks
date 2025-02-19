@@ -26,13 +26,21 @@ public class CustomCraftingModule extends AbstractCraftingBuildingModule.Custom
 
 			for (var raw : MineColoniesTweaksConfigCommon.INSTANCE.buildings.customCraftingModules.get())
 			{
-				var json = gson.fromJson(raw, JsonObject.class);
-				var data = new CustomCraftingModule.Builder(json);
-				data.buildingEntry().getModuleProducers().add(new BuildingEntry.ModuleProducer<>(data.name(), //
-						() -> new CustomCraftingModule(data), //
-						() -> CraftingModuleView::new));
+				try
+				{
+					var json = gson.fromJson(raw, JsonObject.class);
+					var data = new CustomCraftingModule.Builder(json);
+					data.buildingEntry().getModuleProducers().add(new BuildingEntry.ModuleProducer<>(data.name(), //
+							() -> new CustomCraftingModule(data), //
+							() -> CraftingModuleView::new));
 
-				MineColoniesTweaks.LOGGER.info("CustomCraftingModule Added: " + data.name());
+					MineColoniesTweaks.LOGGER.info("CustomCraftingModule Added: " + data.name());
+				}
+				catch (Exception e)
+				{
+					MineColoniesTweaks.LOGGER.error("Exception during load CustomCraftingModule: " + raw, e);
+				}
+
 			}
 
 		}
