@@ -19,7 +19,9 @@ import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 public class ToolTypeExtension
 {
-	private static Map<EquipmentTypeEntry, ToolTypeExtension> MAP = new HashMap<>();
+	private static final Map<EquipmentTypeEntry, ToolTypeExtension> MAP = new HashMap<>();
+	private static final Map<ResourceLocation, TagKey<Item>> ITEM_TAGS = new HashMap<>();
+	private static final Map<ResourceLocation, Int2ObjectOpenHashMap<TagKey<Item>>> LEVEL_TAGS = new HashMap<>();
 
 	@NotNull
 	public static ToolTypeExtension from(@NotNull EquipmentTypeEntry toolType)
@@ -27,33 +29,39 @@ public class ToolTypeExtension
 		return MAP.computeIfAbsent(toolType, ToolTypeExtension::new);
 	}
 
-	public static String getTagNamespace(ResourceLocation name)
+	public static String getTagPath(ResourceLocation toolTypeId)
 	{
-		var namespace = name.getNamespace();
+		var namespace = toolTypeId.getNamespace();
 
-		if (namespace.equals(Constants.MOD_ID))
+		if (namespace.equals(Constants.MOD_ID) || namespace.equals(MineColoniesTweaks.MOD_ID))
 		{
-			return MineColoniesTweaks.MOD_ID;
+			return toolTypeId.getPath();
 		}
 		else
 		{
-			return namespace;
+			return namespace + "/" + toolTypeId.getPath();
 		}
 
 	}
 
 	@NotNull
-	public static TagKey<Item> getItemCustomTag(@NotNull ResourceLocation name)
+	public static TagKey<Item> getItemCustomTag(@NotNull ResourceLocation toolTypeId)
 	{
-		var path = "custom_tools/" + name.getPath().toLowerCase();
-		return ItemTags.create(new ResourceLocation(getTagNamespace(name), path));
+		return ITEM_TAGS.computeIfAbsent(toolTypeId, n ->
+		{
+			var path = "custom_tools/" + getTagPath(n);
+			return ItemTags.create(MineColoniesTweaks.rl(path));
+		});
 	}
 
 	@NotNull
-	public static TagKey<Item> getItemCustomLevelTag(@NotNull ResourceLocation name, int level)
+	public static TagKey<Item> getItemCustomLevelTag(@NotNull ResourceLocation toolTypeId, int level)
 	{
-		var path = "custom_tools/" + name.getPath().toLowerCase() + "/" + level;
-		return ItemTags.create(new ResourceLocation(getTagNamespace(name), path));
+		return LEVEL_TAGS.computeIfAbsent(toolTypeId, p -> new Int2ObjectOpenHashMap<>()).computeIfAbsent(level, l ->
+		{
+			var path = "custom_tools/" + getTagPath(toolTypeId) + "/" + l;
+			return ItemTags.create(MineColoniesTweaks.rl(path));
+		});
 	}
 
 	@NotNull

@@ -124,7 +124,7 @@ public class CustomToolType
 	@NotNull
 	public static String getFallbackTranslationKey(@NotNull ResourceLocation name)
 	{
-		return ToolTypeExtension.getTagNamespace(name) + ".custom_tooltype." + name.getPath();
+		return MineColoniesTweaks.MOD_ID + ".custom_tooltype." + ToolTypeExtension.getTagPath(name).replace('/', '.');
 	}
 
 	@NotNull
