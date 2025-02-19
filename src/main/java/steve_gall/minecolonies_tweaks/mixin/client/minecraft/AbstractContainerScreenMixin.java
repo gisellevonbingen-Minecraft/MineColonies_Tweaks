@@ -3,19 +3,17 @@ package steve_gall.minecolonies_tweaks.mixin.client.minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import steve_gall.minecolonies_tweaks.core.client.gui.AbstractContainerScreenExtension;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableContainerScreenExtension;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 
 @Mixin(value = AbstractContainerScreen.class, remap = true)
-public abstract class AbstractContainerScreenMixin extends Screen
+public abstract class AbstractContainerScreenMixin extends Screen implements AbstractContainerScreenExtension
 {
 	@Shadow(remap = true)
 	protected int leftPos;
@@ -31,12 +29,12 @@ public abstract class AbstractContainerScreenMixin extends Screen
 		super(p_96550_);
 	}
 
-	@Inject(method = "init", remap = true, at = @At(value = "TAIL"))
-	protected void init(CallbackInfo ci)
+	@Override
+	public void minecolonies_tweaks$onInitPost()
 	{
-		if (this instanceof CloseableContainerScreenExtension extension)
+		if (this instanceof CloseableContainerScreenExtension closeable)
 		{
-			extension.minecolonies_tweaks$onInit(this.leftPos, this.topPos, this.imageWidth, this.imageHeight, this::minecolonies_tweaks$addCloseButton);
+			closeable.minecolonies_tweaks$onInit(this.leftPos, this.topPos, this.imageWidth, this.imageHeight, this::minecolonies_tweaks$addCloseButton);
 		}
 
 	}
@@ -60,10 +58,10 @@ public abstract class AbstractContainerScreenMixin extends Screen
 	@Unique
 	private void minecolonies_tweaks$onClosePress(Button button)
 	{
-		if (this instanceof CloseableContainerScreenExtension extension)
+		if (this instanceof CloseableContainerScreenExtension closeable)
 		{
 			this.onClose();
-			extension.minecolonies_tweaks$showParent(false);
+			closeable.minecolonies_tweaks$showParent(false);
 		}
 
 	}
