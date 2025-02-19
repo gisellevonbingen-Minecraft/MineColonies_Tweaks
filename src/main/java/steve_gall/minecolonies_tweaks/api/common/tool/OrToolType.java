@@ -29,7 +29,7 @@ public class OrToolType extends CustomToolType
 	}
 
 	@Override
-	protected int getToolLevel(@NotNull ItemStack stack)
+	public int getToolLevel(@NotNull ItemStack stack)
 	{
 		for (var supplier : this.getToolTypes())
 		{
@@ -47,7 +47,7 @@ public class OrToolType extends CustomToolType
 	}
 
 	@Override
-	protected boolean isTool(@NotNull ItemStack stack)
+	public boolean isTool(@NotNull ItemStack stack)
 	{
 		for (var supplier : this.getToolTypes())
 		{

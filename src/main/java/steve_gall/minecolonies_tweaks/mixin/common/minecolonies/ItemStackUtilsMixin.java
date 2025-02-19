@@ -35,17 +35,16 @@ public abstract class ItemStackUtilsMixin
 	}
 
 	@Inject(method = "getMiningLevel", remap = false, at = @At(value = "HEAD"), cancellable = true)
-	private static void getMiningLevel(@Nullable ItemStack stack, @Nullable IToolType toolType, CallbackInfoReturnable<Integer> cir)
+	private static void getMiningLevel(@Nullable ItemStack itemStack, @Nullable IToolType toolType, CallbackInfoReturnable<Integer> cir)
 	{
-		if (ItemStackUtils.isTool(stack, toolType))
+		if (ItemStackUtils.isTool(itemStack, toolType))
 		{
 			var extension = ToolTypeExtension.from(toolType);
-			var level = extension.getCustomLevel(stack);
+			var level = extension.getCustomLevel(itemStack);
 
 			if (level != -1)
 			{
 				cir.setReturnValue(level);
-				return;
 			}
 			else
 			{

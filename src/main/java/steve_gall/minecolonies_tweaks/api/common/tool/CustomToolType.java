@@ -24,11 +24,19 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 
 public class CustomToolType
 {
+	private static boolean INITIALIZED = false;
 	private static final Map<String, CustomToolType> MAP = new HashMap<>();
 	private static final List<CustomToolType> LIST = new ArrayList<>();
 
 	public static void init()
 	{
+		if (INITIALIZED)
+		{
+			return;
+		}
+
+		INITIALIZED = true;
+
 		try
 		{
 			var gson = new Gson();
@@ -176,12 +184,12 @@ public class CustomToolType
 		return this.toolType;
 	}
 
-	protected int getToolLevel(@NotNull ItemStack stack)
+	public int getToolLevel(@NotNull ItemStack stack)
 	{
 		return -1;
 	}
 
-	protected boolean isTool(@NotNull ItemStack stack)
+	public boolean isTool(@NotNull ItemStack stack)
 	{
 		return false;
 	}
