@@ -20,7 +20,7 @@ public class ToolTypeTags
 
 	public static final String CUSTOM_PREFIX = "custom_tools";
 	public static final String BLACKLIST_PREFIX = "tool_blacklists";
-	public static final TagKey<Item> BLACKLIST_ALL = ItemTags.create(MineColoniesTweaks.rl("all"));
+	public static final TagKey<Item> BLACKLIST_ALL = getBlacklist("all");
 
 	@NotNull
 	public static TagKey<Item> getCustomItem(@NotNull String toolTypeName)
