@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.compatibility.Compatibility;
@@ -125,10 +126,10 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerSkillDivider.get().doubleValue();
 	}
 
-	@ModifyConstant(method = "getActionRewardForCraftingSuccess", remap = false, constant = @Constant(intValue = 64))
-	private int getActionRewardForCraftingSuccess(int MAX_BLOCKS_MINED)
+	@Redirect(method = "wantInventoryDumped", remap = false, at = @At(value = "INVOKE", target = "getActionRewardForCraftingSuccess", remap = false))
+	private int wantInventoryDumped_getActionRewardForCraftingSuccess(EntityAIWorkFarmer self)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerActionsDoneUntilDumping.get().intValue();
+		return this.getActionsDoneUntilDumping();
 	}
 
 	@ModifyConstant(method = "getActionsDoneUntilDumping", remap = false, constant = @Constant(intValue = 64))
