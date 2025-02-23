@@ -50,6 +50,8 @@ public class MineColoniesTweaks
 		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		steve_gall.minecolonies_tweaks.core.common.init.ModItems.REGISTER.register(fml_bus);
+		steve_gall.minecolonies_tweaks.core.common.init.ModRecipes.SERIALIZERS.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
 

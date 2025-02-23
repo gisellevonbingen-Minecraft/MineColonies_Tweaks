@@ -26,5 +26,24 @@
 	"minecolonies_tweaks.gui.repair_resources": "Repair Resources",
 	"minecolonies_tweaks.gui.upgrade_resources": "Upgrade Resources",
 	"minecolonies_tweaks.gui.townhall.batch_repair": "Repair Buildings",
-	"minecolonies_tweaks.gui.townhall.batch_upgrade": "Upgrade Buildings"
+	"minecolonies_tweaks.gui.townhall.batch_upgrade": "Upgrade Buildings",
+	
+	"item.minecolonies_tweaks.resourcescroll_black": "Black Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_blue": "Blue Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_brown": "Brown Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_cyan": "Cyan Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_gray": "Gray Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_green": "Green Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_light_blue": "Light Blue Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_light_gray": "Light Gray Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_lime": "Lime Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_magenta": "Magenta Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_orange": "Orange Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_pink": "Pink Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_purple": "Purple Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_red": "Red Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_white": "White Resourcescroll",
+	"item.minecolonies_tweaks.resourcescroll_yellow": "Yellow Resourcescroll",
+	
+	"_eof": "_eof"
 }
