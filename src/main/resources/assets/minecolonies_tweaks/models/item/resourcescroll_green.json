@@ -1,0 +1,6 @@
+{
+	"parent": "minecolonies_tweaks:item/resourcescroll_color",
+	"textures": {
+		"layer1": "minecolonies_tweaks:item/resourcescroll_green"
+	}
+}

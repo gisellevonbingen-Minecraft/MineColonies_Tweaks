@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.minecolonies.api.blocks.ModBlocks;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
+import com.minecolonies.api.creativetab.ModCreativeTabs;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.items.ModItems;
 
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -61,12 +63,15 @@ public class MineColoniesTweaks
 		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		steve_gall.minecolonies_tweaks.core.common.init.ModItems.REGISTER.register(fml_bus);
+		steve_gall.minecolonies_tweaks.core.common.init.ModRecipes.SERIALIZERS.register(fml_bus);
 		ModEquipmentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
 		fml_bus.addListener(this::onRegister);
 		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
+		fml_bus.addListener(this::onBuildCreativeModeTabContents);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener((RegisterCommandsEvent e) -> ModCommands.register(e.getDispatcher()));
@@ -176,6 +181,19 @@ public class MineColoniesTweaks
 					extension.minecolonies_tweaks$onServerConfigReloaded();
 				}
 
+			}
+
+		}
+
+	}
+
+	private void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent e)
+	{
+		if (e.getTab() == ModCreativeTabs.GENERAL.get())
+		{
+			for (var object : steve_gall.minecolonies_tweaks.core.common.init.ModItems.COLOR_RESOURCE_SCROLLS.values())
+			{
+				e.accept(object.get());
 			}
 
 		}

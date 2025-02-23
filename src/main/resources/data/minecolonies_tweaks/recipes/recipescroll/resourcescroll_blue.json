@@ -1,0 +1,21 @@
+{
+	"type": "minecolonies_tweaks:nbt_merge_shapeless",
+	"baseIndex": 0,
+	"ingredients": [
+		{
+			"type": "forge:difference",
+			"base": {
+				"tag": "minecolonies_tweaks:resourcescrolls"
+			},
+			"subtracted": {
+				"item": "minecolonies_tweaks:resourcescroll_blue"
+			}
+		},
+		{
+			"tag": "forge:dyes/blue"
+		}
+	],
+	"result": {
+		"item": "minecolonies_tweaks:resourcescroll_blue"
+	}
+}
