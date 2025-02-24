@@ -28,6 +28,7 @@ public class JobConfig
 	public final BooleanValue farmerPlantAfterHoe;
 	public final BooleanValue farmerPlantAfterHarvest;
 	public final BooleanValue structureLeavesFree;
+	public final IntValue warehouseLevelPerCouriers;
 
 	public JobConfig(ForgeConfigSpec.Builder builder)
 	{
@@ -67,6 +68,10 @@ public class JobConfig
 		builder.push("structure");
 		builder.comment("If this is off, Builders will requests 'Leaves' on needed it when build.");
 		this.structureLeavesFree = builder.define("leavesFree", true);
+		builder.pop();
+
+		builder.push("warehouse");
+		this.warehouseLevelPerCouriers = builder.defineInRange("levelPerCouriers", 2, 1, 20);
 		builder.pop();
 	}
 
