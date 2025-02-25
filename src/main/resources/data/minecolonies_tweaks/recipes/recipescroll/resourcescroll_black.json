@@ -1,6 +1,5 @@
 {
 	"type": "minecolonies_tweaks:nbt_merge_shapeless",
-	"baseIndex": 0,
 	"ingredients": [
 		{
 			"type": "forge:difference",
