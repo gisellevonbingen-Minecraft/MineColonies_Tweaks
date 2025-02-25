@@ -1,8 +1,11 @@
 package steve_gall.minecolonies_tweaks.core.common.network.message;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkEvent;
+import steve_gall.minecolonies_tweaks.core.common.CuriosCompat;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
 import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
@@ -49,18 +52,11 @@ public class ResosourcescrollBookOpenMessage extends AbstractMessage
 		if (this.request)
 		{
 			var player = context.getSender();
-			var inventory = player.getInventory();
+			var stack = this.findResourcescrollBook(player);
 
-			for (var i = 0; i < inventory.getContainerSize(); i++)
+			if (!stack.isEmpty())
 			{
-				var stack = inventory.getItem(i);
-
-				if (stack.getItem() instanceof ItemResourceScrollBook)
-				{
-					MineColoniesTweaks.network().sendToPlayer(new ResosourcescrollBookOpenMessage(stack), player);
-					break;
-				}
-
+				MineColoniesTweaks.network().sendToPlayer(new ResosourcescrollBookOpenMessage(stack), player);
 			}
 
 		}
@@ -69,6 +65,50 @@ public class ResosourcescrollBookOpenMessage extends AbstractMessage
 			item.openWindow(this.stack);
 		}
 
+	}
+
+	public ItemStack findResourcescrollBook(Player player)
+	{
+		var inventory = player.getInventory();
+
+		for (var i = 0; i < inventory.getContainerSize(); i++)
+		{
+			var stack = inventory.getItem(i);
+
+			if (this.testResourcescrollBook(stack))
+			{
+				return stack;
+			}
+
+		}
+
+		if (ModList.get().isLoaded(CuriosCompat.MOD_ID))
+		{
+			var handler = CuriosCompat.getEquippedCurios(player);
+
+			if (handler != null)
+			{
+				for (var i = 0; i < handler.getSlots(); i++)
+				{
+					var stack = handler.getStackInSlot(i);
+
+					if (this.testResourcescrollBook(stack))
+					{
+						return stack;
+					}
+
+				}
+
+			}
+
+		}
+
+		return ItemStack.EMPTY;
+	}
+
+	public boolean testResourcescrollBook(ItemStack stack)
+	{
+		return stack.getItem() instanceof ItemResourceScrollBook;
 	}
 
 	public boolean isRequest()
