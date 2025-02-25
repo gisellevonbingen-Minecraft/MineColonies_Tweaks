@@ -25,6 +25,7 @@ import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDat
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataSaveMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.ResosourcescrollBookOpenMessage;
 
 public class NetworkChannel
 {
@@ -61,6 +62,7 @@ public class NetworkChannel
 		this.registerMessage(BatchRepairDataSaveMessage.class, BatchRepairDataSaveMessage::new);
 		this.registerMessage(BatchUpgradeDataLoadMessage.class, BatchUpgradeDataLoadMessage::new);
 		this.registerMessage(BatchUpgradeDataSaveMessage.class, BatchUpgradeDataSaveMessage::new);
+		this.registerMessage(ResosourcescrollBookOpenMessage.class, ResosourcescrollBookOpenMessage::new);
 	}
 
 	public void handleSplit(AbstractMessage message, Consumer<FrameMessage> consumer)
