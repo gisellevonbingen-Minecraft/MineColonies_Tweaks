@@ -17,8 +17,11 @@ public abstract class AbstractWindowSkeletonMixin
 	{
 		CloseableWindowExtension.find(this).ifPresent(t ->
 		{
-			ci.cancel();
-			t.minecolonies_tweaks$showParent();
+			if (t.minecolonies_tweaks$getParent() != null)
+			{
+				ci.cancel();
+				t.minecolonies_tweaks$showParent();
+			}
 		});
 	}
 
