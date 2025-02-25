@@ -22,6 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
@@ -78,6 +80,7 @@ public class MineColoniesTweaks
 		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
+		fml_bus.addListener(this::onInterModEnqueue);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener((RegisterCommandsEvent e) -> ModCommands.register(e.getDispatcher()));
@@ -210,6 +213,15 @@ public class MineColoniesTweaks
 	private void onFMLClientSetup(FMLClientSetupEvent e)
 	{
 		MenuScreens.register(ModMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
+	}
+
+	private void onInterModEnqueue(InterModEnqueueEvent event)
+	{
+		if (ModList.get().isLoaded(CuriosCompat.MOD_ID))
+		{
+			CuriosCompat.sendInterModComms();
+		}
+
 	}
 
 	public static NetworkChannel network()
