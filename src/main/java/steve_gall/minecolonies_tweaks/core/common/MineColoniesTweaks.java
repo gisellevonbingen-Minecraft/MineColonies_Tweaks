@@ -10,6 +10,7 @@ import com.minecolonies.api.creativetab.ModCreativeTabs;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.items.ModItems;
 
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -33,6 +35,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
+import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventoryScreen;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
 import steve_gall.minecolonies_tweaks.core.common.command.ModCommands;
@@ -41,6 +44,7 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
 import steve_gall.minecolonies_tweaks.core.common.init.ModEquipmentTypes;
+import steve_gall.minecolonies_tweaks.core.common.init.ModMenuTypes;
 import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavior;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
 import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
@@ -65,9 +69,11 @@ public class MineColoniesTweaks
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
 		steve_gall.minecolonies_tweaks.core.common.init.ModItems.REGISTER.register(fml_bus);
 		steve_gall.minecolonies_tweaks.core.common.init.ModRecipes.SERIALIZERS.register(fml_bus);
+		ModMenuTypes.REGISTER.register(fml_bus);
 		ModEquipmentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
+		fml_bus.addListener(this::onFMLClientSetup);
 		fml_bus.addListener(this::onRegister);
 		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
@@ -196,8 +202,14 @@ public class MineColoniesTweaks
 				e.accept(object.get());
 			}
 
+			e.accept(steve_gall.minecolonies_tweaks.core.common.init.ModItems.RESOURCESCROLL_BOOK.get());
 		}
 
+	}
+
+	private void onFMLClientSetup(FMLClientSetupEvent e)
+	{
+		MenuScreens.register(ModMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
 	}
 
 	public static NetworkChannel network()

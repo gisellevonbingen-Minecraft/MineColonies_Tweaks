@@ -32,8 +32,10 @@
 		"minecolonies.FarmFieldMixin",
 		"minecolonies.FieldsModuleMixin",
 		"minecolonies.GlobalResearchBranchMixin",
+		"minecolonies.ItemClipboardAccessor",
 		"minecolonies.ItemCropMixin",
 		"minecolonies.ItemListModuleViewAccessor",
+		"minecolonies.ItemResourceScrollAccessor",
 		"minecolonies.LoadOnlyStructureHandlerMixin",
 		"minecolonies.MinecoloniesCropBlockMixin",
 		"minecolonies.TreeMixin"
