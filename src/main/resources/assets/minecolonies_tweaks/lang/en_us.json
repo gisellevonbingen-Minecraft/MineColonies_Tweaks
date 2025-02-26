@@ -49,9 +49,11 @@
 	"item.minecolonies_tweaks.resourcescroll_white": "White Resourcescroll",
 	"item.minecolonies_tweaks.resourcescroll_yellow": "Yellow Resourcescroll",
 	"item.minecolonies_tweaks.resourcescroll_book": "Resourcescroll Book",
+	"item.minecolonies_tweaks.resourcescroll_book.tooltip1": "Use: Open Book GUI",
+	"item.minecolonies_tweaks.resourcescroll_book.tooltip2": "Sneak+Use: Open Book Inventory",
 	
 	"key.minecolonies_tweaks.categories.general": "Tweaks addon for MineColonies",
-	"key.minecolonies_tweaks.resourcescroll_book": "Open Resourcescroll Book",
+	"key.minecolonies_tweaks.resourcescroll_book": "Open Resourcescroll Book GUI",
 	
 	"_eof": "_eof"
 }
