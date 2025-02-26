@@ -1,6 +1,8 @@
 package steve_gall.minecolonies_tweaks.core.client;
 
 import com.ldtteam.blockui.Loader;
+import com.minecolonies.api.items.ModItems;
+import com.minecolonies.core.items.ItemResourceScroll;
 
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.ScreenEvent;
@@ -8,8 +10,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElementEvent;
 import steve_gall.minecolonies_tweaks.core.client.gui.AbstractContainerScreenExtension;
+import steve_gall.minecolonies_tweaks.core.client.gui.ClipboardElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
+import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollElement;
 import steve_gall.minecolonies_tweaks.core.client.view.Addition;
 import steve_gall.minecolonies_tweaks.core.client.view.FluidIcon;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
@@ -26,6 +31,7 @@ public class MineColoniesTweaksClient
 		forge_bus.addListener(this::onScreenInitPost);
 		forge_bus.addListener(this::onScreenOpening);
 		forge_bus.addListener(this::onClientTickEvent);
+		forge_bus.addListener(this::onResourceScrollBookElement);
 
 		Loader.INSTANCE.register(MineColoniesTweaks.rl("addition").toString(), Addition::new);
 		Loader.INSTANCE.register(MineColoniesTweaks.rl("fluidicon").toString(), FluidIcon::new);
@@ -66,6 +72,21 @@ public class MineColoniesTweaksClient
 				MineColoniesTweaks.network().sendToServer(new ResourcescrollBookOpenMessage());
 			}
 
+		}
+
+	}
+
+	private void onResourceScrollBookElement(ResourceScrollBookElementEvent event)
+	{
+		var stack = event.getStack();
+
+		if (stack.getItem() instanceof ItemResourceScroll)
+		{
+			event.register(new ResourceScrollElement(stack));
+		}
+		else if (stack.is(ModItems.clipboard))
+		{
+			event.register(new ClipboardElement(stack));
 		}
 
 	}
