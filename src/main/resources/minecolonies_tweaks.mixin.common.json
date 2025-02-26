@@ -18,6 +18,7 @@
 		"minecolonies.ColonyViewMixin",
 		"minecolonies.CompatibilityManagerMixin",
 		"minecolonies.CourierAssignmentModuleMixin",
+		"minecolonies.CourierAssignmentModuleViewMixin",
 		"minecolonies.CreativeBuildingStructureHandlerMixin",
 		"minecolonies.CitizenFoodHandlerMixin",
 		"minecolonies.EntityAIEatTaskMixin",

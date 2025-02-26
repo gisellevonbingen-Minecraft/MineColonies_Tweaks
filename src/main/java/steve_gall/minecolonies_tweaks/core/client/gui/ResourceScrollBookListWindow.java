@@ -42,9 +42,9 @@ public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 	public static final Component BUILDER_NOT_SETTED = Component.translatable("minecolonies_tweaks.gui.resourcebook.builder_not_setted");
 	public static final Component COLONY_NOT_SETTED = Component.translatable("minecolonies_tweaks.gui.resourcebook.colony_not_setted");
 
-	public static final String OPEN = "open";
-	public static final String DESC1 = "desc1";
-	public static final String DESC2 = "desc2";
+	public static final String BUTTON_OPEN = "open";
+	public static final String LABEL_DESC1 = "desc1";
+	public static final String LABEL_DESC2 = "desc2";
 
 	private final List<Element> elements;
 	private final ScrollingList resourceList;
@@ -106,7 +106,7 @@ public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 	{
 		super.onButtonClicked(button);
 
-		if (button.getID().equals(OPEN))
+		if (button.getID().equals(BUTTON_OPEN))
 		{
 			var index = this.resourceList.getListElementIndexByPane(button);
 			var element = this.elements.get(index);
@@ -166,13 +166,13 @@ public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 			var workerNameLabel = rowPane.findPaneOfTypeByID(WindowConstants.LABEL_WORKERNAME, Text.class);
 			workerNameLabel.setText(EMPTY);
 
-			var desc1Label = rowPane.findPaneOfTypeByID(DESC1, Text.class);
+			var desc1Label = rowPane.findPaneOfTypeByID(LABEL_DESC1, Text.class);
 			desc1Label.setText(EMPTY);
 
-			var desc2Label = rowPane.findPaneOfTypeByID(DESC2, Text.class);
+			var desc2Label = rowPane.findPaneOfTypeByID(LABEL_DESC2, Text.class);
 			desc2Label.setText(EMPTY);
 
-			var openButton = rowPane.findPaneOfTypeByID(OPEN, Button.class);
+			var openButton = rowPane.findPaneOfTypeByID(BUTTON_OPEN, Button.class);
 			openButton.setVisible(this.valid);
 
 			var hoverPane = desc1Label.getHoverPane();
@@ -269,10 +269,10 @@ public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 			var workerNameLabel = rowPane.findPaneOfTypeByID(WindowConstants.LABEL_WORKERNAME, Text.class);
 			workerNameLabel.setText(this.workerName);
 
-			var desc1Label = rowPane.findPaneOfTypeByID(DESC1, Text.class);
+			var desc1Label = rowPane.findPaneOfTypeByID(LABEL_DESC1, Text.class);
 			desc1Label.setText(this.constructionName);
 
-			var desc2Label = rowPane.findPaneOfTypeByID(DESC2, Text.class);
+			var desc2Label = rowPane.findPaneOfTypeByID(LABEL_DESC2, Text.class);
 			desc2Label.setText(this.progress);
 
 			if (desc1Label.getHoverPane() instanceof Tooltip tooltip)
@@ -365,7 +365,7 @@ public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 			var workerNameLabel = rowPane.findPaneOfTypeByID(WindowConstants.LABEL_WORKERNAME, Text.class);
 			workerNameLabel.setText(this.colonyName);
 
-			var desc1Label = rowPane.findPaneOfTypeByID(DESC1, Text.class);
+			var desc1Label = rowPane.findPaneOfTypeByID(LABEL_DESC1, Text.class);
 			desc1Label.setText(this.requestCount);
 		}
 
