@@ -28,7 +28,7 @@ public class JobConfig
 	public final BooleanValue farmerPlantAfterHoe;
 	public final BooleanValue farmerPlantAfterHarvest;
 	public final BooleanValue structureLeavesFree;
-	public final IntValue warehouseLevelPerCouriers;
+	public final IntValue warehouseCouriersPerLevel;
 
 	public JobConfig(ForgeConfigSpec.Builder builder)
 	{
@@ -71,7 +71,7 @@ public class JobConfig
 		builder.pop();
 
 		builder.push("warehouse");
-		this.warehouseLevelPerCouriers = builder.defineInRange("levelPerCouriers", 2, 1, 20);
+		this.warehouseCouriersPerLevel = builder.defineInRange("couriersPerLevel", 2, 1, 20);
 		builder.pop();
 	}
 

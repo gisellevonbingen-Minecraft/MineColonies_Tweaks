@@ -15,7 +15,7 @@ public abstract class CourierAssignmentModuleMixin extends AbstractAssignedCitiz
 	@ModifyConstant(method = "getModuleMax", remap = false, constant = @Constant(intValue = 2))
 	private int getModuleMax(int levelperCouriers)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.warehouseLevelPerCouriers.get();
+		return MineColoniesTweaksConfigServer.INSTANCE.jobs.warehouseCouriersPerLevel.get();
 	}
 
 }
