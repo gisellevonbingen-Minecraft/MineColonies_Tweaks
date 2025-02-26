@@ -13,7 +13,7 @@ import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
 import steve_gall.minecolonies_tweaks.core.client.view.Addition;
 import steve_gall.minecolonies_tweaks.core.client.view.FluidIcon;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.network.message.ResosourcescrollBookOpenMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.ResourcescrollBookOpenMessage;
 
 public class MineColoniesTweaksClient
 {
@@ -63,7 +63,7 @@ public class MineColoniesTweaksClient
 		{
 			if (ModKeyMappings.RESOURCESCROLL_BOOK.get().consumeClick())
 			{
-				MineColoniesTweaks.network().sendToServer(new ResosourcescrollBookOpenMessage());
+				MineColoniesTweaks.network().sendToServer(new ResourcescrollBookOpenMessage());
 			}
 
 		}

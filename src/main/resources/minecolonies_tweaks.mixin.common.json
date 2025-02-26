@@ -16,6 +16,7 @@
 		"minecolonies.ColonyViewMixin",
 		"minecolonies.CompatibilityManagerMixin",
 		"minecolonies.CourierAssignmentModuleMixin",
+		"minecolonies.CourierAssignmentModuleViewMixin",
 		"minecolonies.CreativeBuildingStructureHandlerMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
 		"minecolonies.EntityAIWorkFarmerAccessor",

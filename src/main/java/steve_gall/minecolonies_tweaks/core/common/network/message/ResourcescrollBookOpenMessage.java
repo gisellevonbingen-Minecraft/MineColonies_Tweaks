@@ -10,24 +10,24 @@ import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
 import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
 
-public class ResosourcescrollBookOpenMessage extends AbstractMessage
+public class ResourcescrollBookOpenMessage extends AbstractMessage
 {
 	private final boolean request;
 	private final ItemStack stack;
 
-	public ResosourcescrollBookOpenMessage()
+	public ResourcescrollBookOpenMessage()
 	{
 		this.request = true;
 		this.stack = ItemStack.EMPTY;
 	}
 
-	public ResosourcescrollBookOpenMessage(ItemStack stack)
+	public ResourcescrollBookOpenMessage(ItemStack stack)
 	{
 		this.request = false;
 		this.stack = stack.copy();
 	}
 
-	public ResosourcescrollBookOpenMessage(FriendlyByteBuf buffer)
+	public ResourcescrollBookOpenMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
 
@@ -56,7 +56,7 @@ public class ResosourcescrollBookOpenMessage extends AbstractMessage
 
 			if (!stack.isEmpty())
 			{
-				MineColoniesTweaks.network().sendToPlayer(new ResosourcescrollBookOpenMessage(stack), player);
+				MineColoniesTweaks.network().sendToPlayer(new ResourcescrollBookOpenMessage(stack), player);
 			}
 
 		}
