@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_tweaks.core.common.item;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
@@ -27,6 +29,11 @@ import steve_gall.minecolonies_tweaks.core.common.inventory.ResourceScrollBookIn
 
 public class ItemResourceScrollBook extends Item
 {
+	public static final List<Component> TOOLTIPS = Arrays.asList(//
+			Component.translatable("item.minecolonies_tweaks.resourcescroll_book.tooltip1"), //
+			Component.translatable("item.minecolonies_tweaks.resourcescroll_book.tooltip2")//
+	);
+
 	private final int slots;
 
 	public ItemResourceScrollBook(Item.Properties properites, int slots)
@@ -82,6 +89,14 @@ public class ItemResourceScrollBook extends Item
 		}
 
 		return items;
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag)
+	{
+		super.appendHoverText(stack, level, tooltip, flag);
+
+		tooltip.addAll(TOOLTIPS);
 	}
 
 	@Override
