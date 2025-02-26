@@ -15,7 +15,7 @@ public abstract class CourierAssignmentModuleViewMixin extends AbstractBuildingM
 	@ModifyConstant(method = "getMaxInhabitants", remap = false, constant = @Constant(intValue = 2))
 	private int getMaxInhabitants(int levelperCouriers)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.warehouseLevelPerCouriers.get();
+		return MineColoniesTweaksConfigServer.INSTANCE.jobs.warehouseCouriersPerLevel.get();
 	}
 
 }
