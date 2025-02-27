@@ -14,6 +14,7 @@ public class ModTags
 		public static final TagKey<Item> DECENT_FOOD = create("decent_food");
 		public static final TagKey<Item> GREAT_FOOD = create("great_food");
 		public static final TagKey<Item> RESOURCESCOLLRS = create("resourcescrolls");
+		public static final TagKey<Item> RESOURCESCROLLBOOK_ELEMENT = create("resourcescrollbook_element");
 
 		public static boolean isFood(Predicate<TagKey<Item>> test)
 		{
