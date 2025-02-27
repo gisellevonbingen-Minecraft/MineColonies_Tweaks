@@ -45,8 +45,10 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
-import steve_gall.minecolonies_tweaks.core.common.init.ModEquipmentTypes;
-import steve_gall.minecolonies_tweaks.core.common.init.ModMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksEquipmentTypes;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksRecipes;
 import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavior;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
 import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
@@ -69,10 +71,10 @@ public class MineColoniesTweaks
 		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
-		steve_gall.minecolonies_tweaks.core.common.init.ModItems.REGISTER.register(fml_bus);
-		steve_gall.minecolonies_tweaks.core.common.init.ModRecipes.SERIALIZERS.register(fml_bus);
-		ModMenuTypes.REGISTER.register(fml_bus);
-		ModEquipmentTypes.REGISTER.register(fml_bus);
+		MCTweaksItems.REGISTER.register(fml_bus);
+		MCTweaksRecipes.SERIALIZERS.register(fml_bus);
+		MCTweaksMenuTypes.REGISTER.register(fml_bus);
+		MCTweaksEquipmentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
 		fml_bus.addListener(this::onFMLClientSetup);
@@ -144,7 +146,7 @@ public class MineColoniesTweaks
 
 	private void onRegister(RegisterEvent e)
 	{
-		if (e.getRegistryKey() == ModEquipmentTypes.REGISTER.getRegistryKey())
+		if (e.getRegistryKey() == MCTweaksEquipmentTypes.REGISTER.getRegistryKey())
 		{
 			CustomToolType.init();
 			@SuppressWarnings("unchecked")
@@ -200,19 +202,19 @@ public class MineColoniesTweaks
 	{
 		if (e.getTab() == ModCreativeTabs.GENERAL.get())
 		{
-			for (var object : steve_gall.minecolonies_tweaks.core.common.init.ModItems.COLOR_RESOURCE_SCROLLS.values())
+			for (var object : MCTweaksItems.COLOR_RESOURCE_SCROLLS.values())
 			{
 				e.accept(object.get());
 			}
 
-			e.accept(steve_gall.minecolonies_tweaks.core.common.init.ModItems.RESOURCESCROLL_BOOK.get());
+			e.accept(MCTweaksItems.RESOURCESCROLL_BOOK.get());
 		}
 
 	}
 
 	private void onFMLClientSetup(FMLClientSetupEvent e)
 	{
-		MenuScreens.register(ModMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
+		MenuScreens.register(MCTweaksMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
 	}
 
 	private void onInterModEnqueue(InterModEnqueueEvent event)

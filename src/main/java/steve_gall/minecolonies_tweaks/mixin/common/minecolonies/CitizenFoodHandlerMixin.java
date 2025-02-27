@@ -11,7 +11,7 @@ import com.minecolonies.api.items.IMinecoloniesFoodItem;
 import com.minecolonies.core.entity.citizen.citizenhandlers.CitizenFoodHandler;
 
 import net.minecraft.world.item.Item;
-import steve_gall.minecolonies_tweaks.core.common.init.ModTags;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
 
 @Mixin(value = CitizenFoodHandler.class, remap = false)
 public abstract class CitizenFoodHandlerMixin
@@ -29,7 +29,7 @@ public abstract class CitizenFoodHandlerMixin
 			{
 				continue;
 			}
-			else if (ModTags.Items.isFood(foodItem.builtInRegistryHolder()::is))
+			else if (MCTweaksTags.Items.isFood(foodItem.builtInRegistryHolder()::is))
 			{
 				diversity++;
 			}

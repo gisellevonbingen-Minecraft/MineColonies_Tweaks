@@ -5,7 +5,7 @@ import com.minecolonies.api.util.constant.TranslationConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import steve_gall.minecolonies_tweaks.core.common.init.ModTags;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
 
 public class CommonForgeEventHandler
 {
@@ -15,11 +15,11 @@ public class CommonForgeEventHandler
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent e)
 	{
-		if (e.getItemStack().is(ModTags.Items.GREAT_FOOD))
+		if (e.getItemStack().is(MCTweaksTags.Items.GREAT_FOOD))
 		{
 			e.getToolTip().add(1, GREAT_FOOD_TOOLTIP);
 		}
-		else if (e.getItemStack().is(ModTags.Items.DECENT_FOOD))
+		else if (e.getItemStack().is(MCTweaksTags.Items.DECENT_FOOD))
 		{
 			e.getToolTip().add(1, DECENT_FOOD_TOOLTIP);
 		}

@@ -6,9 +6,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.core.common.init.ModItems;
-import steve_gall.minecolonies_tweaks.core.common.init.ModMenuTypes;
-import steve_gall.minecolonies_tweaks.core.common.init.ModTags;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
 
 public class ResourceScrollBookInventoryMenu extends AbstractContainerMenu
@@ -25,11 +25,11 @@ public class ResourceScrollBookInventoryMenu extends AbstractContainerMenu
 
 	public ResourceScrollBookInventoryMenu(int windowId, Inventory inventory, int bookSlot)
 	{
-		super(ModMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), windowId);
+		super(MCTweaksMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), windowId);
 
 		this.inventory = inventory;
 		this.bookSlot = bookSlot;
-		this.container = ModItems.RESOURCESCROLL_BOOK.get().getContainer(this.getBook());
+		this.container = MCTweaksItems.RESOURCESCROLL_BOOK.get().getContainer(this.getBook());
 
 		for (var i = 0; i < this.container.getContainerSize(); i++)
 		{
@@ -114,7 +114,7 @@ public class ResourceScrollBookInventoryMenu extends AbstractContainerMenu
 	@Override
 	public boolean stillValid(Player player)
 	{
-		return this.getBook().is(ModItems.RESOURCESCROLL_BOOK.get());
+		return this.getBook().is(MCTweaksItems.RESOURCESCROLL_BOOK.get());
 	}
 
 	public class BookSlot extends Slot
@@ -127,7 +127,7 @@ public class ResourceScrollBookInventoryMenu extends AbstractContainerMenu
 		@Override
 		public boolean mayPlace(ItemStack stack)
 		{
-			return stack.is(ModTags.Items.RESOURCESCROLLBOOK_ELEMENT);
+			return stack.is(MCTweaksTags.Items.RESOURCESCROLLBOOK_ELEMENT);
 		}
 
 	}

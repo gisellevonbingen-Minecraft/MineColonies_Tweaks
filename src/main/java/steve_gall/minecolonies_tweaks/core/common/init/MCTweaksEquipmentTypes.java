@@ -6,7 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import steve_gall.minecolonies_tweaks.api.registries.DeferredRegisterHelper;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
-public class ModEquipmentTypes
+public class MCTweaksEquipmentTypes
 {
 	public static final DeferredRegister<EquipmentTypeEntry> REGISTER = DeferredRegisterHelper.equipmentTypes(MineColoniesTweaks.MOD_ID);
 

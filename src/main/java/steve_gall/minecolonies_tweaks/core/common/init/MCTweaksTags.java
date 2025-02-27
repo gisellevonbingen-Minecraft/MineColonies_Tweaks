@@ -7,7 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
-public class ModTags
+public class MCTweaksTags
 {
 	public static class Items
 	{
@@ -33,7 +33,7 @@ public class ModTags
 
 	}
 
-	private ModTags()
+	private MCTweaksTags()
 	{
 
 	}

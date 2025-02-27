@@ -14,7 +14,7 @@ import com.minecolonies.core.entity.ai.minimal.EntityAIEatTask;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.core.common.init.ModTags;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
 
 @Mixin(value = EntityAIEatTask.class, remap = false)
 public abstract class EntityAIEatTaskMixin
@@ -22,7 +22,7 @@ public abstract class EntityAIEatTaskMixin
 	@Redirect(method = "eat", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/ItemStackUtils.consumeFood"))
 	private void eat_consumeFood(ItemStack foodStack, AbstractEntityCitizen citizen, Inventory inventory)
 	{
-		if (foodStack.is(ModTags.Items.GREAT_FOOD))
+		if (foodStack.is(MCTweaksTags.Items.GREAT_FOOD))
 		{
 			citizen.getCitizenData().getCitizenHappinessHandler().addModifier(new ExpirationBasedHappinessModifier(HADGREATFOOD, 2.0, new StaticHappinessSupplier(2.0), 5));
 		}
