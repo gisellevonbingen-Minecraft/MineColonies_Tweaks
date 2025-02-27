@@ -1,7 +1,5 @@
 package steve_gall.minecolonies_tweaks.core.common.inventory;
 
-import com.minecolonies.core.items.ItemResourceScroll;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.core.common.init.ModItems;
 import steve_gall.minecolonies_tweaks.core.common.init.ModMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.init.ModTags;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
 
 public class ResourceScrollBookInventoryMenu extends AbstractContainerMenu
@@ -128,7 +127,7 @@ public class ResourceScrollBookInventoryMenu extends AbstractContainerMenu
 		@Override
 		public boolean mayPlace(ItemStack stack)
 		{
-			return stack.getItem() instanceof ItemResourceScroll || stack.is(com.minecolonies.api.items.ModItems.clipboard);
+			return stack.is(ModTags.Items.RESOURCESCROLLBOOK_ELEMENT);
 		}
 
 	}
