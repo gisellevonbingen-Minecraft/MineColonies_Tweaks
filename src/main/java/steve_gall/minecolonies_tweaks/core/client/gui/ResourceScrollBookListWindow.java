@@ -20,7 +20,7 @@ import net.minecraftforge.common.MinecraftForge;
 import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElement;
 import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElementEvent;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.init.ModTags;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
 
 public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 {
@@ -39,7 +39,7 @@ public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 			{
 				continue;
 			}
-			else if (stack.is(ModTags.Items.RESOURCESCROLLBOOK_ELEMENT))
+			else if (stack.is(MCTweaksTags.Items.RESOURCESCROLLBOOK_ELEMENT))
 			{
 				MinecraftForge.EVENT_BUS.post(new ResourceScrollBookElementEvent(stack, this.elements::add));
 			}

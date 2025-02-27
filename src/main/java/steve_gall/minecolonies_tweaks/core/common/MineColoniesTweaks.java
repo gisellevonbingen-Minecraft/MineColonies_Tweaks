@@ -34,7 +34,9 @@ import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfi
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
-import steve_gall.minecolonies_tweaks.core.common.init.ModMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksRecipes;
 import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavior;
 import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequest;
@@ -56,9 +58,9 @@ public class MineColoniesTweaks
 		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
-		steve_gall.minecolonies_tweaks.core.common.init.ModItems.REGISTER.register(fml_bus);
-		steve_gall.minecolonies_tweaks.core.common.init.ModRecipes.SERIALIZERS.register(fml_bus);
-		ModMenuTypes.REGISTER.register(fml_bus);
+		MCTweaksItems.REGISTER.register(fml_bus);
+		MCTweaksRecipes.SERIALIZERS.register(fml_bus);
+		MCTweaksMenuTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLClientSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
@@ -104,7 +106,7 @@ public class MineColoniesTweaks
 
 	private void onFMLClientSetup(FMLClientSetupEvent e)
 	{
-		MenuScreens.register(ModMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
+		MenuScreens.register(MCTweaksMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
 	}
 
 	private void onInterModEnqueue(InterModEnqueueEvent event)

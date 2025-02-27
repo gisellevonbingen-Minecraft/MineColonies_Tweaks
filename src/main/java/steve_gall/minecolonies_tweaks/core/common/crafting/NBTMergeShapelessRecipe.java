@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
-import steve_gall.minecolonies_tweaks.core.common.init.ModRecipes;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksRecipes;
 
 public class NBTMergeShapelessRecipe extends ShapelessRecipe
 {
@@ -57,7 +57,7 @@ public class NBTMergeShapelessRecipe extends ShapelessRecipe
 	@Override
 	public RecipeSerializer<?> getSerializer()
 	{
-		return ModRecipes.NBT_MERGE_SHAPELESS_SERIALIZER.get();
+		return MCTweaksRecipes.NBT_MERGE_SHAPELESS_SERIALIZER.get();
 	}
 
 	public static class Serializer implements RecipeSerializer<NBTMergeShapelessRecipe>
