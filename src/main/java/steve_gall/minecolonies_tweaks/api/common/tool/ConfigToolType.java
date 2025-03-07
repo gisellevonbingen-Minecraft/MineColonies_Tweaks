@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.JsonObject;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.util.ItemStackUtils;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -85,7 +86,7 @@ public class ConfigToolType extends CustomToolType
 				@Override
 				public int getToolLevel(@NotNull ItemStack stack, @NotNull ConfigToolType toolType)
 				{
-					return ModEquipmentTypes.armorLevel(stack);
+					return ItemStackUtils.getArmorLevel(stack);
 				}
 			},
 		VANILLA_TOOL()
