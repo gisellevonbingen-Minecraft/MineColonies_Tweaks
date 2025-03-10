@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
-import com.minecolonies.core.colony.buildings.modules.FieldsModule;
+import com.minecolonies.core.colony.buildingextensions.FarmField;
+import com.minecolonies.core.colony.buildings.modules.BuildingExtensionsModule;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingFarmer;
-import com.minecolonies.core.colony.fields.FarmField;
 import com.minecolonies.core.colony.jobs.JobFarmer;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.ai.workers.production.agriculture.EntityAIWorkFarmer;
@@ -97,7 +97,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		{
 			if (MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHarvest.get().booleanValue())
 			{
-				if (this.building.getFirstModuleOccurance(FieldsModule.class).getCurrentField() instanceof FarmField farmField)
+				if (this.building.getFirstModuleOccurance(BuildingExtensionsModule.class).getCurrentExtension() instanceof FarmField farmField)
 				{
 					if (farmField.getSeed().getItem() instanceof BlockItem item && item.getBlock() instanceof StemBlock)
 					{

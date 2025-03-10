@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.minecolonies.api.blocks.huts.AbstractBlockMinecoloniesDefault;
 import com.minecolonies.api.tileentities.AbstractTileEntityScarecrow;
 import com.minecolonies.core.client.render.TileEntityScarecrowRenderer;
-import com.minecolonies.core.colony.fields.FarmField;
+import com.minecolonies.core.colony.buildingextensions.FarmField;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -36,7 +36,7 @@ public abstract class TileEntityScarecrowRendererMixin
 	@Unique
 	private void minecolonies_tweaks$renderSeed(AbstractTileEntityScarecrow te, PoseStack matrixStack, MultiBufferSource iRenderTypeBuffer, int lightA, int lightB)
 	{
-		if (te.getCurrentColony() instanceof IColonyViewExtension colonyView && colonyView.minecolonies_tweaks$getField(te.getBlockPos()) instanceof FarmField field)
+		if (te.getCurrentColony() instanceof IColonyViewExtension colonyView && colonyView.minecolonies_tweaks$getBuildingExtension(te.getBlockPos()) instanceof FarmField field)
 		{
 			var facing = te.getLevel().getBlockState(te.getBlockPos()).getOptionalValue(AbstractBlockMinecoloniesDefault.FACING).orElse(null);
 

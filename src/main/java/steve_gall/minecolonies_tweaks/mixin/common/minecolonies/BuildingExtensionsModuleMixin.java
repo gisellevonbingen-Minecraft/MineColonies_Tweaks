@@ -11,40 +11,40 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.minecolonies.api.colony.fields.IField;
-import com.minecolonies.core.colony.buildings.modules.FieldsModule;
+import com.minecolonies.api.colony.buildingextensions.IBuildingExtension;
+import com.minecolonies.core.colony.buildings.modules.BuildingExtensionsModule;
 
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
 
-@Mixin(value = FieldsModule.class, remap = false)
-public abstract class FieldsModuleMixin
+@Mixin(value = BuildingExtensionsModule.class, remap = false)
+public abstract class BuildingExtensionsModuleMixin
 {
 	@Shadow(remap = false)
 	@Nullable
-	private IField currentField;
+	private IBuildingExtension currentExtension;
 
 	@Unique
 	private int minecolonies_tweaks$nextIndex;
 
 	@Shadow(remap = false)
 	@NotNull
-	public abstract List<IField> getOwnedFields();
+	public abstract List<IBuildingExtension> getOwnedExtensions();
 
-	@Inject(method = "getFieldToWorkOn", remap = false, at = @At(value = "HEAD"), cancellable = true)
-	private void getFieldToWorkOn(CallbackInfoReturnable<IField> cir)
+	@Inject(method = "getExtensionToWorkOn", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	private void getExtensionToWorkOn(CallbackInfoReturnable<IBuildingExtension> cir)
 	{
 		if (!MineColoniesTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue())
 		{
 			return;
 		}
 
-		if (this.currentField != null)
+		if (this.currentExtension != null)
 		{
-			cir.setReturnValue(this.currentField);
+			cir.setReturnValue(this.currentExtension);
 			return;
 		}
 
-		var fields = this.getOwnedFields();
+		var fields = this.getOwnedExtensions();
 		int fieldsSize = fields.size();
 
 		if (fieldsSize == 0)
@@ -58,10 +58,10 @@ public abstract class FieldsModuleMixin
 			this.minecolonies_tweaks$nextIndex = 0;
 		}
 
-		this.currentField = fields.get(this.minecolonies_tweaks$nextIndex);
+		this.currentExtension = fields.get(this.minecolonies_tweaks$nextIndex);
 		this.minecolonies_tweaks$nextIndex = this.minecolonies_tweaks$nextIndex + 1;
 
-		cir.setReturnValue(this.currentField);
+		cir.setReturnValue(this.currentExtension);
 	}
 
 }
