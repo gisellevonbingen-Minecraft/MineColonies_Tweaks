@@ -62,13 +62,19 @@ public class ConfigToolType extends CustomToolType
 	public int getToolLevel(@NotNull ItemStack stack)
 	{
 		var autoLevelType = this.getAutoLevelType();
-		return autoLevelType.getToolLevel(stack, this);
-	}
+		var level = autoLevelType.getToolLevel(stack, this);
 
-	@Override
-	public int getDefaultLevel()
-	{
-		return this.defaultLevel;
+		if (level > -1)
+		{
+			return level;
+		}
+
+		if (this.defaultLevel > -1)
+		{
+			return this.defaultLevel;
+		}
+
+		return super.getToolLevel(stack);
 	}
 
 	public static enum AutoLevelType
@@ -148,7 +154,7 @@ public class ConfigToolType extends CustomToolType
 			this.name = GsonHelper.getAsString(json, "name");
 			this.autoLevelType = AutoLevelType.valueOf(GsonHelper.getAsString(json, "autoLevelType", AutoLevelType.NONE.name()));
 			this.translationKey = GsonHelper2.of(json, "translationKey", GsonHelper::getAsString);
-			this.defaultLevel = GsonHelper.getAsInt(json, "defaultLevel", 0);
+			this.defaultLevel = GsonHelper.getAsInt(json, "defaultLevel", -1);
 			this.durabilityBase = GsonHelper.getAsInt(json, "durabilityBase", Integer.MAX_VALUE);
 		}
 
