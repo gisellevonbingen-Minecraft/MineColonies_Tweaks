@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -156,12 +155,6 @@ public class CustomToolType
 		}
 
 		return this.displayName;
-	}
-
-	@NotNull
-	public Optional<Integer> getDefaultLevel()
-	{
-		return Optional.empty();
 	}
 
 	public final void pair(@NotNull ToolType toolType)

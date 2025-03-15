@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.core.common.util.GsonHelper2;
 
 public class ConfigToolType extends CustomToolType
@@ -17,7 +18,7 @@ public class ConfigToolType extends CustomToolType
 	@NotNull
 	private final String translationKey;
 	@NotNull
-	private final Optional<Integer> defaultLevel;
+	private final int defaultLevel;
 
 	public ConfigToolType(Builder builder, String namespace)
 	{
@@ -41,10 +42,14 @@ public class ConfigToolType extends CustomToolType
 	}
 
 	@Override
-	@NotNull
-	public Optional<Integer> getDefaultLevel()
+	public int getToolLevel(@NotNull ItemStack stack)
 	{
-		return this.defaultLevel;
+		if (this.defaultLevel > -1)
+		{
+			return this.defaultLevel;
+		}
+
+		return super.getToolLevel(stack);
 	}
 
 	public static class Builder
@@ -55,7 +60,7 @@ public class ConfigToolType extends CustomToolType
 		private boolean hasVariableMaterials = false;
 		@NotNull
 		private Optional<String> translationKey = Optional.empty();
-		private Optional<Integer> defaultLevel = Optional.empty();
+		private int defaultLevel = -1;
 
 		public Builder(@NotNull String name)
 		{
@@ -75,7 +80,7 @@ public class ConfigToolType extends CustomToolType
 			this.name = GsonHelper.getAsString(json, "name");
 			this.hasVariableMaterials = GsonHelper.getAsBoolean(json, "hasVariableMaterials", false);
 			this.translationKey = GsonHelper2.of(json, "translationKey", GsonHelper::getAsString);
-			this.defaultLevel = GsonHelper2.of(json, "defaultLevel", GsonHelper::getAsInt);
+			this.defaultLevel = GsonHelper.getAsInt(json, "defaultLevel", -1);
 		}
 
 		@NotNull
@@ -85,7 +90,7 @@ public class ConfigToolType extends CustomToolType
 			json.addProperty("name", this.name());
 			json.addProperty("hasVariableMaterials", this.hasVariableMaterials());
 			GsonHelper2.ifPresent("translationKey", this.translationKey(), json::addProperty);
-			GsonHelper2.ifPresent("defaultLevel", this.defaultLevel(), json::addProperty);
+			json.addProperty("defaultLevel", this.defaultLevel());
 			return json;
 		}
 
@@ -120,14 +125,13 @@ public class ConfigToolType extends CustomToolType
 			return this;
 		}
 
-		@NotNull
-		public Optional<Integer> defaultLevel()
+		public int defaultLevel()
 		{
 			return this.defaultLevel;
 		}
 
 		@NotNull
-		public Builder defaultLevel(@NotNull Optional<Integer> defaultLevel)
+		public Builder defaultLevel(int defaultLevel)
 		{
 			this.defaultLevel = defaultLevel;
 			return this;

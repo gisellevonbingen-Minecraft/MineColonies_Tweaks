@@ -42,19 +42,9 @@ public abstract class ItemStackUtilsMixin
 			var extension = ToolTypeExtension.from(toolType);
 			var level = extension.getCustomLevel(itemStack);
 
-			if (level != -1)
+			if (level > -1)
 			{
 				cir.setReturnValue(level);
-			}
-			else
-			{
-				var data = extension.getCustomToolType();
-
-				if (data != null)
-				{
-					data.getDefaultLevel().ifPresent(cir::setReturnValue);
-				}
-
 			}
 
 		}
