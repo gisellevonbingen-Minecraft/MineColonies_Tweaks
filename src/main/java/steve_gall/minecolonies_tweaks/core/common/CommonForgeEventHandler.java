@@ -42,39 +42,48 @@ public class CommonForgeEventHandler
 		{
 			var command = extension.minecolonies_tweaks$getCommand();
 
-			if (command != null)
+			if (command == null)
 			{
-				var colony = e.getColony();
-				var placeholders = new HashMap<String, String>();
-				placeholders.put("effect", e.getEffect().getId().toString());
-				placeholders.put("ownerName", colony.getPermissions().getOwnerName());
-				placeholders.put("ownerUUID", colony.getPermissions().getOwner().toString());
-				placeholders.put("prev", String.valueOf(e.getPrev()));
-				placeholders.put("next", String.valueOf(e.getNext()));
-				placeholders.put("delta", String.valueOf(e.getNext() - e.getPrev()));
+				return;
+			}
 
-				for (var entry : placeholders.entrySet())
-				{
-					command = command.replace("<" + entry.getKey() + ">", entry.getValue());
-				}
+			var colony = e.getColony();
+			command = this.patchCommand(e, command);
 
-				var server = colony.getWorld().getServer();
-				var owner = server.getPlayerList().getPlayer(colony.getPermissions().getOwner());
+			var server = colony.getWorld().getServer();
+			var owner = server.getPlayerList().getPlayer(colony.getPermissions().getOwner());
 
-				if (owner != null)
-				{
-					this.performCommand(server, command);
-				}
-				else
-				{
-					((ColonyExtension) colony).minecolonies_tweaks$getCommandQueue().add(command);
-					MineColoniesTweaks.LOGGER.info("ResearchEffectCommand Enqueued: " + command);
-				}
-
+			if (owner != null)
+			{
+				this.performCommand(server, command);
+			}
+			else
+			{
+				((ColonyExtension) colony).minecolonies_tweaks$getCommandQueue().add(command);
+				MineColoniesTweaks.LOGGER.info("ResearchEffectCommand Enqueued: " + command);
 			}
 
 		}
 
+	}
+
+	private String patchCommand(ResearchEffectChangedEventArgs e, String command)
+	{
+		var colony = e.getColony();
+		var placeholders = new HashMap<String, String>();
+		placeholders.put("effect", e.getEffect().getId().toString());
+		placeholders.put("ownerName", colony.getPermissions().getOwnerName());
+		placeholders.put("ownerUUID", colony.getPermissions().getOwner().toString());
+		placeholders.put("prev", String.valueOf(e.getPrev()));
+		placeholders.put("next", String.valueOf(e.getNext()));
+		placeholders.put("delta", String.valueOf(e.getNext() - e.getPrev()));
+
+		for (var entry : placeholders.entrySet())
+		{
+			command = command.replace("<" + entry.getKey() + ">", entry.getValue());
+		}
+
+		return command;
 	}
 
 	@SubscribeEvent
