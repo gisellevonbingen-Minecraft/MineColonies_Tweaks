@@ -2,8 +2,14 @@ package steve_gall.minecolonies_tweaks.core.common;
 
 import java.util.HashMap;
 
+import com.minecolonies.api.colony.IColonyManager;
+
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import steve_gall.minecolonies_tweaks.api.common.research.ResearchEffectChangedEventArgs;
+import steve_gall.minecolonies_tweaks.core.common.colony.ColonyExtension;
 import steve_gall.minecolonies_tweaks.core.common.research.GlobalResearchEffectExtension;
 
 public class CommonForgeEventHandler
@@ -17,11 +23,11 @@ public class CommonForgeEventHandler
 
 			if (command != null)
 			{
-				var logger = MineColoniesTweaks.LOGGER;
+				var colony = e.getColony();
 				var placeholders = new HashMap<String, String>();
 				placeholders.put("effect", e.getEffect().getId().toString());
-				placeholders.put("ownerName", e.getColony().getPermissions().getOwnerName());
-				placeholders.put("ownerUUID", e.getColony().getPermissions().getOwner().toString());
+				placeholders.put("ownerName", colony.getPermissions().getOwnerName());
+				placeholders.put("ownerUUID", colony.getPermissions().getOwner().toString());
 				placeholders.put("prev", String.valueOf(e.getPrev()));
 				placeholders.put("next", String.valueOf(e.getNext()));
 				placeholders.put("delta", String.valueOf(e.getNext() - e.getPrev()));
@@ -31,28 +37,59 @@ public class CommonForgeEventHandler
 					command = command.replace("<" + entry.getKey() + ">", entry.getValue());
 				}
 
-				try
+				var server = colony.getWorld().getServer();
+				var owner = server.getPlayerList().getPlayer(colony.getPermissions().getOwner());
+
+				if (owner != null)
 				{
-					var server = e.getColony().getWorld().getServer();
-					server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
-					logger.error("ResearchEffectCommand Performed: " + command);
+					this.performCommand(server, command);
 				}
-				catch (Exception e1)
+				else
 				{
-					logger.error(e1);
-					logger.error("ResearchEffectCommand Error");
-					logger.error("Commandline: " + command);
-					logger.error("Variables: ");
-
-					for (var entry : placeholders.entrySet())
-					{
-						logger.error("- " + entry.getKey() + ": " + entry.getValue());
-					}
-
+					((ColonyExtension) colony).minecolonies_tweaks$getCommandQueue().add(command);
+					MineColoniesTweaks.LOGGER.info("ResearchEffectCommand Enqueued: " + command);
 				}
 
 			}
 
+		}
+
+	}
+
+	@SubscribeEvent
+	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent e)
+	{
+		if (e.getEntity() instanceof ServerPlayer player && IColonyManager.getInstance().getIColonyByOwner(player.level, player) instanceof ColonyExtension extension)
+		{
+			var queue = extension.minecolonies_tweaks$getCommandQueue();
+			var server = player.level.getServer();
+
+			for (var command : queue)
+			{
+				this.performCommand(server, command);
+			}
+
+			queue.clear();
+		}
+
+	}
+
+	private boolean performCommand(MinecraftServer server, String command)
+	{
+		var logger = MineColoniesTweaks.LOGGER;
+
+		try
+		{
+			server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
+			logger.info("ResearchEffectCommand Performed: " + command);
+			return true;
+		}
+		catch (Exception ex)
+		{
+			logger.error(ex);
+			logger.error("ResearchEffectCommand Error");
+			logger.error("Commandline: " + command);
+			return false;
 		}
 
 	}
