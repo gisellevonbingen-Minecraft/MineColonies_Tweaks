@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.minecolonies.api.colony.fields.registry.FieldRegistries;
-import com.minecolonies.core.colony.fields.FarmField;
+import com.minecolonies.api.colony.buildingextensions.registry.BuildingExtensionRegistries.BuildingExtensionEntry;
+import com.minecolonies.core.colony.buildingextensions.FarmField;
 
 import net.minecraft.core.BlockPos;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
@@ -19,7 +19,7 @@ public abstract class FarmFieldMixin
 	private int maxRadius;
 
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"))
-	private void init(FieldRegistries.FieldEntry fieldType, BlockPos position, CallbackInfo ci)
+	private void init(BuildingExtensionEntry fieldType, BlockPos position, CallbackInfo ci)
 	{
 		this.maxRadius = MineColoniesTweaksConfigServer.INSTANCE.fields.farmMaxRange.get().intValue();
 	}

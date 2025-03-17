@@ -18,7 +18,7 @@ import com.minecolonies.api.tileentities.AbstractTileEntityScarecrow;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.client.gui.containers.WindowField;
-import com.minecolonies.core.colony.fields.FarmField;
+import com.minecolonies.core.colony.buildingextensions.FarmField;
 import com.minecolonies.core.network.messages.server.colony.building.fields.FarmFieldPlotResizeMessage;
 
 import net.minecraft.client.gui.screens.Screen;

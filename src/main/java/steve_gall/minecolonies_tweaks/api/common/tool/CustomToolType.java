@@ -163,11 +163,6 @@ public class CustomToolType
 		return this.displayName;
 	}
 
-	public int getDefaultLevel()
-	{
-		return 0;
-	}
-
 	public final void pair(@NotNull EquipmentTypeEntry toolType)
 	{
 		if (this.toolType != null)
