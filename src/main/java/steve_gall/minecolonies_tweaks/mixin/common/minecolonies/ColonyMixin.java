@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
+import java.util.ArrayList;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,6 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.minecolonies.core.colony.Colony;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchRepairData;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
@@ -22,12 +27,23 @@ public abstract class ColonyMixin implements ColonyExtension
 	private final BatchRepairData minecolonies_tweaks$batchRepair = new BatchRepairData();
 	@Unique
 	private final BatchUpgradeData minecolonies_tweaks$batchUpgrade = new BatchUpgradeData();
+	@Unique
+	private final ArrayList<String> minecolonies_tweaks$commandQueue = new ArrayList<>();
 
 	@Inject(method = "read", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	public void read(CompoundTag compound, CallbackInfo ci)
 	{
 		this.minecolonies_tweaks$batchRepair.deserializeNBT(compound.getCompound(MineColoniesTweaks.rl("batch_repair").toString()));
 		this.minecolonies_tweaks$batchUpgrade.deserializeNBT(compound.getCompound(MineColoniesTweaks.rl("batch_upgrade").toString()));
+
+		var commandQueue = compound.getList(MineColoniesTweaks.rl("command_queue").toString(), Tag.TAG_STRING);
+		this.minecolonies_tweaks$commandQueue.clear();
+
+		for (var i = 0; i < commandQueue.size(); i++)
+		{
+			this.minecolonies_tweaks$commandQueue.add(commandQueue.getString(i));
+		}
+
 	}
 
 	@Inject(method = "write", remap = false, at = @At(value = "TAIL"), cancellable = true)
@@ -35,6 +51,15 @@ public abstract class ColonyMixin implements ColonyExtension
 	{
 		compound.put(MineColoniesTweaks.rl("batch_repair").toString(), this.minecolonies_tweaks$batchRepair.serializeNBT());
 		compound.put(MineColoniesTweaks.rl("batch_upgrade").toString(), this.minecolonies_tweaks$batchUpgrade.serializeNBT());
+
+		var commandQueue = new ListTag();
+
+		for (var i = 0; i < this.minecolonies_tweaks$commandQueue.size(); i++)
+		{
+			commandQueue.add(StringTag.valueOf(this.minecolonies_tweaks$commandQueue.get(i)));
+		}
+
+		compound.put(MineColoniesTweaks.rl("command_queue").toString(), commandQueue);
 	}
 
 	@Override
@@ -47,6 +72,12 @@ public abstract class ColonyMixin implements ColonyExtension
 	public BatchUpgradeData minecolonies_tweaks$getBatchUpgrade()
 	{
 		return this.minecolonies_tweaks$batchUpgrade;
+	}
+
+	@Override
+	public ArrayList<String> minecolonies_tweaks$getCommandQueue()
+	{
+		return this.minecolonies_tweaks$commandQueue;
 	}
 
 }
