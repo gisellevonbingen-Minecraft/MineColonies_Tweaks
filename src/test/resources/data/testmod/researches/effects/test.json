@@ -1,0 +1,11 @@
+{
+	"effect": true,
+	"name": "Effect Test Name",
+	"subtitle": "Effect Test Subtitle",
+	"levels": [
+		10,
+		20,
+		30
+	],
+	"command": "msg @a <ownerName> - <effect>: <prev> -> <next>"
+}
