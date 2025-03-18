@@ -8,4 +8,8 @@ public interface GlobalResearchEffectExtension
 
 	@Nullable
 	String minecolonies_tweaks$getCommand();
+
+	void minecolonies_tweaks$setOfflineRunnable(boolean offlineRunnable);
+
+	boolean minecolonies_tweaks$isOfflineRunnable();
 }

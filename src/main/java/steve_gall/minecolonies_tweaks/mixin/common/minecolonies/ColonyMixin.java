@@ -54,9 +54,9 @@ public abstract class ColonyMixin implements ColonyExtension
 
 		var commandQueue = new ListTag();
 
-		for (var i = 0; i < this.minecolonies_tweaks$commandQueue.size(); i++)
+		for (var command : this.minecolonies_tweaks$commandQueue)
 		{
-			commandQueue.add(StringTag.valueOf(this.minecolonies_tweaks$commandQueue.get(i)));
+			commandQueue.add(StringTag.valueOf(command));
 		}
 
 		compound.put(MineColoniesTweaks.rl("command_queue").toString(), commandQueue);
