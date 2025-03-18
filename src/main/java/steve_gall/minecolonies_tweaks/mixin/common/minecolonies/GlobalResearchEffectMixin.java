@@ -17,17 +17,20 @@ import steve_gall.minecolonies_tweaks.core.common.research.GlobalResearchEffectE
 public abstract class GlobalResearchEffectMixin implements GlobalResearchEffectExtension
 {
 	private static final String TAG_COMMAND = "command";
+	private static final String TAG_IS_OFFLINE_RUNNABLE = "isOfflineRunnable";
 
-	private String command = null;
+	private String minecolonies_tweaks$command = null;
+	private boolean minecolonies_tweaks$isOfflineRunnable = false;
 
 	@Inject(method = "<init>(Lnet/minecraft/nbt/CompoundTag;)V", remap = false, at = @At(value = "TAIL"), cancellable = false)
 	private void init(CompoundTag nbt, CallbackInfo ci)
 	{
 		if (nbt.contains(TAG_COMMAND, Tag.TAG_STRING))
 		{
-			this.command = nbt.getString(TAG_COMMAND);
+			this.minecolonies_tweaks$command = nbt.getString(TAG_COMMAND);
 		}
 
+		this.minecolonies_tweaks$isOfflineRunnable = nbt.getBoolean(TAG_IS_OFFLINE_RUNNABLE);
 	}
 
 	@Inject(method = "writeToNBT", remap = false, at = @At(value = "TAIL"), cancellable = false)
@@ -35,23 +38,36 @@ public abstract class GlobalResearchEffectMixin implements GlobalResearchEffectE
 	{
 		var nbt = cir.getReturnValue();
 
-		if (this.command != null)
+		if (this.minecolonies_tweaks$command != null)
 		{
-			nbt.putString(TAG_COMMAND, this.command);
+			nbt.putString(TAG_COMMAND, this.minecolonies_tweaks$command);
 		}
 
+		nbt.putBoolean(TAG_IS_OFFLINE_RUNNABLE, this.minecolonies_tweaks$isOfflineRunnable);
 	}
 
 	@Override
 	public @Nullable String minecolonies_tweaks$getCommand()
 	{
-		return this.command;
+		return this.minecolonies_tweaks$command;
 	}
 
 	@Override
 	public void minecolonies_tweaks$setCommand(@Nullable String command)
 	{
-		this.command = command;
+		this.minecolonies_tweaks$command = command;
+	}
+
+	@Override
+	public boolean minecolonies_tweaks$isOfflineRunnable()
+	{
+		return this.minecolonies_tweaks$isOfflineRunnable;
+	}
+
+	@Override
+	public void minecolonies_tweaks$setOfflineRunnable(boolean offlineRunnable)
+	{
+		this.minecolonies_tweaks$isOfflineRunnable = offlineRunnable;
 	}
 
 }

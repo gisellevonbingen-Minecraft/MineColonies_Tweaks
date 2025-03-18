@@ -13,6 +13,7 @@ public abstract class ResearchEffectCategoryMixin implements ResearchEffectCateg
 {
 	@Unique
 	private String minecolonies_tweaks$command = null;
+	private boolean minecolonies_tweaks$isOfflineRunnable = false;
 
 	@Override
 	public @Nullable String minecolonies_tweaks$getCommand()
@@ -24,6 +25,18 @@ public abstract class ResearchEffectCategoryMixin implements ResearchEffectCateg
 	public void minecolonies_tweaks$setCommand(@Nullable String command)
 	{
 		this.minecolonies_tweaks$command = command;
+	}
+
+	@Override
+	public boolean minecolonies_tweaks$isOfflineRunnable()
+	{
+		return this.minecolonies_tweaks$isOfflineRunnable;
+	}
+
+	@Override
+	public void minecolonies_tweaks$setOfflineRunnable(boolean offlineRunnable)
+	{
+		this.minecolonies_tweaks$isOfflineRunnable = offlineRunnable;
 	}
 
 }

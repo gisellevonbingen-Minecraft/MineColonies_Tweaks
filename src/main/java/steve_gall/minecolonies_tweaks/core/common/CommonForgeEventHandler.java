@@ -53,7 +53,7 @@ public class CommonForgeEventHandler
 			var server = colony.getWorld().getServer();
 			var owner = server.getPlayerList().getPlayer(colony.getPermissions().getOwner());
 
-			if (owner != null)
+			if (owner != null || extension.minecolonies_tweaks$isOfflineRunnable())
 			{
 				this.performCommand(server, command);
 			}

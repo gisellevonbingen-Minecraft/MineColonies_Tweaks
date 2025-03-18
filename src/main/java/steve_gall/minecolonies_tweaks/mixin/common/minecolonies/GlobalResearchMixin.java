@@ -36,6 +36,7 @@ public abstract class GlobalResearchMixin
 				if (category instanceof ResearchEffectCategoryExtension categoryExtension)
 				{
 					effectExtension.minecolonies_tweaks$setCommand(categoryExtension.minecolonies_tweaks$getCommand());
+					effectExtension.minecolonies_tweaks$setOfflineRunnable(categoryExtension.minecolonies_tweaks$isOfflineRunnable());
 				}
 
 			}
