@@ -1,0 +1,12 @@
+{
+	"name": "Test 9",
+	"subtitle": "Research Test 9",
+	"branch": "testmod:branch_test",
+	"researchLevel": 1,
+	"effects": [
+		{
+			"testmod:effects/test": 3
+		}
+	],
+	"parentResearch": "testmod:test/test7"
+}

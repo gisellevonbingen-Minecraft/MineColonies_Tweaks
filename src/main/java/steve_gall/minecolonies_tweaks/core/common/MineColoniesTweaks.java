@@ -68,6 +68,7 @@ public class MineColoniesTweaks
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener((RegisterCommandsEvent e) -> ModCommands.register(e.getDispatcher()));
+		forge_bus.register(new CommonForgeEventHandler());
 
 		NETWORK = new NetworkChannel("main");
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
