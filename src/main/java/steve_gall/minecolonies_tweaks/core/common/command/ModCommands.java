@@ -24,6 +24,7 @@ public class ModCommands
 	{
 		var command = Commands.literal(root);
 		command.then(CitizenCommands.register());
+		command.then(ResearchCommands.register());
 
 		return command;
 	}
