@@ -38,7 +38,7 @@ public class CommonForgeEventHandler
 	@SubscribeEvent
 	public void onResearchEffectChangedEvent(ResearchEffectChangedEventArgs e)
 	{
-		if (e.getEffect() instanceof GlobalResearchEffectExtension extension)
+		if (e.getNext() > e.getPrev() && e.getEffect() instanceof GlobalResearchEffectExtension extension)
 		{
 			var command = extension.minecolonies_tweaks$getCommand();
 

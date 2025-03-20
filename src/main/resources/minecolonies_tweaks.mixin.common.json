@@ -39,6 +39,7 @@
 		"minecolonies.ItemCropMixin",
 		"minecolonies.ItemListModuleViewAccessor",
 		"minecolonies.ItemResourceScrollAccessor",
+		"minecolonies.LocalResearchTreeMixin",
 		"minecolonies.LoadOnlyStructureHandlerMixin",
 		"minecolonies.ResearchEffectCategoryMixin",
 		"minecolonies.ResearchEffectManagerMixin",
