@@ -40,7 +40,7 @@ import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventoryScreen;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
-import steve_gall.minecolonies_tweaks.core.common.command.ModCommands;
+import steve_gall.minecolonies_tweaks.core.common.command.MCTweaksCommands;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
@@ -85,7 +85,7 @@ public class MineColoniesTweaks
 		fml_bus.addListener(this::onInterModEnqueue);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
-		forge_bus.addListener((RegisterCommandsEvent e) -> ModCommands.register(e.getDispatcher()));
+		forge_bus.addListener((RegisterCommandsEvent e) -> MCTweaksCommands.register(e.getDispatcher()));
 		forge_bus.register(new CommonForgeEventHandler());
 
 		NETWORK = new NetworkChannel("main");
