@@ -10,7 +10,7 @@ import com.minecolonies.core.entity.citizen.EntityCitizen;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = EntityCitizen.class, remap = false)
 public abstract class EntityCitizenMixin
@@ -26,7 +26,7 @@ public abstract class EntityCitizenMixin
 	{
 		var result = this.directPlayerInteraction(player, hand);
 
-		if (MineColoniesTweaksConfigServer.INSTANCE.citizens.disableInteractionDelay.get())
+		if (MCTweaksConfigServer.INSTANCE.citizens.disableInteractionDelay.get())
 		{
 			this.interactionCooldown = 0;
 		}

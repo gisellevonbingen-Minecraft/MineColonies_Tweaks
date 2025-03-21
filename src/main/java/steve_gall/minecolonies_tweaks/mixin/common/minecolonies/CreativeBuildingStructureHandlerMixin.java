@@ -9,7 +9,7 @@ import com.minecolonies.api.util.CreativeBuildingStructureHandler;
 
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = CreativeBuildingStructureHandler.class, remap = false)
 public abstract class CreativeBuildingStructureHandlerMixin
@@ -19,7 +19,7 @@ public abstract class CreativeBuildingStructureHandlerMixin
 	{
 		if (cir.getReturnValueZ() && itemStack != null && itemStack.is(ItemTags.LEAVES))
 		{
-			if (MineColoniesTweaksConfigServer.INSTANCE.jobs.structureLeavesFree.get())
+			if (MCTweaksConfigServer.INSTANCE.jobs.structureLeavesFree.get())
 			{
 				return;
 			}

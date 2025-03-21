@@ -13,7 +13,7 @@ import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
 import net.minecraft.util.GsonHelper;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.util.GsonHelper2;
 
 public class CustomCraftingModule extends AbstractCraftingBuildingModule.Custom
@@ -24,7 +24,7 @@ public class CustomCraftingModule extends AbstractCraftingBuildingModule.Custom
 		{
 			var gson = new Gson();
 
-			for (var raw : MineColoniesTweaksConfigCommon.INSTANCE.buildings.customCraftingModules.get())
+			for (var raw : MCTweaksConfigCommon.INSTANCE.buildings.customCraftingModules.get())
 			{
 				try
 				{

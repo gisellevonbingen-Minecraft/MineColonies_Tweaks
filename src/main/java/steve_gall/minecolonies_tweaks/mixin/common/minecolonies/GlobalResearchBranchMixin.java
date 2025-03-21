@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.core.research.GlobalResearchBranch;
 
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = GlobalResearchBranch.class, remap = false)
 public abstract class GlobalResearchBranchMixin
@@ -16,7 +16,7 @@ public abstract class GlobalResearchBranchMixin
 	private void getBaseTime(int depth, CallbackInfoReturnable<Integer> cir)
 	{
 		var original = cir.getReturnValue().doubleValue();
-		var speed = MineColoniesTweaksConfigServer.INSTANCE.researches.speed.get().doubleValue();
+		var speed = MCTweaksConfigServer.INSTANCE.researches.speed.get().doubleValue();
 
 		if (speed == 0.0D)
 		{

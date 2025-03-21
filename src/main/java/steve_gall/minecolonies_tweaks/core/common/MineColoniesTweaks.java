@@ -41,9 +41,9 @@ import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventor
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
 import steve_gall.minecolonies_tweaks.core.common.command.MCTweaksCommands;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigClient;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksEquipmentTypes;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
@@ -66,9 +66,9 @@ public class MineColoniesTweaks
 	public MineColoniesTweaks()
 	{
 		var modLoadingContext = ModLoadingContext.get();
-		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, MineColoniesTweaksConfigClient.SPEC);
-		modLoadingContext.registerConfig(ModConfig.Type.COMMON, MineColoniesTweaksConfigCommon.SPEC);
-		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, MCTweaksConfigClient.SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.COMMON, MCTweaksConfigCommon.SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MCTweaksConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
 		MCTweaksItems.REGISTER.register(fml_bus);
@@ -174,7 +174,7 @@ public class MineColoniesTweaks
 
 	private void onConfigReload(ModConfigEvent e)
 	{
-		if (e.getConfig().getSpec() == MineColoniesTweaksConfigServer.SPEC)
+		if (e.getConfig().getSpec() == MCTweaksConfigServer.SPEC)
 		{
 			for (var block : ForgeRegistries.BLOCKS.getValues())
 			{
