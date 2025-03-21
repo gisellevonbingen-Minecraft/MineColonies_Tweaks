@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
 
 public class CustomToolType
 {
@@ -40,7 +40,7 @@ public class CustomToolType
 		{
 			var gson = new Gson();
 
-			for (var raw : MineColoniesTweaksConfigCommon.INSTANCE.tools.customTypes.get())
+			for (var raw : MCTweaksConfigCommon.INSTANCE.tools.customTypes.get())
 			{
 				try
 				{

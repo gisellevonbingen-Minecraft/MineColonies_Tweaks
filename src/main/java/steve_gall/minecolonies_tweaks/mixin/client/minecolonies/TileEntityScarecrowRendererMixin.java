@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import steve_gall.minecolonies_tweaks.core.common.colony.IColonyViewExtension;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigClient;
 
 @Mixin(value = TileEntityScarecrowRenderer.class, remap = false)
 public abstract class TileEntityScarecrowRendererMixin
@@ -26,7 +26,7 @@ public abstract class TileEntityScarecrowRendererMixin
 	@Inject(method = "render", remap = false, at = @At(value = "TAIL"), cancellable = false)
 	private void render(AbstractTileEntityScarecrow te, float partialTicks, PoseStack matrixStack, MultiBufferSource iRenderTypeBuffer, int lightA, int lightB, CallbackInfo ci)
 	{
-		if (MineColoniesTweaksConfigClient.INSTANCE.renderFieldSeed.get())
+		if (MCTweaksConfigClient.INSTANCE.renderFieldSeed.get())
 		{
 			this.minecolonies_tweaks$renderSeed(te, matrixStack, iRenderTypeBuffer, lightA, lightB);
 		}

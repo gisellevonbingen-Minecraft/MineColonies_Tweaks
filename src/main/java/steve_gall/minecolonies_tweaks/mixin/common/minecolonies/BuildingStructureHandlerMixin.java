@@ -9,7 +9,7 @@ import com.minecolonies.core.entity.ai.util.BuildingStructureHandler;
 
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = BuildingStructureHandler.class, remap = false)
 public abstract class BuildingStructureHandlerMixin
@@ -19,7 +19,7 @@ public abstract class BuildingStructureHandlerMixin
 	{
 		if (cir.getReturnValueZ() && itemStack != null && itemStack.is(ItemTags.LEAVES))
 		{
-			if (MineColoniesTweaksConfigServer.INSTANCE.jobs.structureLeavesFree.get())
+			if (MCTweaksConfigServer.INSTANCE.jobs.structureLeavesFree.get())
 			{
 				return;
 			}

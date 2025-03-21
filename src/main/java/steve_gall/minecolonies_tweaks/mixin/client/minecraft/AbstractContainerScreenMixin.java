@@ -10,7 +10,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_tweaks.core.client.gui.AbstractContainerScreenExtension;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableContainerScreenExtension;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigClient;
 
 @Mixin(value = AbstractContainerScreen.class, remap = true)
 public abstract class AbstractContainerScreenMixin extends Screen implements AbstractContainerScreenExtension
@@ -42,7 +42,7 @@ public abstract class AbstractContainerScreenMixin extends Screen implements Abs
 	@Unique
 	private boolean minecolonies_tweaks$addCloseButton(int x, int y, int width, int height)
 	{
-		if (MineColoniesTweaksConfigClient.INSTANCE.addReturnButton.get().booleanValue())
+		if (MCTweaksConfigClient.INSTANCE.addReturnButton.get().booleanValue())
 		{
 			var closeButton = new Button(x, y, width, height, Component.literal("X"), this::minecolonies_tweaks$onClosePress);
 			this.addRenderableWidget(closeButton);

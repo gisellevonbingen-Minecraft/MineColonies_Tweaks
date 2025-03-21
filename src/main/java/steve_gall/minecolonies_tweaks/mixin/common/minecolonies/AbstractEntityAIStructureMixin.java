@@ -9,7 +9,7 @@ import com.minecolonies.core.entity.ai.basic.AbstractEntityAIStructure;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.state.BlockState;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = AbstractEntityAIStructure.class, remap = false)
 public abstract class AbstractEntityAIStructureMixin
@@ -19,7 +19,7 @@ public abstract class AbstractEntityAIStructureMixin
 	{
 		if (cir.getReturnValueZ() && block != null && block.is(BlockTags.LEAVES))
 		{
-			if (MineColoniesTweaksConfigServer.INSTANCE.jobs.structureLeavesFree.get())
+			if (MCTweaksConfigServer.INSTANCE.jobs.structureLeavesFree.get())
 			{
 				return;
 			}

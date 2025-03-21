@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.entity.mobs.AbstractEntityRaiderMob;
 
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = AbstractEntityRaiderMob.class, remap = false)
 public abstract class AbstractEntityRaiderMobMixin
@@ -23,7 +23,7 @@ public abstract class AbstractEntityRaiderMobMixin
 	@Inject(method = "initStatsFor", remap = false, at = @At(value = "HEAD"), cancellable = false)
 	private void initStatsFor(double baseHealth, double difficulty, double baseDamage, CallbackInfo ci)
 	{
-		if (MineColoniesTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
+		if (MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			this.envDamageInterval = 0;
 			this.envDamageImmunity = false;
@@ -35,7 +35,7 @@ public abstract class AbstractEntityRaiderMobMixin
 	@Inject(method = "setEnvDamageInterval", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void setEnvDamageInterval(int interval, CallbackInfo ci)
 	{
-		if (interval > 0 && MineColoniesTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
+		if (interval > 0 && MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			ci.cancel();
 		}
@@ -45,7 +45,7 @@ public abstract class AbstractEntityRaiderMobMixin
 	@Inject(method = "setEnvDamageImmunity", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void setEnvDamageImmunity(boolean immunity, CallbackInfo ci)
 	{
-		if (immunity && MineColoniesTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
+		if (immunity && MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			ci.cancel();
 		}
@@ -55,7 +55,7 @@ public abstract class AbstractEntityRaiderMobMixin
 	@Inject(method = "setTempEnvDamageImmunity", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void setTempEnvDamageImmunity(boolean immunity, CallbackInfo ci)
 	{
-		if (immunity && MineColoniesTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
+		if (immunity && MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			ci.cancel();
 		}

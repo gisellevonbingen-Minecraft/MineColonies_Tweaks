@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import com.minecolonies.core.colony.buildings.modules.AbstractAssignedCitizenModule;
 import com.minecolonies.core.colony.buildings.modules.CourierAssignmentModule;
 
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = CourierAssignmentModule.class, remap = false)
 public abstract class CourierAssignmentModuleMixin extends AbstractAssignedCitizenModule
@@ -15,7 +15,7 @@ public abstract class CourierAssignmentModuleMixin extends AbstractAssignedCitiz
 	@ModifyConstant(method = "getModuleMax", remap = false, constant = @Constant(intValue = 2))
 	private int getModuleMax(int levelperCouriers)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.warehouseCouriersPerLevel.get();
+		return MCTweaksConfigServer.INSTANCE.jobs.warehouseCouriersPerLevel.get();
 	}
 
 }
