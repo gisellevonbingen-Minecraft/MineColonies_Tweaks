@@ -19,18 +19,25 @@ import steve_gall.minecolonies_tweaks.core.common.research.GlobalResearchEffectE
 public class CommonForgeEventHandler
 {
 	public static final Component GREAT_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 3);
-	public static final Component DECENT_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 1);
+	public static final Component DECENT_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 2);
+	public static final Component FINE_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 1);
 
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent e)
 	{
-		if (e.getItemStack().is(MCTweaksTags.Items.GREAT_FOOD))
+		var tier = MCTweaksTags.Items.getFoodTier(e.getItemStack()::is);
+
+		if (tier == 3)
 		{
 			e.getToolTip().add(1, GREAT_FOOD_TOOLTIP);
 		}
-		else if (e.getItemStack().is(MCTweaksTags.Items.DECENT_FOOD))
+		else if (tier == 2)
 		{
 			e.getToolTip().add(1, DECENT_FOOD_TOOLTIP);
+		}
+		else if (tier == 1)
+		{
+			e.getToolTip().add(1, FINE_FOOD_TOOLTIP);
 		}
 
 	}

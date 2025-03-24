@@ -21,7 +21,7 @@ public abstract class EntityCitizenMixin
 	@Shadow(remap = false)
 	abstract InteractionResult directPlayerInteraction(Player player, InteractionHand hand);
 
-	@Redirect(method = "checkAndHandleImportantInteractions", remap = false, at = @At(value = "INVOKE", target = "directPlayerInteraction", remap = false))
+	@Redirect(method = "checkAndHandleImportantInteractions", remap = true, at = @At(value = "INVOKE", target = "directPlayerInteraction", remap = false))
 	private InteractionResult checkAndHandleImportantInteractions(EntityCitizen self, Player player, InteractionHand hand)
 	{
 		var result = this.directPlayerInteraction(player, hand);
