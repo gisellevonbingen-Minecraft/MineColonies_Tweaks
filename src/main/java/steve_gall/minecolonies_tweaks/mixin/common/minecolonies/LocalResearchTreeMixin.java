@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +30,28 @@ public abstract class LocalResearchTreeMixin implements LocalResearchTreeExtensi
 	abstract void resetEffects(IColony colony);
 
 	@Override
+	public void minecolonies_tweaks$reset(IColony colony, ResourceLocation branchId)
+	{
+		var values = this.researchTree.get(branchId);
+
+		if (values == null)
+		{
+			return;
+		}
+
+		for (var research : new ArrayList<>(values.keySet()))
+		{
+			values.remove(research);
+			this.inProgress.remove(research);
+			this.isComplete.remove(research);
+		}
+
+		this.maxLevelResearchCompleted.remove(branchId);
+
+		this.minecolonies_tweaks$onResearchChanged(colony);
+	}
+
+	@Override
 	public void minecolonies_tweaks$resetAll(IColony colony)
 	{
 		this.researchTree.values().forEach(Map::clear);
@@ -36,10 +59,20 @@ public abstract class LocalResearchTreeMixin implements LocalResearchTreeExtensi
 		this.isComplete.clear();
 		this.maxLevelResearchCompleted.clear();
 
-		this.resetEffects(colony);
+		this.minecolonies_tweaks$onResearchChanged(colony);
+	}
 
+	private void minecolonies_tweaks$onResearchChanged(IColony colony)
+	{
+		this.resetEffects(colony);
 		colony.getResearchManager().markDirty();
 		colony.getBuildingManager().markBuildingsDirty();
+
+		for (var citizen : colony.getCitizenManager().getCitizens())
+		{
+			citizen.applyResearchEffects();
+		}
+
 	}
 
 }
