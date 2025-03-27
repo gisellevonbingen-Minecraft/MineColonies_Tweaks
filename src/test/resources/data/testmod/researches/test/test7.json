@@ -1,7 +1,7 @@
 {
 	"name": "Test 7",
 	"subtitle": "Research Test 7",
-	"branch": "testmod:branch_test",
+	"branch": "testmod:test",
 	"researchLevel": 1,
 	"effects": [
 		{
