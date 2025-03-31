@@ -1,6 +1,7 @@
 {
 	"values": [
 		"minecolonies:clipboard",
+		"minecolonies:colonymap",
 		"#minecolonies_tweaks:resourcescrolls"
 	]
 }

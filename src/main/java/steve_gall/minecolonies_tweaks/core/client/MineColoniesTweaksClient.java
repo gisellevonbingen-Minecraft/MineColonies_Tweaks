@@ -14,6 +14,7 @@ import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElementEv
 import steve_gall.minecolonies_tweaks.core.client.gui.AbstractContainerScreenExtension;
 import steve_gall.minecolonies_tweaks.core.client.gui.ClipboardElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
+import steve_gall.minecolonies_tweaks.core.client.gui.ColonyMapElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollElement;
 import steve_gall.minecolonies_tweaks.core.client.view.Addition;
 import steve_gall.minecolonies_tweaks.core.client.view.FluidIcon;
@@ -87,6 +88,10 @@ public class MineColoniesTweaksClient
 		else if (stack.is(ModItems.clipboard))
 		{
 			event.register(new ClipboardElement(stack));
+		}
+		else if (stack.is(ModItems.colonyMap))
+		{
+			event.register(new ColonyMapElement(stack));
 		}
 
 	}

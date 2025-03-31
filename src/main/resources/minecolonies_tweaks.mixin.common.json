@@ -37,6 +37,7 @@
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.GlobalResearchEffectMixin",
 		"minecolonies.ItemClipboardAccessor",
+		"minecolonies.ItemColonyMapAccessor",
 		"minecolonies.ItemCropMixin",
 		"minecolonies.ItemListModuleViewAccessor",
 		"minecolonies.ItemResourceScrollAccessor",
