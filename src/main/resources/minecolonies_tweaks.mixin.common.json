@@ -44,12 +44,12 @@
 		"minecolonies.ItemStackUtilsMixin",
 		"minecolonies.LocalResearchTreeMixin",
 		"minecolonies.LoadOnlyStructureHandlerMixin",
+		"minecolonies.MinecoloniesCropBlockMixin",
 		"minecolonies.MinimumStockModuleMixin",
 		"minecolonies.ResearchEffectCategoryMixin",
 		"minecolonies.ResearchEffectManagerMixin",
 		"minecolonies.ResearchListenerMixin",
 		"minecolonies.ResearchManagerMixin",
-		"minecolonies.MinecoloniesCropBlockMixin",
 		"minecolonies.TreeMixin"
 	],
 	"injectors": {
