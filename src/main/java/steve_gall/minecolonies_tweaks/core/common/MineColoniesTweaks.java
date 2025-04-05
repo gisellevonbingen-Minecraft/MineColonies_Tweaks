@@ -3,9 +3,11 @@ package steve_gall.minecolonies_tweaks.core.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
 import com.minecolonies.api.items.ModItems;
+import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
@@ -82,6 +84,7 @@ public class MineColoniesTweaks
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
 
 			CustomCraftingModule.loadCustomCraftingModules();
+			ModBuildings.postBox.get().getModuleProducers().add(BuildingModules.MIN_STOCK);
 
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
 
