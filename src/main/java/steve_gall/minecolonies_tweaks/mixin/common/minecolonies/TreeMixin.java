@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.colony.IColony;
@@ -37,8 +37,8 @@ public abstract class TreeMixin
 	@Shadow(remap = false)
 	abstract void addAndSearch(@NotNull final Level world, @NotNull final BlockPos log, @Nullable final IColony colony);
 
-	@Redirect(method = "<init>(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lcom/minecolonies/api/colony/IColony;)V", remap = false, at = @At(value = "INVOKE", target = "addAndSearch(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lcom/minecolonies/api/colony/IColony;)V", remap = false))
-	private void init_addAndSearch(Tree self, Level level, BlockPos log, IColony colony)
+	@Inject(method = "addAndSearch", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	private void addAndSearch(Level level, BlockPos log, IColony colony, CallbackInfo ci)
 	{
 		var state = level.getBlockState(log);
 
@@ -49,10 +49,9 @@ public abstract class TreeMixin
 			this.woodBlocks.add(chrousTree.getLog());
 			this.location = chrousTree.getLog();
 			this.topLog = chrousTree.getLog();
-			return;
+			ci.cancel();
 		}
 
-		this.addAndSearch(level, log, colony);
 	}
 
 	@Inject(method = "calcSapling", remap = false, at = @At(value = "HEAD"), cancellable = true)
@@ -65,20 +64,6 @@ public abstract class TreeMixin
 			cir.setReturnValue(new ItemStack(Items.CHORUS_FLOWER));
 		}
 
-	}
-
-	@Redirect(method = "findLogs", remap = false, at = @At(value = "INVOKE", target = "addAndSearch(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lcom/minecolonies/api/colony/IColony;)V", remap = false))
-	private void findLogs_addAndSearch(Tree self, Level level, BlockPos log, IColony colony)
-	{
-		if (level.getBlockState(log).is(Blocks.CHORUS_PLANT))
-		{
-			var chrousTree = new ChrousTree(level, log);
-			this.woodBlocks.addAll(chrousTree.getDeadFlowers());
-			this.woodBlocks.add(log);
-			return;
-		}
-
-		this.addAndSearch(level, log, colony);
 	}
 
 	@Inject(method = "checkTree", remap = false, at = @At(value = "HEAD"), cancellable = true)
