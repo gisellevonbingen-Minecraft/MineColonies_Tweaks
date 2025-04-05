@@ -3,7 +3,8 @@ package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 
@@ -18,20 +19,14 @@ public abstract class EntityCitizenMixin
 	@Shadow(remap = false)
 	private int interactionCooldown;
 
-	@Shadow(remap = false)
-	abstract InteractionResult directPlayerInteraction(Player player, InteractionHand hand);
-
-	@Redirect(method = "checkAndHandleImportantInteractions", remap = true, at = @At(value = "INVOKE", target = "directPlayerInteraction", remap = false))
-	private InteractionResult checkAndHandleImportantInteractions(EntityCitizen self, Player player, InteractionHand hand)
+	@Inject(method = "directPlayerInteraction", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	private void directPlayerInteraction(final Player player, final InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir)
 	{
-		var result = this.directPlayerInteraction(player, hand);
-
 		if (MCTweaksConfigServer.INSTANCE.citizens.disableInteractionDelay.get())
 		{
 			this.interactionCooldown = 0;
 		}
 
-		return result;
 	}
 
 }
