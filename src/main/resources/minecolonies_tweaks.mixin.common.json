@@ -42,7 +42,8 @@
 		"minecolonies.ResearchManagerMixin",
 		"minecolonies.ToolMixin",
 		"minecolonies.ToolTypeMixin",
-		"minecolonies.TreeMixin"
+		"minecolonies.TreeMixin",
+		"minecolonies.TryResearchMessageMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
