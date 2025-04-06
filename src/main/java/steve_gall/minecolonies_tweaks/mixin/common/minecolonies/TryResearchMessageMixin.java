@@ -12,7 +12,7 @@ import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 @Mixin(value = TryResearchMessage.class)
 public abstract class TryResearchMessageMixin
 {
-	@Redirect(method = "onExecute", remap = false, at = @At(value = "INVOKE", target = "net/minecraft/world/entity/player/Player.isCreative", remap = true))
+	@Redirect(method = "onExecute", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isCreative()Z", remap = true))
 	private boolean onExecute_isCreative(Player player)
 	{
 		return player.isCreative() || MCTweaksConfigServer.INSTANCE.researches.ignoreConstraints.get();
