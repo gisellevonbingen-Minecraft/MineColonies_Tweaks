@@ -12,6 +12,7 @@ import com.minecolonies.api.research.ILocalResearchTree;
 import com.minecolonies.core.client.gui.WindowResearchTree;
 
 import net.minecraft.resources.ResourceLocation;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = WindowResearchTree.class, remap = false)
 public abstract class WindowResearchTreeMixin extends Pane
@@ -22,7 +23,7 @@ public abstract class WindowResearchTreeMixin extends Pane
 	@Redirect(method = "<init>", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/ILocalResearchTree.branchFinishedHighestLevel", remap = false))
 	private boolean init_branchFinishedHighestLevel(ILocalResearchTree tree, ResourceLocation branch)
 	{
-		if (this.mc.player.isCreative())
+		if (this.mc.player.isCreative() || MCTweaksConfigServer.INSTANCE.researches.ignoreConstraints.get())
 		{
 			return false;
 		}
@@ -30,7 +31,7 @@ public abstract class WindowResearchTreeMixin extends Pane
 		return tree.branchFinishedHighestLevel(branch);
 	}
 
-	@Redirect(method = {"getResearchButtonState", "onButtonClicked"}, remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/IGlobalResearch.getDepth", remap = false))
+	@Redirect(method = "getResearchButtonState", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/IGlobalResearch.getDepth", remap = false))
 	private int getResearchButtonState_getDepth(IGlobalResearch research)
 	{
 		if (this.mc.player.isCreative())
@@ -41,10 +42,32 @@ public abstract class WindowResearchTreeMixin extends Pane
 		return research.getDepth();
 	}
 
-	@Redirect(method = "drawResearchItem", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/IGlobalResearch.hasOnlyChild", remap = false))
+	@Redirect(method = {"onButtonClicked", "generateResearchTooltips"}, remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/IGlobalResearch.getDepth", remap = false))
+	private int onButtonClicked_getDepth(IGlobalResearch research)
+	{
+		if (this.mc.player.isCreative() || MCTweaksConfigServer.INSTANCE.researches.ignoreConstraints.get())
+		{
+			return 0;
+		}
+
+		return research.getDepth();
+	}
+
+	@Redirect(method = "getResearchButtonState", remap = false, at = @At(value = "FIELD", target = "hasMax:Z", remap = false))
+	private boolean getResearchButtonState_hasMax(WindowResearchTree self)
+	{
+		if (MCTweaksConfigServer.INSTANCE.researches.ignoreConstraints.get())
+		{
+			return false;
+		}
+
+		return this.hasMax;
+	}
+
+	@Redirect(method = {"drawResearchItem", "drawArrows"}, remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/IGlobalResearch.hasOnlyChild", remap = false))
 	private boolean drawResearchItem_hasOnlyChild(IGlobalResearch research)
 	{
-		if (this.mc.player.isCreative())
+		if (this.mc.player.isCreative() || MCTweaksConfigServer.INSTANCE.researches.ignoreConstraints.get())
 		{
 			return false;
 		}

@@ -50,7 +50,8 @@
 		"minecolonies.ResearchEffectManagerMixin",
 		"minecolonies.ResearchListenerMixin",
 		"minecolonies.ResearchManagerMixin",
-		"minecolonies.TreeMixin"
+		"minecolonies.TreeMixin",
+		"minecolonies.TryResearchMessageMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
