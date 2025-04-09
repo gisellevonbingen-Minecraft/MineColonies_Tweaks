@@ -36,6 +36,7 @@
 		"minecolonies.LocalResearchTreeMixin",
 		"minecolonies.LoadOnlyStructureHandlerMixin",
 		"minecolonies.MinimumStockModuleMixin",
+		"minecolonies.RecipeStorageMixin",
 		"minecolonies.ResearchEffectCategoryMixin",
 		"minecolonies.ResearchEffectManagerMixin",
 		"minecolonies.ResearchListenerMixin",

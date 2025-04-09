@@ -24,13 +24,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.items.IItemHandler;
+import steve_gall.minecolonies_tweaks.core.common.crafting.RecipeStorageExtension;
 
 public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 {
 	@NotNull
 	private final ICustomizedRecipeStorage impl;
 	@NotNull
-	private final DelegateRecipeStorage delegate;
+	private final RecipeStorage delegate;
 	@NotNull
 	private final AbstractRecipeType<IRecipeStorage> recipeType;
 
@@ -40,7 +41,8 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 	public CustomizableRecipeStorage(@NotNull IToken<?> token, @NotNull ICustomizedRecipeStorage impl)
 	{
 		this.impl = impl;
-		this.delegate = new DelegateRecipeStorage(this, token, impl.getInput(), impl.getGridSize(), impl.getPrimaryOutput(), impl.getIntermediate(), impl.getRecipeSource(), impl.getRecipeType(), impl.getAlternateOutputs(), getSecondaryOutputs(impl), impl.getLootTable(), impl.getRequiredTool());
+		this.delegate = new RecipeStorage(token, impl.getInput(), impl.getGridSize(), impl.getPrimaryOutput(), impl.getIntermediate(), impl.getRecipeSource(), impl.getRecipeType(), impl.getAlternateOutputs(), getSecondaryOutputs(impl), impl.getLootTable(), impl.getRequiredTool());
+		((RecipeStorageExtension) this.delegate).minecolonies_tweaks$setCustomized(impl);
 
 		var type = impl.getRecipeType();
 		var recipeTypes = MinecoloniesAPIProxy.getInstance().getRecipeTypeRegistry();
