@@ -31,6 +31,7 @@
 	"minecolonies_tweaks.gui.resourcebook.open": "Open",
 	"minecolonies_tweaks.gui.resourcebook.builder_not_setted": "Builder not setted",
 	"minecolonies_tweaks.gui.resourcebook.colony_not_setted": "Colony not setted",
+	"minecolonies_tweaks.gui.warehouse.empty_slots": "Empty Slots: %1$s/%2$s (%3$s)",
 	
 	"item.minecolonies_tweaks.resourcescroll_black": "Black Resource Scroll",
 	"item.minecolonies_tweaks.resourcescroll_blue": "Blue Resource Scroll",

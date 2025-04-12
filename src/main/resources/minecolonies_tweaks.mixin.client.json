@@ -8,6 +8,7 @@
 		"minecraft.ScreenMixin",
 		
 		"minecolonies.AbstractModuleWindowMixin",
+		"minecolonies.AbstractWindowModuleBuildingMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.AbstractWindowSkeletonsMixin",
 		"minecolonies.ItemListModuleWindowMixin",
