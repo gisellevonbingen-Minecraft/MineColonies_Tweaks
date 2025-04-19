@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_tweaks.core.common;
 
+import java.util.Arrays;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -84,7 +86,17 @@ public class MineColoniesTweaks
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
 
 			CustomCraftingModule.loadCustomCraftingModules();
-			ModBuildings.postBox.get().getModuleProducers().add(BuildingModules.MIN_STOCK);
+
+			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.postBox, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter))
+			{
+				var moduleProducers = buildingEntry.get().getModuleProducers();
+
+				if (!moduleProducers.contains(BuildingModules.MIN_STOCK))
+				{
+					moduleProducers.add(BuildingModules.MIN_STOCK);
+				}
+
+			}
 
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
 
