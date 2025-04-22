@@ -75,7 +75,7 @@ public class CommonForgeEventHandler
 		}
 
 	}
-	
+
 	@SubscribeEvent
 	public void onResearchEffectChangedEvent(ResearchEffectChangedEventArgs e)
 	{
