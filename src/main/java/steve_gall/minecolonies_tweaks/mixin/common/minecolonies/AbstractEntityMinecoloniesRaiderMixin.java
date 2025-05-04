@@ -3,7 +3,9 @@ package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.entity.mobs.AbstractEntityMinecoloniesRaider;
@@ -58,6 +60,20 @@ public abstract class AbstractEntityMinecoloniesRaiderMixin
 		if (immunity && MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			ci.cancel();
+		}
+
+	}
+
+	@ModifyConstant(method = "hurt", remap = true, constant = @Constant(floatValue = 30.0F))
+	private float hurt_MIN_THORNS_DAMAG(float MIN_THORNS_DAMAGE)
+	{
+		if (MCTweaksConfigServer.INSTANCE.monsters.disableThorns.get())
+		{
+			return Float.POSITIVE_INFINITY;
+		}
+		else
+		{
+			return MIN_THORNS_DAMAGE;
 		}
 
 	}
