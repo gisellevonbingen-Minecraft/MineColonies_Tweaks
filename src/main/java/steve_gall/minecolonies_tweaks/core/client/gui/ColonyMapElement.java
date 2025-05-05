@@ -53,7 +53,7 @@ public class ColonyMapElement extends ResourceScrollBookElement
 	{
 		super.update(index, rowPane);
 
-		this.getWorkerNameLabel(rowPane).setText(this.colonyName);
+		this.getDesc1Label(rowPane).setText(this.colonyName);
 	}
 
 	public IColonyView getColonyView()

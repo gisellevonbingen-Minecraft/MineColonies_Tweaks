@@ -90,10 +90,10 @@ public class ResourceScrollElement extends ResourceScrollBookElement
 	{
 		super.update(index, rowPane);
 
-		this.getWorkerNameLabel(rowPane).setText(this.workerName);
-		this.getDesc1Label(rowPane).setText(this.constructionName);
-		this.getDesc2Label(rowPane).setText(this.progress);
-		this.getTooltip(rowPane).setText(this.constructionName);
+		this.getDesc1Label(rowPane).setText(this.workerName);
+		this.getDesc2Label(rowPane).setText(this.constructionName);
+		this.getDesc3Label(rowPane).setText(this.progress);
+		this.getTooltip2(rowPane).setText(this.constructionName);
 	}
 
 	public BuildingBuilder.View getBuildingView()

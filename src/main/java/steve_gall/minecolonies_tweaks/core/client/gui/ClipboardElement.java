@@ -64,8 +64,8 @@ public class ClipboardElement extends ResourceScrollBookElement
 	{
 		super.update(index, rowPane);
 
-		this.getWorkerNameLabel(rowPane).setText(this.colonyName);
-		this.getDesc1Label(rowPane).setText(this.requestCount);
+		this.getDesc1Label(rowPane).setText(this.colonyName);
+		this.getDesc2Label(rowPane).setText(this.requestCount);
 	}
 
 	public IColonyView getColonyView()
