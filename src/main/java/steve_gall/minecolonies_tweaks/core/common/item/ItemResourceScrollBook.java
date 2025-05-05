@@ -114,7 +114,7 @@ public class ItemResourceScrollBook extends Item
 			}
 
 		}
-		else
+		else if (!player.isShiftKeyDown())
 		{
 			this.openWindow(stack);
 		}
@@ -135,7 +135,7 @@ public class ItemResourceScrollBook extends Item
 			}
 
 		}
-		else
+		else if (!player.isShiftKeyDown())
 		{
 			this.openWindow(stack);
 		}
