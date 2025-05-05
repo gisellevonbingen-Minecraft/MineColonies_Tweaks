@@ -27,8 +27,8 @@ public class MCTweaksItems
 
 		for (var color : DyeColor.values())
 		{
-			var obj = REGISTER.register("resourcescroll_" + color.getName().toLowerCase(), () -> new ItemResourceScroll(new Item.Properties()));
-			colorResourceScrolls.put(color, obj);
+			var resourceScroll = REGISTER.register("resourcescroll_" + color.getName().toLowerCase(), () -> new ItemResourceScroll(new Item.Properties()));
+			colorResourceScrolls.put(color, resourceScroll);
 		}
 
 	}
