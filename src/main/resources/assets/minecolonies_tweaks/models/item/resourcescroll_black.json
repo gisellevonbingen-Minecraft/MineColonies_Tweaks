@@ -1,6 +1,6 @@
 {
 	"parent": "minecolonies_tweaks:item/resourcescroll_color",
 	"textures": {
-		"layer1": "minecolonies_tweaks:item/resourcescroll_black"
+		"layer1": "minecolonies_tweaks:item/dot_black"
 	}
 }
