@@ -117,7 +117,7 @@ dependencies {
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
     implementation fg.deobf("curse.maven:curios-309927:${curios_file}")
 
-    // Runtiem Only
+    // Runtime Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")
     runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")
     runtimeOnly fg.deobf("curse.maven:configured-457570:${configured_file}")
