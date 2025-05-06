@@ -18,6 +18,7 @@ public class ResourceScrollBookElement
 	public static final Component EMPTY = Component.empty();
 	public static final Component BUILDER_NOT_SETTED = Component.translatable("minecolonies_tweaks.gui.resourcebook.builder_not_setted");
 	public static final Component COLONY_NOT_SETTED = Component.translatable("minecolonies_tweaks.gui.resourcebook.colony_not_setted");
+	public static final Component BUILDING_IS_MISSING = Component.translatable("minecolonies_tweaks.gui.resourcebook.building_is_missing");
 
 	public static final String BUTTON_OPEN = "open";
 	public static final String LABEL_DESC1 = "desc1";

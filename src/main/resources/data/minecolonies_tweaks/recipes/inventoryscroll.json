@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"P": {
+			"tag": "forge:leather"
+		},
+		"C": {
+			"tag": "forge:chests"
+		},
+		"T": {
+			"item": "structurize:sceptergold"
+		},
+		"X": {
+			"item": "minecraft:stick"
+		}
+	},
+	"pattern": [
+		"XTX",
+		"XPX",
+		"XCX"
+	],
+	"result": {
+		"item": "minecolonies_tweaks:inventoryscroll"
+	},
+	"show_notification": true
+}

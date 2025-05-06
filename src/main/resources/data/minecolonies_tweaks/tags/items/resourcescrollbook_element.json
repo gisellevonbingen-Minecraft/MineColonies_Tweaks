@@ -1,6 +1,7 @@
 {
 	"values": [
 		"minecolonies:clipboard",
-		"#minecolonies_tweaks:resourcescrolls"
+		"#minecolonies_tweaks:resourcescrolls",
+		"#minecolonies_tweaks:inventoryscrolls"
 	]
 }
