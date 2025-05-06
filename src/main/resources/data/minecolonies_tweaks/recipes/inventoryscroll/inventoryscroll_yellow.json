@@ -1,0 +1,20 @@
+{
+	"type": "minecolonies_tweaks:nbt_merge_shapeless",
+	"ingredients": [
+		{
+			"type": "forge:difference",
+			"base": {
+				"tag": "minecolonies_tweaks:inventoryscrolls"
+			},
+			"subtracted": {
+				"item": "minecolonies_tweaks:inventoryscroll_yellow"
+			}
+		},
+		{
+			"tag": "forge:dyes/yellow"
+		}
+	],
+	"result": {
+		"item": "minecolonies_tweaks:inventoryscroll_yellow"
+	}
+}

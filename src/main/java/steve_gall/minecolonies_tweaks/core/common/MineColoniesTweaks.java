@@ -222,6 +222,13 @@ public class MineColoniesTweaks
 				e.accept(object.get());
 			}
 
+			e.accept(MCTweaksItems.INVENTORYSCROLL.get());
+
+			for (var object : MCTweaksItems.COLOR_INVENTORY_SCROLLS.values())
+			{
+				e.accept(object.get());
+			}
+
 			e.accept(MCTweaksItems.RESOURCESCROLL_BOOK.get());
 		}
 

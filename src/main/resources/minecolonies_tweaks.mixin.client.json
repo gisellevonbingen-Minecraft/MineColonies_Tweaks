@@ -19,6 +19,7 @@
 		"minecolonies.TileEntityScarecrowRendererMixin",
 		"minecolonies.TownhallWindowMainPageMixin",
 		"minecolonies.WindowFieldMixin",
+		"minecolonies.WindowHutAllInventoryMixin",
 		"minecolonies.WindowCraftingsMixin",
 		"minecolonies.WindowInventoriesMixin",
 		"minecolonies.WindowPostBoxMixin",
