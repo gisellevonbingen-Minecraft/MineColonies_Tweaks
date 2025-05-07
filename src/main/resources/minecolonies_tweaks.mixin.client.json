@@ -8,15 +8,22 @@
 		"minecraft.ScreenMixin",
 		
 		"minecolonies.AbstractModuleWindowMixin",
+		"minecolonies.AbstractWindowModuleBuildingMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.AbstractWindowSkeletonsMixin",
 		"minecolonies.ItemListModuleWindowMixin",
 		"minecolonies.MainWindowCitizenMixin",
+		"minecolonies.RestaurantMenuModuleWindow1Mixin",
+		"minecolonies.RestaurantMenuModuleWindow2Mixin",
+		"minecolonies.RestaurantMenuModuleWindowMixin",
 		"minecolonies.TileEntityScarecrowRendererMixin",
 		"minecolonies.TownhallWindowMainPageMixin",
 		"minecolonies.WindowFieldMixin",
+		"minecolonies.WindowHutAllInventoryMixin",
 		"minecolonies.WindowCraftingsMixin",
 		"minecolonies.WindowInventoriesMixin",
+		"minecolonies.WindowPostBoxMixin",
+		"minecolonies.WindowResearchTreeMixin",
 		
 		"blockui.ButtonImageMixin",
 		"blockui.ViewMixin"

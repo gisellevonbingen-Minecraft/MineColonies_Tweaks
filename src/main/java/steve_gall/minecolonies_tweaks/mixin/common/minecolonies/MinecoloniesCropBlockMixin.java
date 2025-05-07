@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = MinecoloniesCropBlock.class, remap = false)
 public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecolonies<MinecoloniesCropBlock> implements MinecoloniesCropBlockExtension, BonemealableBlock
@@ -63,7 +63,7 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 	@Override
 	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClientSide)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.blocks.cropCanPerformBonemeal.get().booleanValue() && !this.isMaxAge(state);
+		return MCTweaksConfigServer.INSTANCE.blocks.cropCanPerformBonemeal.get().booleanValue() && !this.isMaxAge(state);
 	}
 
 	@Override
@@ -81,8 +81,8 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 	@Override
 	public void minecolonies_tweaks$onServerConfigReloaded()
 	{
-		this.preferredFarmland = MineColoniesTweaksConfigServer.INSTANCE.blocks.cropVanillaFarmland.get().booleanValue() ? Blocks.FARMLAND : this.minecolonies_tweaks$preferredFarmland;
-		this.preferredBiome = MineColoniesTweaksConfigServer.INSTANCE.blocks.cropIgnoreBiome.get().booleanValue() ? null : this.minecolonies_tweaks$preferredBiome;
+		this.preferredFarmland = MCTweaksConfigServer.INSTANCE.blocks.cropVanillaFarmland.get().booleanValue() ? Blocks.FARMLAND : this.minecolonies_tweaks$preferredFarmland;
+		this.preferredBiome = MCTweaksConfigServer.INSTANCE.blocks.cropIgnoreBiome.get().booleanValue() ? null : this.minecolonies_tweaks$preferredBiome;
 	}
 
 }

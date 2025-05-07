@@ -1,0 +1,6 @@
+{
+	"parent": "minecolonies_tweaks:item/inventoryscroll_color",
+	"textures": {
+		"layer2": "minecolonies_tweaks:item/dot_green"
+	}
+}

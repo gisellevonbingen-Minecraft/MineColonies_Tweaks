@@ -23,7 +23,7 @@ import com.minecolonies.core.entity.ai.workers.production.agriculture.EntityAIWo
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.StemBlock;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
 public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<JobFarmer, BuildingFarmer>
@@ -51,7 +51,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	@Inject(method = "workAtField", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void workAtField(CallbackInfoReturnable<IAIState> cir)
 	{
-		if (MineColoniesTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue() && cir.getReturnValue() == AIWorkerState.IDLE)
+		if (MCTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue() && cir.getReturnValue() == AIWorkerState.IDLE)
 		{
 			if (this.shouldDumpInventory)
 			{
@@ -72,7 +72,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	@Inject(method = "hoeIfAble", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void hoeIfAble_Return(BlockPos position, FarmField farmField, CallbackInfoReturnable<Boolean> cir)
 	{
-		if (MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHoe.get().booleanValue())
+		if (MCTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHoe.get().booleanValue())
 		{
 			if (farmField.getSeed().getItem() instanceof BlockItem item && item.getBlock() instanceof StemBlock)
 			{
@@ -95,7 +95,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	{
 		if (cir.getReturnValueZ() && position != null)
 		{
-			if (MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHarvest.get().booleanValue())
+			if (MCTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHarvest.get().booleanValue())
 			{
 				if (this.building.getFirstModuleOccurance(BuildingExtensionsModule.class).getCurrentExtension() instanceof FarmField farmField)
 				{
@@ -116,13 +116,13 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	@ModifyConstant(method = "getLevelDelay", remap = false, constant = @Constant(doubleValue = 40))
 	private double getLevelDelay_standardDelay(double STANDARD_DELAY)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerWorkDelay.get().intValue();
+		return MCTweaksConfigServer.INSTANCE.jobs.farmerWorkDelay.get().intValue();
 	}
 
 	@ModifyConstant(method = "getLevelDelay", remap = false, constant = @Constant(doubleValue = 2.0))
 	private double getLevelDelay_skillDivider(double skillDivider)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerSkillDivider.get().doubleValue();
+		return MCTweaksConfigServer.INSTANCE.jobs.farmerSkillDivider.get().doubleValue();
 	}
 
 	@Redirect(method = "wantInventoryDumped", remap = false, at = @At(value = "INVOKE", target = "getActionRewardForCraftingSuccess", remap = false))
@@ -134,7 +134,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	@ModifyConstant(method = "getActionsDoneUntilDumping", remap = false, constant = @Constant(intValue = 64))
 	private int getActionsDoneUntilDumping(int MAX_BLOCKS_MINED)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.farmerActionsDoneUntilDumping.get().intValue();
+		return MCTweaksConfigServer.INSTANCE.jobs.farmerActionsDoneUntilDumping.get().intValue();
 	}
 
 }

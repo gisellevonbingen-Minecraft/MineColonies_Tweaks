@@ -10,7 +10,7 @@ import com.minecolonies.api.colony.buildingextensions.registry.BuildingExtension
 import com.minecolonies.core.colony.buildingextensions.FarmField;
 
 import net.minecraft.core.BlockPos;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = FarmField.class, remap = false)
 public abstract class FarmFieldMixin
@@ -21,7 +21,7 @@ public abstract class FarmFieldMixin
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"))
 	private void init(BuildingExtensionEntry fieldType, BlockPos position, CallbackInfo ci)
 	{
-		this.maxRadius = MineColoniesTweaksConfigServer.INSTANCE.fields.farmMaxRange.get().intValue();
+		this.maxRadius = MCTweaksConfigServer.INSTANCE.fields.farmMaxRange.get().intValue();
 	}
 
 }

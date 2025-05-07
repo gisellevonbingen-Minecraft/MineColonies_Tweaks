@@ -7,7 +7,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
-public class ModCommands
+public class MCTweaksCommands
 {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher)
 	{
@@ -24,6 +24,7 @@ public class ModCommands
 	{
 		var command = Commands.literal(root);
 		command.then(CitizenCommands.register());
+		command.then(ResearchCommands.register());
 
 		return command;
 	}

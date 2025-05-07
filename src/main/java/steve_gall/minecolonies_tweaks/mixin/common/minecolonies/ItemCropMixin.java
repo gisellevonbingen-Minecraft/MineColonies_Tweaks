@@ -25,7 +25,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
 
 @Mixin(value = ItemCrop.class, remap = false)
@@ -51,13 +51,13 @@ public abstract class ItemCropMixin extends BlockItem implements ItemCropExtensi
 	@Override
 	public void minecolonies_tweaks$onServerConfigReloaded()
 	{
-		this.preferredBiome = MineColoniesTweaksConfigServer.INSTANCE.blocks.cropIgnoreBiome.get().booleanValue() ? null : this.minecolonies_tweaks$preferredBiome;
+		this.preferredBiome = MCTweaksConfigServer.INSTANCE.blocks.cropIgnoreBiome.get().booleanValue() ? null : this.minecolonies_tweaks$preferredBiome;
 	}
 
 	@Redirect(method = "canPlace", remap = true, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isCreative()Z", remap = true))
 	private boolean canPlace_isCreative(Player player)
 	{
-		if (MineColoniesTweaksConfigServer.INSTANCE.blocks.cropCanPlayerPlant.get().booleanValue())
+		if (MCTweaksConfigServer.INSTANCE.blocks.cropCanPlayerPlant.get().booleanValue())
 		{
 			return true;
 		}
@@ -87,7 +87,7 @@ public abstract class ItemCropMixin extends BlockItem implements ItemCropExtensi
 
 	private boolean testForRemove(Component line)
 	{
-		var config = MineColoniesTweaksConfigServer.INSTANCE.blocks;
+		var config = MCTweaksConfigServer.INSTANCE.blocks;
 
 		if (config.cropCanPlayerPlant.get().booleanValue() && config.cropVanillaFarmland.get().booleanValue())
 		{

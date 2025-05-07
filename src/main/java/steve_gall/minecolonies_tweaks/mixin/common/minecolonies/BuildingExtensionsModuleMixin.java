@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.minecolonies.api.colony.buildingextensions.IBuildingExtension;
 import com.minecolonies.core.colony.buildings.modules.BuildingExtensionsModule;
 
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = BuildingExtensionsModule.class, remap = false)
 public abstract class BuildingExtensionsModuleMixin
@@ -33,7 +33,7 @@ public abstract class BuildingExtensionsModuleMixin
 	@Inject(method = "getExtensionToWorkOn", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void getExtensionToWorkOn(CallbackInfoReturnable<IBuildingExtension> cir)
 	{
-		if (!MineColoniesTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue())
+		if (!MCTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue())
 		{
 			return;
 		}

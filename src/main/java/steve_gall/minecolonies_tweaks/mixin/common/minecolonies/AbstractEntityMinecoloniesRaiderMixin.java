@@ -3,12 +3,14 @@ package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.entity.mobs.AbstractEntityMinecoloniesRaider;
 
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = AbstractEntityMinecoloniesRaider.class, remap = false)
 public abstract class AbstractEntityMinecoloniesRaiderMixin
@@ -23,7 +25,7 @@ public abstract class AbstractEntityMinecoloniesRaiderMixin
 	@Inject(method = "initStatsFor", remap = false, at = @At(value = "HEAD"), cancellable = false)
 	private void initStatsFor(double baseHealth, double difficulty, double baseDamage, CallbackInfo ci)
 	{
-		if (MineColoniesTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
+		if (MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			this.envDamageInterval = 0;
 			this.envDamageImmunity = false;
@@ -35,7 +37,7 @@ public abstract class AbstractEntityMinecoloniesRaiderMixin
 	@Inject(method = "setEnvDamageInterval", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void setEnvDamageInterval(int interval, CallbackInfo ci)
 	{
-		if (interval > 0 && MineColoniesTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
+		if (interval > 0 && MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			ci.cancel();
 		}
@@ -45,7 +47,7 @@ public abstract class AbstractEntityMinecoloniesRaiderMixin
 	@Inject(method = "setEnvDamageImmunity", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void setEnvDamageImmunity(boolean immunity, CallbackInfo ci)
 	{
-		if (immunity && MineColoniesTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
+		if (immunity && MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			ci.cancel();
 		}
@@ -55,9 +57,23 @@ public abstract class AbstractEntityMinecoloniesRaiderMixin
 	@Inject(method = "setTempEnvDamageImmunity", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void setTempEnvDamageImmunity(boolean immunity, CallbackInfo ci)
 	{
-		if (immunity && MineColoniesTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
+		if (immunity && MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			ci.cancel();
+		}
+
+	}
+
+	@ModifyConstant(method = "hurt", remap = true, constant = @Constant(floatValue = 30.0F))
+	private float hurt_MIN_THORNS_DAMAG(float MIN_THORNS_DAMAGE)
+	{
+		if (MCTweaksConfigServer.INSTANCE.monsters.disableThorns.get())
+		{
+			return Float.POSITIVE_INFINITY;
+		}
+		else
+		{
+			return MIN_THORNS_DAMAGE;
 		}
 
 	}

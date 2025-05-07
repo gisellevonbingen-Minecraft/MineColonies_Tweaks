@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
 
 @Mixin(value = ChunkGenerator.class, remap = true)
 public class ChunkGeneratorMixin
@@ -49,7 +49,7 @@ public class ChunkGeneratorMixin
 
 	private boolean test(RandomState randomState, ResourceLocation randomKey, ChunkPos chunkPos)
 	{
-		var chance = MineColoniesTweaksConfigCommon.INSTANCE.worldGens.emptyColoniesGenerationChance.get();
+		var chance = MCTweaksConfigCommon.INSTANCE.worldGens.emptyColoniesGenerationChance.get();
 
 		if (chance <= 0.0D)
 		{

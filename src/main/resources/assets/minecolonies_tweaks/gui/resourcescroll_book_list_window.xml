@@ -1,5 +1,5 @@
 <window xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	size="260 244" pause="false" lightbox="false"
+	size="270 244" pause="false" lightbox="false"
 	xsi:noNamespaceSchemaLocation="file:../../../../../api/java/com/minecolonies/blockui/blockui.xsd">
 
 	<image
@@ -12,14 +12,14 @@
 	<label size="100% 11" pos="0 13" color="black" textalign="MIDDLE"
 		label="$(item.minecolonies_tweaks.resourcescroll_book)" />
 
-	<box size="234 200" linewidth="1" pos="13 26">
+	<box size="244 200" linewidth="1" pos="13 26">
 		<list id="resources" size="100% 100%">
 			<box size="100% 30" linewidth="1">
 				<itemicon id="resourceIcon" size="16 16" pos="1 6" />
-				<label id="workerName" size="163 9" pos="20 2" color="black" />
-				<label id="desc1" size="163 9" pos="20 11" color="black" />
-				<label id="desc2" size="163 9" pos="20 20" color="black" />
-				<button id="open" size="40 18" pos="183 6"
+				<label id="desc1" size="173 9" pos="20 2" color="black" />
+				<label id="desc2" size="173 9" pos="20 11" color="black" />
+				<label id="desc3" size="173 9" pos="20 20" color="black" />
+				<button id="open" size="40 18" pos="193 6"
 					label="$(minecolonies_tweaks.gui.resourcebook.open)" />
 			</box>
 		</list>

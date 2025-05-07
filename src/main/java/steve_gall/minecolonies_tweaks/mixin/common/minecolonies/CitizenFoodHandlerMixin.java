@@ -29,7 +29,7 @@ public abstract class CitizenFoodHandlerMixin
 			{
 				continue;
 			}
-			else if (MCTweaksTags.Items.isFood(foodItem.builtInRegistryHolder()::is))
+			else if (MCTweaksTags.Items.getFoodTier(foodItem.builtInRegistryHolder()::is) > 0)
 			{
 				diversity++;
 			}

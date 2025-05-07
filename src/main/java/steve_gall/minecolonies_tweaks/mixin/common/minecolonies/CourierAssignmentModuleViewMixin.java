@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModuleView;
 import com.minecolonies.core.colony.buildings.moduleviews.CourierAssignmentModuleView;
 
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = CourierAssignmentModuleView.class, remap = false)
 public abstract class CourierAssignmentModuleViewMixin extends AbstractBuildingModuleView
@@ -15,7 +15,7 @@ public abstract class CourierAssignmentModuleViewMixin extends AbstractBuildingM
 	@ModifyConstant(method = "getMaxInhabitants", remap = false, constant = @Constant(intValue = 2))
 	private int getMaxInhabitants(int levelperCouriers)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.warehouseCouriersPerLevel.get();
+		return MCTweaksConfigServer.INSTANCE.jobs.warehouseCouriersPerLevel.get();
 	}
 
 }

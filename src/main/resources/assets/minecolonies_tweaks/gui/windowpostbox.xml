@@ -1,0 +1,6 @@
+<minecolonies_tweaks:addition>
+
+    <button id="min_stack" size="86 17" pos="6 210" color="black" label="$(com.minecolonies.coremod.gui.warehouse.stock)"
+                 source="minecolonies:textures/gui/builderhut/builder_button_medium.png"/>
+
+</minecolonies_tweaks:addition>

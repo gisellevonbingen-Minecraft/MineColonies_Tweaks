@@ -1,14 +1,18 @@
 package steve_gall.minecolonies_tweaks.core.common;
 
+import java.util.Arrays;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.minecolonies.api.blocks.ModBlocks;
+import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
 import com.minecolonies.api.creativetab.ModCreativeTabs;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.items.ModItems;
+import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Registry;
@@ -40,10 +44,10 @@ import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventoryScreen;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
-import steve_gall.minecolonies_tweaks.core.common.command.ModCommands;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigCommon;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.command.MCTweaksCommands;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigClient;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksEquipmentTypes;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
@@ -66,9 +70,9 @@ public class MineColoniesTweaks
 	public MineColoniesTweaks()
 	{
 		var modLoadingContext = ModLoadingContext.get();
-		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, MineColoniesTweaksConfigClient.SPEC);
-		modLoadingContext.registerConfig(ModConfig.Type.COMMON, MineColoniesTweaksConfigCommon.SPEC);
-		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MineColoniesTweaksConfigServer.SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, MCTweaksConfigClient.SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.COMMON, MCTweaksConfigCommon.SPEC);
+		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MCTweaksConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
 		MCTweaksItems.REGISTER.register(fml_bus);
@@ -85,7 +89,7 @@ public class MineColoniesTweaks
 		fml_bus.addListener(this::onInterModEnqueue);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
-		forge_bus.addListener((RegisterCommandsEvent e) -> ModCommands.register(e.getDispatcher()));
+		forge_bus.addListener((RegisterCommandsEvent e) -> MCTweaksCommands.register(e.getDispatcher()));
 		forge_bus.register(new CommonForgeEventHandler());
 
 		NETWORK = new NetworkChannel("main");
@@ -100,6 +104,17 @@ public class MineColoniesTweaks
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
 
 			CustomCraftingModule.loadCustomCraftingModules();
+
+			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.postBox, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter))
+			{
+				var moduleProducers = buildingEntry.get().getModuleProducers();
+
+				if (!moduleProducers.contains(BuildingModules.MIN_STOCK))
+				{
+					moduleProducers.add(BuildingModules.MIN_STOCK);
+				}
+
+			}
 
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
 
@@ -174,7 +189,7 @@ public class MineColoniesTweaks
 
 	private void onConfigReload(ModConfigEvent e)
 	{
-		if (e.getConfig().getSpec() == MineColoniesTweaksConfigServer.SPEC)
+		if (e.getConfig().getSpec() == MCTweaksConfigServer.SPEC)
 		{
 			for (var block : ForgeRegistries.BLOCKS.getValues())
 			{
@@ -203,6 +218,13 @@ public class MineColoniesTweaks
 		if (e.getTab() == ModCreativeTabs.GENERAL.get())
 		{
 			for (var object : MCTweaksItems.COLOR_RESOURCE_SCROLLS.values())
+			{
+				e.accept(object.get());
+			}
+
+			e.accept(MCTweaksItems.INVENTORYSCROLL.get());
+
+			for (var object : MCTweaksItems.COLOR_INVENTORY_SCROLLS.values())
 			{
 				e.accept(object.get());
 			}

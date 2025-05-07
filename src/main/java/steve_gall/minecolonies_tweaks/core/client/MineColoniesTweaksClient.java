@@ -14,10 +14,13 @@ import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElementEv
 import steve_gall.minecolonies_tweaks.core.client.gui.AbstractContainerScreenExtension;
 import steve_gall.minecolonies_tweaks.core.client.gui.ClipboardElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
+import steve_gall.minecolonies_tweaks.core.client.gui.ColonyMapElement;
+import steve_gall.minecolonies_tweaks.core.client.gui.InventoryScrollElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollElement;
 import steve_gall.minecolonies_tweaks.core.client.view.Addition;
 import steve_gall.minecolonies_tweaks.core.client.view.FluidIcon;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemInventoryScroll;
 import steve_gall.minecolonies_tweaks.core.common.network.message.ResourcescrollBookOpenMessage;
 
 public class MineColoniesTweaksClient
@@ -87,6 +90,14 @@ public class MineColoniesTweaksClient
 		else if (stack.is(ModItems.clipboard))
 		{
 			event.register(new ClipboardElement(stack));
+		}
+		else if (stack.is(ModItems.colonyMap))
+		{
+			event.register(new ColonyMapElement(stack));
+		}
+		else if (stack.getItem() instanceof ItemInventoryScroll)
+		{
+			event.register(new InventoryScrollElement(stack));
 		}
 
 	}

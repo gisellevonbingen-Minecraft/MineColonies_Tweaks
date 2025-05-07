@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigServer;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
 public abstract class AbstractEntityAICraftingMixin
@@ -14,19 +14,19 @@ public abstract class AbstractEntityAICraftingMixin
 	@ModifyConstant(method = "decide", remap = false, constant = @Constant(intValue = 400))
 	private int decide_setDelay(int timeout)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.craftingDecideDelay.get();
+		return MCTweaksConfigServer.INSTANCE.jobs.craftingDecideDelay.get();
 	}
 
 	@ModifyConstant(method = "getRequiredProgressForMakingRawMaterial", remap = false, constant = @Constant(intValue = 10))
 	private int modifyProgressMuliplier(int PROGRESS_MULTIPLIER)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.craftingProgressMultiplier.get();
+		return MCTweaksConfigServer.INSTANCE.jobs.craftingProgressMultiplier.get();
 	}
 
 	@ModifyConstant(method = "getRequiredProgressForMakingRawMaterial", remap = false, constant = @Constant(intValue = 3))
 	private int modifyHittingTime(int HITTING_TIME)
 	{
-		return MineColoniesTweaksConfigServer.INSTANCE.jobs.craftingHittingTime.get();
+		return MCTweaksConfigServer.INSTANCE.jobs.craftingHittingTime.get();
 	}
 
 }

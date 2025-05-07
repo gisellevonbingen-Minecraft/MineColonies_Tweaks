@@ -6,7 +6,7 @@ import com.ldtteam.blockui.BOScreen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
+import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigClient;
 
 public interface CloseableWindowExtension
 {
@@ -35,7 +35,7 @@ public interface CloseableWindowExtension
 
 	default boolean minecolonies_tweaks$showParent(boolean isEsc)
 	{
-		if (isEsc && !MineColoniesTweaksConfigClient.INSTANCE.escToReturn.get().booleanValue())
+		if (isEsc && !MCTweaksConfigClient.INSTANCE.escToReturn.get().booleanValue())
 		{
 			return false;
 		}
