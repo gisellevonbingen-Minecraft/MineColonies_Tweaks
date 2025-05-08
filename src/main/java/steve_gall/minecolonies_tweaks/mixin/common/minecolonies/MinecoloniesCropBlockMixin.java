@@ -90,17 +90,12 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 
 	@Unique
 	private boolean call_sendForgeEvents(ServerLevel level, BlockPos pos, BlockState state, int i, Operation<Boolean> original) {
-		if (MCTweaksConfigServer.INSTANCE.blocks.sendForgeEvents.get()) {
-			boolean placed = false;
-			if (ForgeHooks.onCropsGrowPre(level, pos, state, true)) {
-				placed = original.call(level, pos, state, i);
-				ForgeHooks.onCropsGrowPost(level, pos, state);
-			}
-			return placed;
+		boolean placed = false;
+		if (ForgeHooks.onCropsGrowPre(level, pos, state, true)) {
+			placed = original.call(level, pos, state, i);
+			ForgeHooks.onCropsGrowPost(level, pos, state);
 		}
-		else {
-			return original.call(level, pos, state, i);
-		}
+		return placed;
 	}
 
 	@Shadow(remap = false)
@@ -137,7 +132,7 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
     @SuppressWarnings("deprecation")
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (MCTweaksConfigServer.INSTANCE.blocks.allowVanillaRandomTicks.get()) {
+		if (MCTweaksConfigServer.INSTANCE.blocks.cropVanillaFarmland.get()) {
 			// Same implementation as in the last part of MinecoloniesFarmland.randomTick
 			int growthChance = 4;
 			if (level.isRaining()) {

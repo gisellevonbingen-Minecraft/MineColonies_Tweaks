@@ -9,8 +9,6 @@ public class BlockConfig
 	public final BooleanValue cropIgnoreBiome;
 	public final BooleanValue cropCanPlayerPlant;
 	public final BooleanValue cropCanPerformBonemeal;
-	public final BooleanValue allowVanillaRandomTicks;
-	public final BooleanValue sendForgeEvents;
 
 	public BlockConfig(ForgeConfigSpec.Builder builder)
 	{
@@ -20,9 +18,6 @@ public class BlockConfig
 		this.cropIgnoreBiome = builder.define("ignoreBiome", false);
 		this.cropCanPlayerPlant = builder.define("canPlayerPlant", false);
 		this.cropCanPerformBonemeal = builder.define("canPerformBonemeal", true);
-		this.allowVanillaRandomTicks = builder.define("allowVanillaRandomTicks", false);
-		builder.comment("When a crop grows, it will send a Forge event so other mods can intercept it.");
-		this.sendForgeEvents = builder.define("sendForgeEvents", false);
 		builder.pop();
 	}
 
