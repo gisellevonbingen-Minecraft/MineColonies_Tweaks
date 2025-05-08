@@ -6,10 +6,11 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingLumberjack;
@@ -33,8 +34,8 @@ public abstract class EntityAIWorkLumberjackMixin extends AbstractEntityAICrafti
 		super(job);
 	}
 
-	@Redirect(method = "chopTree", remap = false, at = @At(value = "INVOKE", target = "mineBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Z", remap = false))
-	private boolean chopTree_mineBlock(EntityAIWorkLumberjack self, BlockPos blockToMine, BlockPos safeStand)
+	@WrapOperation(method = "chopTree", remap = false, at = @At(value = "INVOKE", target = "mineBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Z", remap = false))
+	private boolean chopTree_mineBlock(EntityAIWorkLumberjack self, BlockPos blockToMine, BlockPos safeStand, Operation<Boolean> operation)
 	{
 		var state = this.world.getBlockState(blockToMine);
 
@@ -67,7 +68,7 @@ public abstract class EntityAIWorkLumberjackMixin extends AbstractEntityAICrafti
 			return result;
 		}
 
-		return this.mineBlock(blockToMine, safeStand);
+		return operation.call(self, blockToMine, safeStand);
 	}
 
 	@Inject(method = "isItemWorthPickingUp", remap = false, at = @At(value = "TAIL"), cancellable = false)
@@ -84,10 +85,10 @@ public abstract class EntityAIWorkLumberjackMixin extends AbstractEntityAICrafti
 
 	}
 
-	@Redirect(method = "isCorrectSapling", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/ItemStackUtils.isStackSapling", remap = false))
-	private boolean isCorrectSapling_isStackSapling(ItemStack stack)
+	@WrapOperation(method = "isCorrectSapling", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/ItemStackUtils.isStackSapling", remap = false))
+	private boolean isCorrectSapling_isStackSapling(ItemStack stack, Operation<Boolean> operation)
 	{
-		return ItemStackUtils.isStackSapling(stack) || stack.is(Items.CHORUS_FLOWER);
+		return operation.call(stack) || stack.is(Items.CHORUS_FLOWER);
 	}
 
 	@Inject(method = "placeSaplings", remap = false, at = @At(value = "HEAD"), cancellable = true)

@@ -8,9 +8,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.compatibility.Compatibility;
 import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
@@ -126,8 +127,8 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		return MCTweaksConfigServer.INSTANCE.jobs.farmerSkillDivider.get().doubleValue();
 	}
 
-	@Redirect(method = "wantInventoryDumped", remap = false, at = @At(value = "INVOKE", target = "getActionRewardForCraftingSuccess", remap = false))
-	private int wantInventoryDumped_getActionRewardForCraftingSuccess(EntityAIWorkFarmer self)
+	@WrapOperation(method = "wantInventoryDumped", remap = false, at = @At(value = "INVOKE", target = "getActionRewardForCraftingSuccess", remap = false))
+	private int wantInventoryDumped_getActionRewardForCraftingSuccess(EntityAIWorkFarmer self, Operation<Integer> operation)
 	{
 		return this.getActionsDoneUntilDumping();
 	}

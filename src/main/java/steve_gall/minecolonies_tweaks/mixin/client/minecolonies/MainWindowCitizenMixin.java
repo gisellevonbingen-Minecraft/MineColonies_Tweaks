@@ -6,13 +6,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.ldtteam.blockui.Loader;
 import com.ldtteam.blockui.PaneParams;
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.views.View;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.colony.ICitizenDataView;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.entity.citizen.Skill;
@@ -68,10 +69,10 @@ public abstract class MainWindowCitizenMixin extends AbstractWindowCitizen imple
 
 	}
 
-	@Redirect(method = "onButtonClicked", remap = false, at = @At(value = "NEW", target = "com/minecolonies/core/network/messages/server/colony/citizen/AdjustSkillCitizenMessage"))
-	private AdjustSkillCitizenMessage onButtonClicked(IColony colony, @NotNull ICitizenDataView citizenDataView, int quantity, Skill skill)
+	@WrapOperation(method = "onButtonClicked", remap = false, at = @At(value = "NEW", target = "com/minecolonies/core/network/messages/server/colony/citizen/AdjustSkillCitizenMessage"))
+	private AdjustSkillCitizenMessage onButtonClicked(IColony colony, @NotNull ICitizenDataView citizenDataView, int quantity, Skill skill, Operation<AdjustSkillCitizenMessage> operation)
 	{
-		return new AdjustSkillCitizenMessage(colony, citizenDataView, this.getSkillQuantity(quantity), skill);
+		return operation.call(colony, citizenDataView, this.getSkillQuantity(quantity), skill);
 	}
 
 	@Unique
