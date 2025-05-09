@@ -8,9 +8,10 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.core.blocks.MinecoloniesCropBlock;
 import com.minecolonies.core.items.ItemCrop;
@@ -54,8 +55,8 @@ public abstract class ItemCropMixin extends BlockItem implements ItemCropExtensi
 		this.preferredBiome = MCTweaksConfigServer.INSTANCE.blocks.cropIgnoreBiome.get().booleanValue() ? null : this.minecolonies_tweaks$preferredBiome;
 	}
 
-	@Redirect(method = "canPlace", remap = true, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isCreative()Z", remap = true))
-	private boolean canPlace_isCreative(Player player)
+	@WrapOperation(method = "canPlace", remap = true, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isCreative()Z", remap = true))
+	private boolean canPlace_isCreative(Player player, Operation<Boolean> operation)
 	{
 		if (MCTweaksConfigServer.INSTANCE.blocks.cropCanPlayerPlant.get().booleanValue())
 		{
@@ -63,7 +64,7 @@ public abstract class ItemCropMixin extends BlockItem implements ItemCropExtensi
 		}
 		else
 		{
-			return player.isCreative();
+			return operation.call(player);
 		}
 
 	}
