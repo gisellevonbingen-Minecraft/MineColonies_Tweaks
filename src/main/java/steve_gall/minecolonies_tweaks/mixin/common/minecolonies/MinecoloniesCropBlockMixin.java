@@ -2,10 +2,15 @@ package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
 import java.util.List;
 
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.minecolonies.core.Network;
+import com.minecolonies.core.network.messages.client.VanillaParticleMessage;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.network.PacketDistributor;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -54,6 +59,45 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 		this.minecolonies_tweaks$preferredBiome = preferredBiome;
 	}
 
+	@WrapOperation(method = "<init>",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;of()Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;"
+			))
+	private static BlockBehaviour.Properties init_injectRandomTicks(Operation<Properties> original) {
+		return original.call().randomTicks();
+	}
+
+	@WrapOperation(method = "attemptGrow",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z",
+					ordinal = 0
+			))
+	private boolean attemptGrow_sendForgeEvents1(ServerLevel level, BlockPos pos, BlockState state, int i, Operation<Boolean> original) {
+		return call_sendForgeEvents(level, pos, state, i, original);
+	}
+
+	@WrapOperation(method = "attemptGrow",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z",
+					ordinal = 1
+			))
+	private boolean attemptGrow_sendForgeEvents2(ServerLevel level, BlockPos pos, BlockState state, int i, Operation<Boolean> original) {
+		return call_sendForgeEvents(level, pos, state, i, original);
+	}
+
+	@Unique
+	private boolean call_sendForgeEvents(ServerLevel level, BlockPos pos, BlockState state, int i, Operation<Boolean> original) {
+		boolean placed = false;
+		if (ForgeHooks.onCropsGrowPre(level, pos, state, true)) {
+			placed = original.call(level, pos, state, i);
+			ForgeHooks.onCropsGrowPost(level, pos, state);
+		}
+		return placed;
+	}
+
 	@Shadow(remap = false)
 	public abstract void attemptGrow(BlockState state, ServerLevel level, BlockPos pos);
 
@@ -85,4 +129,20 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 		this.preferredBiome = MCTweaksConfigServer.INSTANCE.blocks.cropIgnoreBiome.get().booleanValue() ? null : this.minecolonies_tweaks$preferredBiome;
 	}
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		if (MCTweaksConfigServer.INSTANCE.blocks.cropVanillaFarmland.get()) {
+			// Same implementation as in the last part of MinecoloniesFarmland.randomTick
+			int growthChance = 4;
+			if (level.isRaining()) {
+				growthChance = 6;
+			}
+
+			if (random.nextInt(100) <= growthChance) {
+				this.attemptGrow(state, level, pos);
+				Network.getNetwork().sendToPosition(new VanillaParticleMessage((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() - 0.5F), (double) ((float) pos.getZ() + 0.5F), ParticleTypes.HAPPY_VILLAGER), new PacketDistributor.TargetPoint((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 16.0, level.dimension()));
+			}
+		}
+    }
 }
