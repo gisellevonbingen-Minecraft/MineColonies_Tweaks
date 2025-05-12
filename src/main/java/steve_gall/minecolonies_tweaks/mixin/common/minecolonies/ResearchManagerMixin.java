@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.colony.IColony;
-import com.minecolonies.api.research.effects.IResearchEffectManager;
+import com.minecolonies.api.research.IResearchEffectManager;
 import com.minecolonies.core.colony.managers.ResearchManager;
 
 import steve_gall.minecolonies_tweaks.core.common.research.ResearchEffectManagerExtension;

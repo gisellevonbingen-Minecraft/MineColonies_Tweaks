@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.colony.IColony;
-import com.minecolonies.api.research.effects.IResearchEffect;
+import com.minecolonies.api.research.IResearchEffect;
 import com.minecolonies.core.research.GlobalResearchEffect;
 import com.minecolonies.core.research.ResearchEffectManager;
 
@@ -26,7 +26,7 @@ public abstract class ResearchEffectManagerMixin implements ResearchEffectManage
 	private IColony minecolonies_tweaks$colony;
 
 	@Shadow(remap = false)
-	private Map<ResourceLocation, IResearchEffect<?>> effectMap;
+	private Map<ResourceLocation, IResearchEffect> effectMap;
 
 	@Shadow(remap = false)
 	abstract double getEffectStrength(ResourceLocation id);
@@ -39,7 +39,7 @@ public abstract class ResearchEffectManagerMixin implements ResearchEffectManage
 	}
 
 	@Inject(method = "applyEffect", remap = false, at = @At(value = "HEAD"), cancellable = false)
-	private void applyEffect(IResearchEffect<?> effect, CallbackInfo ci)
+	private void applyEffect(IResearchEffect effect, CallbackInfo ci)
 	{
 		if (this.minecolonies_tweaks$isServerSide() && effect instanceof GlobalResearchEffect effect2)
 		{

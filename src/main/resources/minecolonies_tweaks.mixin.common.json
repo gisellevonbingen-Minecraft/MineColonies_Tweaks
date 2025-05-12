@@ -34,7 +34,6 @@
 		"minecolonies.EquipmentTypeEntryMixin",
 		"minecolonies.FarmFieldMixin",
 		"minecolonies.FoodUtilsMixin",
-		"minecolonies.GlobalResearchMixin",
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.GlobalResearchEffectMixin",
 		"minecolonies.ItemClipboardAccessor",
