@@ -34,6 +34,8 @@
 	"minecolonies_tweaks.gui.resourcebook.building_is_missing": "Building is missing",
 	"minecolonies_tweaks.gui.warehouse.empty_slots": "Empty Slots: %1$s/%2$s",
 	
+	"minecolonies_tweaks.text.postbox_delivery_completed": "Postbox Delivery Complete: %s",
+	
 	"item.minecolonies_tweaks.resourcescroll_black": "Black Resource Scroll",
 	"item.minecolonies_tweaks.resourcescroll_blue": "Blue Resource Scroll",
 	"item.minecolonies_tweaks.resourcescroll_brown": "Brown Resource Scroll",
