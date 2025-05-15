@@ -2,24 +2,25 @@ package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
 import java.util.List;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.minecolonies.core.Network;
-import com.minecolonies.core.network.messages.client.VanillaParticleMessage;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.network.PacketDistributor;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.blocks.AbstractBlockMinecolonies;
+import com.minecolonies.core.Network;
 import com.minecolonies.core.blocks.MinecoloniesCropBlock;
 import com.minecolonies.core.blocks.MinecoloniesFarmland;
+import com.minecolonies.core.network.messages.client.VanillaParticleMessage;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -29,7 +30,10 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
@@ -111,7 +115,7 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 			if (random.nextInt(100) <= growthChance)
 			{
 				this.attemptGrow(state, level, pos);
-				Network.getNetwork().sendToPosition(new VanillaParticleMessage(pos.getX() + 0.5D, pos.getY() - 0.5D, pos.getZ() + 0.5D, ParticleTypes.HAPPY_VILLAGER), new PacketDistributor.TargetPoint((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 16.0, level.dimension()));
+				Network.getNetwork().sendToPosition(new VanillaParticleMessage(pos.getX() + 0.5D, pos.getY() - 0.5D, pos.getZ() + 0.5D, ParticleTypes.HAPPY_VILLAGER), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 16.0, level.dimension()));
 			}
 
 		}
