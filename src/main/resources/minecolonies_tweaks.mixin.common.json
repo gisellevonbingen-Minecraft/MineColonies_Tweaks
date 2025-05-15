@@ -6,6 +6,7 @@
 	"mixins": [
 		"minecraft.ChunkGeneratorMixin",
 		
+		"minecolonies.AbstractBuildingMixin",
 		"minecolonies.AbstractEntityAICraftingAccessor",
 		"minecolonies.AbstractEntityAICraftingMixin",
 		"minecolonies.AbstractEntityAIInteractMixin",
@@ -46,11 +47,13 @@
 		"minecolonies.LoadOnlyStructureHandlerMixin",
 		"minecolonies.MinecoloniesCropBlockMixin",
 		"minecolonies.MinimumStockModuleMixin",
+		"minecolonies.PostBoxRequestMessageMixin",
 		"minecolonies.RecipeStorageMixin",
 		"minecolonies.ResearchEffectCategoryMixin",
 		"minecolonies.ResearchEffectManagerMixin",
 		"minecolonies.ResearchListenerMixin",
 		"minecolonies.ResearchManagerMixin",
+		"minecolonies.StackMixin",
 		"minecolonies.TreeMixin",
 		"minecolonies.TryResearchMessageMixin"
 	],
