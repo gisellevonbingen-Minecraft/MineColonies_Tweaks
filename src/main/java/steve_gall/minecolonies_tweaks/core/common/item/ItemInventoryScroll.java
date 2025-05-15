@@ -21,6 +21,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import steve_gall.minecolonies_tweaks.api.common.building.BuildingPos;
+import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
 
 public class ItemInventoryScroll extends Item
 {
@@ -177,10 +178,7 @@ public class ItemInventoryScroll extends Item
 		}
 		else
 		{
-			var mergeing = Component.empty().withStyle(ChatFormatting.DARK_PURPLE);
-			mergeing.append(buildingView.getCustomName().isEmpty() ? Component.translatable(buildingView.getBuildingType().getTranslationKey()) : Component.literal(buildingView.getCustomName()));
-			mergeing.append(" ").append(String.valueOf(buildingView.getBuildingLevel()));
-			buildingName = mergeing;
+			buildingName = Component.empty().append(BuildingUtils.getDisplayName(buildingView)).withStyle(ChatFormatting.DARK_PURPLE);
 		}
 
 		tooltip.add(Component.translatable("item.minecolonies_tweaks.inventoryscroll.linked_building", buildingName));
