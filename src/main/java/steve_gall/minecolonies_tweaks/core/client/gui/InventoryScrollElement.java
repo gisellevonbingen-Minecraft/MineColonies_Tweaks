@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElement;
 import steve_gall.minecolonies_tweaks.core.common.building.BuildingEmptySlotCounter;
+import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemInventoryScroll;
 
 public class InventoryScrollElement extends ResourceScrollBookElement
@@ -50,11 +51,7 @@ public class InventoryScrollElement extends ResourceScrollBookElement
 		}
 
 		this.valid = true;
-
-		var buildingName = Component.empty().withStyle(ChatFormatting.DARK_PURPLE);
-		buildingName.append(buildingView.getCustomName().isEmpty() ? Component.translatable(buildingView.getBuildingType().getTranslationKey()) : Component.literal(buildingView.getCustomName()));
-		buildingName.append(" ").append(String.valueOf(buildingView.getBuildingLevel()));
-		this.buildingName = buildingName;
+		this.buildingName = Component.empty().append(BuildingUtils.getDisplayName(buildingView)).withStyle(ChatFormatting.DARK_PURPLE);
 
 		if (this.slotCounter == null || this.slotCounter.getBuildingView() != buildingView)
 		{
