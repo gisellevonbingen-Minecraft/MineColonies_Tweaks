@@ -20,6 +20,24 @@ public abstract class FoodUtilsMixin
 		return FoodUtils2.getTierRepresentedFood(foodStack);
 	}
 
+	@Redirect(method = "hasBestOptionInInv", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getItem()Lnet/minecraft/world/item/Item;", remap = true, ordinal = 0))
+	private static Item hasBestOptionInInv0(ItemStack foodStack)
+	{
+		return FoodUtils2.getTierRepresentedFood(foodStack);
+	}
+
+	@Redirect(method = "hasBestOptionInInv", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/crafting/ItemStorage;getItem()Lnet/minecraft/world/item/Item;", remap = false, ordinal = 0))
+	private static Item hasBestOptionInInv0(ItemStorage foodStack)
+	{
+		return FoodUtils2.getTierRepresentedFood(foodStack.getItemStack());
+	}
+
+	@Redirect(method = "hasBestOptionInInv", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/crafting/ItemStorage;getItem()Lnet/minecraft/world/item/Item;", remap = false, ordinal = 2))
+	private static Item hasBestOptionInInv2(ItemStorage foodStack)
+	{
+		return FoodUtils2.getTierRepresentedFood(foodStack.getItemStack());
+	}
+
 	@Redirect(method = "getBestFoodForCitizen", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/crafting/ItemStorage;getItem()Lnet/minecraft/world/item/Item;", remap = false, ordinal = 0))
 	private static Item getBestFoodForCitizen0(ItemStorage foodStack)
 	{
