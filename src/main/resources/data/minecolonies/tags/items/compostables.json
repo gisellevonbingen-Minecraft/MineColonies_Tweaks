@@ -1,5 +1,22 @@
 {
 	"values": [
-		"minecolonies:mistletoe"
+		"minecraft:hay_block",
+		"minecraft:big_dripleaf",
+		"minecraft:spore_blossom",
+		"minecraft:glow_lichen",
+		"minecraft:dried_kelp_block",
+		"minecraft:twisting_vines",
+		"minecraft:weeping_vines",
+		"minecraft:melon",
+		"minecraft:moss_block",
+		"minecraft:moss_carpet",
+		"minecraft:shroomlight",
+		"minecraft:nether_sprouts",
+		"minecraft:mangrove_roots",
+		"minecraft:hanging_roots",
+		"minecraft:crimson_roots",
+		"minecraft:warped_roots",
+		"minecolonies:mistletoe",
+		"#minecolonies:fungi"
 	]
 }
