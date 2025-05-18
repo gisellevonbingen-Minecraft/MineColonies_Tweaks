@@ -2,17 +2,17 @@ package steve_gall.minecolonies_tweaks.api.common;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
-public abstract class CustomizableObjectRegistry<OBJECT>
+public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends CustomizableObjectRegistry.Entry>
 {
 	public static final String TAG_ID = "ID";
 	public static final String TAG_OBJECT = "Object";
@@ -20,34 +20,40 @@ public abstract class CustomizableObjectRegistry<OBJECT>
 	public static final ResourceLocation EMPTY_ID = MineColoniesTweaks.rl("empty");
 	public static final String EMPTY_ID_STRING = EMPTY_ID.toString();
 
-	private final Map<ResourceLocation, Entry<?>> map = new HashMap<>();
+	private final Map<ResourceLocation, ENTRY> map = new HashMap<>();
 
 	public CustomizableObjectRegistry()
 	{
 
 	}
 
-	public <TYPED_OBJECT extends OBJECT> void register(@NotNull ResourceLocation id, @NotNull BiConsumer<TYPED_OBJECT, CompoundTag> serializer, @NotNull Function<CompoundTag, TYPED_OBJECT> desrializer)
+	protected void register(@NotNull ENTRY entry)
 	{
+		var id = entry.getId();
+
 		if (this.map.containsKey(id))
 		{
 			throw new IllegalArgumentException("ID " + id + " is already registered");
 		}
 
-		this.map.put(id, new Entry<>(id, serializer, desrializer));
+		this.map.put(id, entry);
 	}
 
 	protected abstract ResourceLocation getId(OBJECT object);
 
+	protected abstract void serializeObject(@NotNull IFactoryController controller, @NotNull ENTRY entry, @Nullable OBJECT object, @NotNull CompoundTag tag);
+
+	protected abstract OBJECT deserializeObject(@NotNull IFactoryController controller, @NotNull ENTRY entry, @NotNull CompoundTag tag);
+
 	@NotNull
-	public CompoundTag serialize(@Nullable OBJECT object)
+	public CompoundTag serialize(@NotNull IFactoryController controller, @Nullable OBJECT object)
 	{
 		var tag = new CompoundTag();
-		serialize(object, tag);
+		serialize(controller, object, tag);
 		return tag;
 	}
 
-	public void serialize(@Nullable OBJECT object, @NotNull CompoundTag tag)
+	public void serialize(@NotNull IFactoryController controller, @Nullable OBJECT object, @NotNull CompoundTag tag)
 	{
 		if (object == null)
 		{
@@ -55,25 +61,25 @@ public abstract class CustomizableObjectRegistry<OBJECT>
 		}
 
 		var id = this.getId(object);
-		var supplier = this.map.get(id);
+		var entry = this.map.get(id);
 
-		if (supplier == null)
+		if (entry == null)
 		{
 			throw new IllegalArgumentException("ID " + id + " is not registered");
 		}
 
 		tag.putString(TAG_ID, id.toString());
-		tag.put(TAG_OBJECT, serializeWithoutId(object));
+		tag.put(TAG_OBJECT, this.serializeWithoutId(controller, object));
 	}
 
-	public CompoundTag serializeWithoutId(@Nullable OBJECT object)
+	public CompoundTag serializeWithoutId(@NotNull IFactoryController controller, @Nullable OBJECT object)
 	{
 		var tag = new CompoundTag();
-		serializeWithoutId(object, tag);
+		this.serializeWithoutId(controller, object, tag);
 		return tag;
 	}
 
-	public void serializeWithoutId(@Nullable OBJECT object, @NotNull CompoundTag tag)
+	public void serializeWithoutId(@NotNull IFactoryController controller, @Nullable OBJECT object, @NotNull CompoundTag tag)
 	{
 		if (object == null)
 		{
@@ -81,52 +87,49 @@ public abstract class CustomizableObjectRegistry<OBJECT>
 		}
 
 		var id = this.getId(object);
-		var supplier = this.map.get(id);
+		var entry = this.map.get(id);
 
-		if (supplier == null)
+		if (entry == null)
 		{
 			throw new IllegalArgumentException("ID " + id + " is not registered");
 		}
 
-		@SuppressWarnings("unchecked")
-		var serializer = (BiConsumer<OBJECT, CompoundTag>) supplier.serializer;
-		serializer.accept(object, tag);
+		this.serializeObject(controller, entry, object, tag);
 	}
 
 	@Nullable
-	public OBJECT deserialize(@NotNull CompoundTag tag)
+	public OBJECT deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag tag)
 	{
 		var id = new ResourceLocation(tag.getString(TAG_ID));
-		return deserializeWithoutId(tag.getCompound(TAG_OBJECT), id);
+		return deserializeWithoutId(controller, tag.getCompound(TAG_OBJECT), id);
 	}
 
-	@SuppressWarnings("unchecked")
-	public OBJECT deserializeWithoutId(@NotNull CompoundTag tag, ResourceLocation id)
+	public OBJECT deserializeWithoutId(@NotNull IFactoryController controller, @NotNull CompoundTag tag, ResourceLocation id)
 	{
-		var supplier = this.map.get(id);
+		var entry = this.map.get(id);
 
-		if (supplier == null)
+		if (entry == null)
 		{
 			return null;
 		}
 
-		return (OBJECT) supplier.deserializer.apply(tag);
+		return this.deserializeObject(controller, entry, tag);
 	}
 
-	private static class Entry<OBJECT>
+	public static abstract class Entry
 	{
 		@NotNull
 		private ResourceLocation id;
-		@NotNull
-		private BiConsumer<OBJECT, CompoundTag> serializer;
-		@NotNull
-		private Function<CompoundTag, OBJECT> deserializer;
 
-		public Entry(@NotNull ResourceLocation id, @NotNull BiConsumer<OBJECT, CompoundTag> serializer, @NotNull Function<CompoundTag, OBJECT> deserializer)
+		public Entry(@NotNull ResourceLocation id)
 		{
 			this.id = id;
-			this.serializer = serializer;
-			this.deserializer = deserializer;
+		}
+
+		@NotNull
+		public ResourceLocation getId()
+		{
+			return this.id;
 		}
 
 	}

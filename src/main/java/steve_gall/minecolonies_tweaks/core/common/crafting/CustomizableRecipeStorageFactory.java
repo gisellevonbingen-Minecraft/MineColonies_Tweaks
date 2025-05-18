@@ -49,7 +49,7 @@ public class CustomizableRecipeStorageFactory implements IFactory<IToken<?>, Cus
 	public @NotNull CompoundTag serialize(@NotNull IFactoryController controller, @NotNull CustomizableRecipeStorage output)
 	{
 		var tag = new CompoundTag();
-		tag.put(TAG_IMPL, CustomizedRecipeStorageRegistry.INSTANCE.serialize(output.getImpl()));
+		tag.put(TAG_IMPL, CustomizedRecipeStorageRegistry.INSTANCE.serialize(controller, output.getImpl()));
 		tag.put(TAG_TOKEN, StandardFactoryController.getInstance().serialize(output.getToken()));
 		return tag;
 	}
@@ -57,7 +57,7 @@ public class CustomizableRecipeStorageFactory implements IFactory<IToken<?>, Cus
 	@Override
 	public @NotNull CustomizableRecipeStorage deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag tag) throws Throwable
 	{
-		var impl = CustomizedRecipeStorageRegistry.INSTANCE.deserialize(tag.getCompound(TAG_IMPL));
+		var impl = CustomizedRecipeStorageRegistry.INSTANCE.deserialize(controller, tag.getCompound(TAG_IMPL));
 		IToken<?> token = StandardFactoryController.getInstance().deserialize(tag.getCompound(TAG_TOKEN));
 		return new CustomizableRecipeStorage(token, impl);
 	}
@@ -65,14 +65,14 @@ public class CustomizableRecipeStorageFactory implements IFactory<IToken<?>, Cus
 	@Override
 	public void serialize(@NotNull IFactoryController controller, @NotNull CustomizableRecipeStorage output, FriendlyByteBuf buffer)
 	{
-		buffer.writeNbt(CustomizedRecipeStorageRegistry.INSTANCE.serialize(output.getImpl()));
+		buffer.writeNbt(CustomizedRecipeStorageRegistry.INSTANCE.serialize(controller, output.getImpl()));
 		controller.serialize(buffer, output.getToken());
 	}
 
 	@Override
 	public @NotNull CustomizableRecipeStorage deserialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer) throws Throwable
 	{
-		var impl = CustomizedRecipeStorageRegistry.INSTANCE.deserialize(buffer.readNbt());
+		var impl = CustomizedRecipeStorageRegistry.INSTANCE.deserialize(controller, buffer.readNbt());
 		IToken<?> token = controller.deserialize(buffer);
 		return new CustomizableRecipeStorage(token, impl);
 	}
