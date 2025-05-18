@@ -56,7 +56,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	{
 		var compound = new CompoundTag();
 		compound.putString(TAG_ID, input.getId().toString());
-		compound.put(TAG_OBJECT, DeliverableObjectRegistry.INSTANCE.serializeWithoutId(input.getObject()));
+		compound.put(TAG_OBJECT, DeliverableObjectRegistry.INSTANCE.serializeWithoutId(controller, input.getObject()));
 		compound.put(TAG_RESULT, input.getResult().serializeNBT());
 		return compound;
 	}
@@ -65,7 +65,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	public static CustomizableDeliverable deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag compound)
 	{
 		var id = new ResourceLocation(compound.getString(TAG_ID));
-		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(compound.getCompound(TAG_OBJECT), id);
+		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(controller, compound.getCompound(TAG_OBJECT), id);
 		var result = ItemStack.of(compound.getCompound(TAG_RESULT));
 		return new CustomizableDeliverable(id, object, result);
 	}
@@ -73,7 +73,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	public static void serialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer, @NotNull CustomizableDeliverable input)
 	{
 		buffer.writeResourceLocation(input.getId());
-		buffer.writeNbt(DeliverableObjectRegistry.INSTANCE.serializeWithoutId(input.getObject()));
+		buffer.writeNbt(DeliverableObjectRegistry.INSTANCE.serializeWithoutId(controller, input.getObject()));
 		buffer.writeItem(input.getResult());
 	}
 
@@ -81,7 +81,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	public static CustomizableDeliverable deserialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer)
 	{
 		var id = buffer.readResourceLocation();
-		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(buffer.readNbt(), id);
+		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(controller, buffer.readNbt(), id);
 		var result = buffer.readItem();
 		return new CustomizableDeliverable(id, object, result);
 	}
@@ -93,6 +93,8 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 		return object != null && object.matches(stack);
 	}
 
+	@Override
+	@NotNull
 	public ResourceLocation getId()
 	{
 		return this.id;

@@ -38,7 +38,11 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
+import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestableObjectRegistry;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.resolvers.CustomizableRequestResolverFactory;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventoryScreen;
@@ -49,6 +53,7 @@ import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigClient;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksBuildingModules;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksEquipmentTypes;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
@@ -58,6 +63,10 @@ import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
 import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequest;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequestFactory;
+import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableRequestableRequest;
+import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableRequestableRequestFactory;
+import steve_gall.minecolonies_tweaks.core.common.research.ResearchCost;
+import steve_gall.minecolonies_tweaks.core.common.research.ResearchCostResolver;
 
 @Mod(MineColoniesTweaks.MOD_ID)
 public class MineColoniesTweaks
@@ -100,12 +109,16 @@ public class MineColoniesTweaks
 	{
 		e.enqueueWork(() ->
 		{
-			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
+			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestableRequestFactory());
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
+			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
+
+			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestResolverFactory<>(ResearchCostResolver.class, SerializationIds.RESEARCH_COST, ResearchCostResolver::serialize, ResearchCostResolver::deserialize));
+			RequestableObjectRegistry.INSTANCE.register(ResearchCost.ID, ResearchCost::serialize, ResearchCost::deserialize);
 
 			CustomCraftingModule.loadCustomCraftingModules();
 
-			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.postBox, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter))
+			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.postBox, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter, ModBuildings.university))
 			{
 				var moduleProducers = buildingEntry.get().getModuleProducers();
 
@@ -115,6 +128,8 @@ public class MineColoniesTweaks
 				}
 
 			}
+
+			ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
 
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
 
@@ -156,6 +171,7 @@ public class MineColoniesTweaks
 
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
 	{
+		RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
 		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
 	}
 
