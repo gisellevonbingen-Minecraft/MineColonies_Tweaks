@@ -3,36 +3,18 @@ package steve_gall.minecolonies_tweaks.core.common.requestsystem;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.reflect.TypeToken;
-import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
-import com.minecolonies.api.colony.requestsystem.request.IRequestFactory;
-import com.minecolonies.api.colony.requestsystem.request.RequestState;
-import com.minecolonies.api.colony.requestsystem.requester.IRequester;
-import com.minecolonies.api.colony.requestsystem.token.IToken;
-import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories;
+import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IFriendlyByteBufToObjectReader;
+import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.INBTToObjectConverter;
+import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IObjectToNBTConverter;
+import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IObjectToPackBufferWriter;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestFactoryHelper;
 
-public class CustomizableDeliverableRequestFactory implements IRequestFactory<CustomizableDeliverable, CustomizableDeliverableRequest>
+public class CustomizableDeliverableRequestFactory extends CustomizableRequestFactory<CustomizableDeliverable, CustomizableDeliverableRequest>
 {
-	public static final TypeToken<CustomizableDeliverableRequest> OUPYT_TYPE = TypeToken.of(CustomizableDeliverableRequest.class);
 	public static final TypeToken<CustomizableDeliverable> INPUT_TYPE = TypeToken.of(CustomizableDeliverable.class);
-
-	@Override
-	public CustomizableDeliverableRequest getNewInstance(@NotNull CustomizableDeliverable input, @NotNull IRequester location, @NotNull IToken<?> token, @NotNull RequestState initialState)
-	{
-		return new CustomizableDeliverableRequest(location, token, initialState, input);
-	}
-
-	@Override
-	@NotNull
-	public TypeToken<? extends CustomizableDeliverableRequest> getFactoryOutputType()
-	{
-		return OUPYT_TYPE;
-	}
+	public static final TypeToken<CustomizableDeliverableRequest> OUPYT_TYPE = TypeToken.of(CustomizableDeliverableRequest.class);
 
 	@Override
 	@NotNull
@@ -43,34 +25,45 @@ public class CustomizableDeliverableRequestFactory implements IRequestFactory<Cu
 
 	@Override
 	@NotNull
-	public CompoundTag serialize(@NotNull IFactoryController controller, @NotNull CustomizableDeliverableRequest output)
+	public TypeToken<? extends CustomizableDeliverableRequest> getFactoryOutputType()
 	{
-		return StandardRequestFactories.serializeToNBT(controller, output, CustomizableDeliverable::serialize);
-	}
-
-	@NotNull
-	@Override
-	public CustomizableDeliverableRequest deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag nbt) throws Throwable
-	{
-		return StandardRequestFactories.deserializeFromNBT(controller, nbt, CustomizableDeliverable::deserialize, RequestFactoryHelper.getObjectConstructor(controller, this.getFactoryOutputType()));
-	}
-
-	@Override
-	public void serialize(@NotNull IFactoryController controller, @NotNull CustomizableDeliverableRequest output, FriendlyByteBuf packetBuffer)
-	{
-		StandardRequestFactories.serializeToFriendlyByteBuf(controller, output, packetBuffer, CustomizableDeliverable::serialize);
-	}
-
-	@Override
-	public @NotNull CustomizableDeliverableRequest deserialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer) throws Throwable
-	{
-		return StandardRequestFactories.deserializeFromFriendlyByteBuf(controller, buffer, CustomizableDeliverable::deserialize, RequestFactoryHelper.getObjectConstructor(controller, this.getFactoryOutputType()));
+		return OUPYT_TYPE;
 	}
 
 	@Override
 	public short getSerializationId()
 	{
 		return SerializationIds.CUSTOMIZABLE_DELIVERABLE_REQUEST_ID;
+	}
+
+	@Override
+	public NewFactory<CustomizableDeliverable, CustomizableDeliverableRequest> getNewFactory()
+	{
+		return CustomizableDeliverableRequest::new;
+	}
+
+	@Override
+	public INBTToObjectConverter<CustomizableDeliverable> getNBTDeserializer()
+	{
+		return CustomizableDeliverable::deserialize;
+	}
+
+	@Override
+	public IObjectToNBTConverter<CustomizableDeliverable> getNBTSerializer()
+	{
+		return CustomizableDeliverable::serialize;
+	}
+
+	@Override
+	public IFriendlyByteBufToObjectReader<CustomizableDeliverable> getByteBufDeserializer()
+	{
+		return CustomizableDeliverable::deserialize;
+	}
+
+	@Override
+	public IObjectToPackBufferWriter<CustomizableDeliverable> getByteBufSerializer()
+	{
+		return CustomizableDeliverable::serialize;
 	}
 
 }
