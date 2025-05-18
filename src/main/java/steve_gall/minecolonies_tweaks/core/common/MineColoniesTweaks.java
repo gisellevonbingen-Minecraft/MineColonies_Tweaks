@@ -30,6 +30,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventoryScreen;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
@@ -45,6 +46,8 @@ import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavi
 import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequest;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequestFactory;
+import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableRequestableRequest;
+import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableRequestableRequestFactory;
 
 @Mod(MineColoniesTweaks.MOD_ID)
 public class MineColoniesTweaks
@@ -82,8 +85,9 @@ public class MineColoniesTweaks
 	{
 		e.enqueueWork(() ->
 		{
-			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
+			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestableRequestFactory());
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
+			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
 
 			CustomCraftingModule.loadCustomCraftingModules();
 
@@ -117,6 +121,7 @@ public class MineColoniesTweaks
 
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
 	{
+		RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
 		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
 	}
 
