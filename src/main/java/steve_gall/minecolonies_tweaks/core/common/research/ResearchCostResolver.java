@@ -22,6 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.IRequestableObject;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.resolvers.CustomizableRequestableBuildingResolver;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksBuildingModules;
 
 public class ResearchCostResolver extends CustomizableRequestableBuildingResolver<ResearchCost>
 {
@@ -37,34 +38,24 @@ public class ResearchCostResolver extends CustomizableRequestableBuildingResolve
 
 	public static boolean hasResolver(IBuilding building)
 	{
-		for (var resolver : building.getResolvers())
+		if (building.hasModule(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER))
 		{
-			if (resolver instanceof ResearchCostResolver)
-			{
-				return true;
-			}
-
+			var module = building.getModule(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
+			return module.hasResolver();
 		}
 
 		return false;
-
 	}
 
 	public static boolean hasResolver(IBuildingView buildingView)
 	{
-		for (var token : buildingView.getResolverIds())
+		if (buildingView.hasModuleView(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER))
 		{
-			var resolver = buildingView.getColony().getRequestManager().getResolverForToken(token);
-
-			if (resolver instanceof ResearchCostResolver)
-			{
-				return true;
-			}
-
+			var module = buildingView.getModuleView(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
+			return module.hasResolver();
 		}
 
 		return false;
-
 	}
 
 	public ResearchCostResolver(@NotNull ILocation location, @NotNull IToken<?> token)

@@ -24,18 +24,41 @@ public class ResearchCostResolverBuildingModule extends AbstractBuildingModule i
 		return Arrays.asList(new ResearchCostResolver(location, this.getBuilding().getColony().getRequestManager().getFactoryController().getNewInstance(TypeConstants.ITOKEN)));
 	}
 
+	public boolean hasResolver()
+	{
+		for (var resolver : this.getBuilding().getResolvers())
+		{
+			if (resolver instanceof ResearchCostResolver)
+			{
+				return true;
+			}
+
+		}
+
+		return false;
+	}
+
 	@Override
 	public void serializeToView(FriendlyByteBuf buf)
 	{
 		super.serializeToView(buf);
+
+		buf.writeBoolean(this.hasResolver());
 	}
 
 	public static class View extends AbstractBuildingModuleView
 	{
+		private boolean hasResolver;
+
 		@Override
 		public void deserialize(@NotNull FriendlyByteBuf buf)
 		{
+			this.hasResolver = buf.readBoolean();
+		}
 
+		public boolean hasResolver()
+		{
+			return this.hasResolver;
 		}
 
 		@Override
