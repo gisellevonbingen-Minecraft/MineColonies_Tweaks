@@ -21,10 +21,14 @@ public abstract class BuildingExtensionsModuleMixin
 {
 	@Shadow(remap = false)
 	@Nullable
-	private IBuildingExtension currentExtension;
+	private IBuildingExtension.ExtensionId currentExtensionId;
 
 	@Unique
 	private int minecolonies_tweaks$nextIndex;
+
+	@Shadow(remap = false)
+	@Nullable
+	public abstract IBuildingExtension getCurrentExtension();
 
 	@Shadow(remap = false)
 	@NotNull
@@ -38,9 +42,11 @@ public abstract class BuildingExtensionsModuleMixin
 			return;
 		}
 
-		if (this.currentExtension != null)
+		var currentExtension = getCurrentExtension();
+
+		if (currentExtension != null)
 		{
-			cir.setReturnValue(this.currentExtension);
+			cir.setReturnValue(currentExtension);
 			return;
 		}
 
@@ -58,10 +64,11 @@ public abstract class BuildingExtensionsModuleMixin
 			this.minecolonies_tweaks$nextIndex = 0;
 		}
 
-		this.currentExtension = fields.get(this.minecolonies_tweaks$nextIndex);
+		currentExtension = fields.get(this.minecolonies_tweaks$nextIndex);
+		this.currentExtensionId = currentExtension.getId();
 		this.minecolonies_tweaks$nextIndex = this.minecolonies_tweaks$nextIndex + 1;
 
-		cir.setReturnValue(this.currentExtension);
+		cir.setReturnValue(currentExtension);
 	}
 
 }
