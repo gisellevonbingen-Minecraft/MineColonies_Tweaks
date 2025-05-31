@@ -25,6 +25,7 @@ import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDat
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataSaveMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.MaximumStockUpdateMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.ResearchCostRequestMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.ResourcescrollBookOpenMessage;
 
@@ -65,6 +66,7 @@ public class NetworkChannel
 		this.registerMessage(BatchUpgradeDataSaveMessage.class, BatchUpgradeDataSaveMessage::new);
 		this.registerMessage(ResourcescrollBookOpenMessage.class, ResourcescrollBookOpenMessage::new);
 		this.registerMessage(ResearchCostRequestMessage.class, ResearchCostRequestMessage::new);
+		this.registerMessage(MaximumStockUpdateMessage.class, MaximumStockUpdateMessage::new);
 	}
 
 	public void handleSplit(AbstractMessage message, Consumer<FrameMessage> consumer)

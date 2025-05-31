@@ -1,0 +1,26 @@
+<window size="190 244" pause="false" lightbox="false">
+	<image
+		source="minecolonies:textures/gui/builderhut/builder_paper.png"
+		size="190 244" />
+	<text size="130 11" pos="30 14" textalign="MIDDLE" color="black"
+		label="$(com.minecolonies.coremod.gui.workerhuts.maximumstock)" />
+	<list id="resourcesstock" size="170 180" pos="13 50"
+		emptytext="$(com.minecolonies.coremod.gui.warehouse.stock.empty)"
+		emptycolor="black">
+		<box size="100% 17" linewidth="1">
+			<itemicon id="resourceIcon" size="17 17" pos="0 0" />
+			<text id="resourceName" size="90 12" pos="17 1" color="black" />
+			<text id="resourceQty" size="25 12" pos="106 1" color="black" />
+
+			<button label="X" id="removeStock" pos="131 1" size="30 15"
+				source="minecolonies:textures/gui/builderhut/builder_button_very_small.png"
+				color="red" />
+		</box>
+	</list>
+	<button id="addStock" size="86 17" pos="30 30" color="black"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
+		label="$(com.minecolonies.coremod.gui.warehouse.add)"
+		tooltip="$(minecolonies_tweaks.gui.maximumstock.description)" />
+	<text id="kinds" size="57 17" pos="126 30" textalign="MIDDLE_LEFT"
+		color="black" label="0/0" />
+</window>

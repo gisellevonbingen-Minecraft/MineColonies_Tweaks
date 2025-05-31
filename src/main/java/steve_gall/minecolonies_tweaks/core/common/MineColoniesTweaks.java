@@ -112,6 +112,7 @@ public class MineColoniesTweaks
 			}
 
 			ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
+			ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
 
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
 
