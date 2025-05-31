@@ -39,6 +39,9 @@
 	"minecolonies_tweaks.gui.already_requested": "Already requested",
 	"minecolonies_tweaks.gui.branch_missing": "Branch is missing",
 	"minecolonies_tweaks.gui.research_missing": "Research is missing",
+	"minecolonies_tweaks.gui.maximumstock.description": "Workers doesn't stop working.\nThis feature only destroys excess items.",
+	"minecolonies_tweaks.gui.maximumstock.empty": "No maximum stock set",
+	"minecolonies_tweaks.gui.surely": "Sure?",
 	
 	"minecolonies_tweaks.text.postbox_delivery_completed": "Postbox Delivery Complete: %s",
 	"minecolonies_tweaks.text.research_cost": "Research Cost",
@@ -91,6 +94,8 @@
 	"item.minecolonies_tweaks.inventoryscroll_red": "Red Inventory Scroll",
 	"item.minecolonies_tweaks.inventoryscroll_white": "White Inventory Scroll",
 	"item.minecolonies_tweaks.inventoryscroll_yellow": "Yellow Inventory Scroll",
+	
+	"com.minecolonies.coremod.gui.workerhuts.maximumstock": "Maximum Stock",
 	
 	"key.minecolonies_tweaks.categories.general": "Tweaks addon for MineColonies",
 	"key.minecolonies_tweaks.resourcescroll_book": "Open Resource Scroll Book GUI",

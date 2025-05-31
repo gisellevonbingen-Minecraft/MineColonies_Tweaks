@@ -29,6 +29,7 @@ public class JobConfig
 	public final BooleanValue farmerPlantAfterHarvest;
 	public final BooleanValue structureLeavesFree;
 	public final IntValue warehouseCouriersPerLevel;
+	public final IntValue maximumStockKindsPerLevel;
 
 	public JobConfig(ForgeConfigSpec.Builder builder)
 	{
@@ -72,6 +73,11 @@ public class JobConfig
 
 		builder.push("warehouse");
 		this.warehouseCouriersPerLevel = builder.defineInRange("couriersPerLevel", 2, 1, 20);
+		builder.pop();
+
+		builder.push("maximumStock");
+		builder.comment("This will be affected by research effect 'effects/minimumstockmultiplier'");
+		this.maximumStockKindsPerLevel = builder.defineInRange("kindsPerLevel", 5, 0, 100);
 		builder.pop();
 	}
 
