@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.colony.buildings.IBuilding;
+import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.core.colony.buildings.modules.MinimumStockModule;
 import com.minecolonies.core.colony.buildings.workerbuildings.PostBox;
 
@@ -17,8 +18,9 @@ public abstract class MinimumStockModuleMixin
 	{
 		if (building instanceof PostBox)
 		{
+			var increase = 1.0D + building.getColony().getResearchManager().getResearchEffects().getEffectStrength(ResearchConstants.MINIMUM_STOCK);
 			var townhall = building.getColony().getBuildingManager().getTownHall();
-			return townhall == null ? 0 : townhall.getBuildingLevel();
+			return townhall == null ? 0 : (int) (townhall.getBuildingLevel() * increase);
 		}
 		else
 		{
