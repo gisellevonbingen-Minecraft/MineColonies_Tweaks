@@ -100,7 +100,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 			var maxStackSize = stack.getMaxStackSize();
 			var target = entry.getIntValue() * maxStackSize;
 			Predicate<ItemStack> predicate = s -> this.matchesItem(s, stack);
-			var count = InventoryUtils.hasBuildingEnoughElseCount(this.building, predicate, target);
+			var count = InventoryUtils.getCountFromBuilding(this.building, predicate);
 			var over = count - target;
 
 			if (over > 0)
