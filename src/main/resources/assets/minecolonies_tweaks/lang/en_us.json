@@ -34,6 +34,7 @@
 	"minecolonies_tweaks.gui.resourcebook.building_is_missing": "Building is missing",
 	"minecolonies_tweaks.gui.warehouse.empty_slots": "Empty Slots: %1$s/%2$s",
 	"minecolonies_tweaks.gui.request_research_cost": "Request Cost?",
+	"minecolonies_tweaks.gui.request_research_cost.desc": "Begin research when request completed.",
 	"minecolonies_tweaks.gui.research_cost_requested": "Research Cost Requested: %1$s - %2$s",
 	"minecolonies_tweaks.gui.research_not_found": "Research not found: %1$s - %2$s",
 	"minecolonies_tweaks.gui.already_requested": "Already requested",

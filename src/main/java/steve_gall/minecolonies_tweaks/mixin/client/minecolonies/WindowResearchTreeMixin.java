@@ -225,6 +225,7 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 
 		var tooltip = PaneBuilders.tooltipBuilder().hoverPane(undoButton);
 		tooltip.append(Component.translatable("minecolonies_tweaks.gui.request_research_cost")).bold();
+		tooltip.paragraphBreak().append(Component.translatable("minecolonies_tweaks.gui.request_research_cost.desc"));
 
 		if (ResearchCost.isRequested(this.building, research.getBranch(), research.getId()))
 		{
