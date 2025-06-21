@@ -14,13 +14,13 @@ public class InventoryUtils2
 	public static InvWrapper wrapWithBuilding(InvWrapper inv, Level level, BlockPos pos)
 	{
 		var itemHandlers = new ArrayList<IItemHandlerModifiable>();
-		itemHandlers.add(inv);
 
 		if (getBlockEntityItemHandler(level, pos) instanceof IItemHandlerModifiable itemHandlerModifiable)
 		{
 			itemHandlers.add(itemHandlerModifiable);
 		}
 
+		itemHandlers.add(inv);
 		return new CombinedInvWrapper(inv, itemHandlers.toArray(IItemHandlerModifiable[]::new));
 	}
 

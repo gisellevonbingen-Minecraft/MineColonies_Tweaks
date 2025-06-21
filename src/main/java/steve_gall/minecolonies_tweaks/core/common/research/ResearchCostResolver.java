@@ -117,12 +117,34 @@ public class ResearchCostResolver extends CustomizableRequestableBuildingResolve
 
 			if (player != null)
 			{
-				var tree = IGlobalResearchTree.getInstance();
-				var branch = tree.getBranchData(request.getBranchId());
-				var research = branch != null ? tree.getResearch(request.getBranchId(), request.getResearchId()) : null;
+				var globalTree = IGlobalResearchTree.getInstance();
+				var branch = globalTree.getBranchData(request.getBranchId());
+				var research = branch != null ? globalTree.getResearch(request.getBranchId(), request.getResearchId()) : null;
 				var branchName = research != null ? MutableComponent.create(branch.getName()) : Component.literal(request.getBranchId().toString());
 				var researchName = research != null ? MutableComponent.create(research.getName()) : Component.literal(request.getResearchId().toString());
 				player.sendSystemMessage(Component.translatable("minecolonies_tweaks.text.research_cost.delivery_completed", branchName, researchName).withStyle(ChatFormatting.GRAY));
+
+				var colony = building.getColony();
+				var localTree = colony.getResearchManager().getResearchTree();
+
+				try
+				{
+					if (localTree instanceof LocalResearchTreeExtension extension)
+					{
+						extension.minecolonies_tweaks$setBuilding(building);
+					}
+
+					localTree.attemptBeginResearch(player, colony, research);
+				}
+				finally
+				{
+					if (localTree instanceof LocalResearchTreeExtension extension)
+					{
+						extension.minecolonies_tweaks$setBuilding(null);
+					}
+
+				}
+
 			}
 
 		}
