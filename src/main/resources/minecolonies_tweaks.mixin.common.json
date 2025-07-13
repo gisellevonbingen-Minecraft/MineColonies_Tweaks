@@ -48,6 +48,8 @@
 		"minecolonies.MinecoloniesCropBlockMixin",
 		"minecolonies.MinimumStockModuleMixin",
 		"minecolonies.PostBoxRequestMessageMixin",
+		"minecolonies.RestaurantMenuModuleMixin",
+		"minecolonies.RestaurantMenuModuleViewMixin",
 		"minecolonies.RecipeStorageMixin",
 		"minecolonies.ResearchEffectCategoryMixin",
 		"minecolonies.ResearchEffectManagerMixin",

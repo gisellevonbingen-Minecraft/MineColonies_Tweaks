@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_tweaks.core.common.config;
 
+import com.minecolonies.core.colony.buildings.modules.RestaurantMenuModule;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -16,6 +17,7 @@ public class JobConfig
 {
 	public final IntValue blockMiningDelay;
 	public final IntValue blockBuildingDelay;
+	public final IntValue menuPerLevel;
 
 	public final DoubleValue builderBlockMiningDelayBuff;
 	public final IntValue craftingProgressMultiplier;
@@ -35,6 +37,8 @@ public class JobConfig
 	{
 		this.blockMiningDelay = builder.defineInRange("blockMiningDelay", AbstractEntityAIInteract.BLOCK_MINING_DELAY, 0, Integer.MAX_VALUE);
 		this.blockBuildingDelay = builder.defineInRange("blockBuildingDelay", AbstractEntityAIStructureAccessor.getBuildBlockDelay(), 0, Integer.MAX_VALUE);
+		builder.comment("for restaurant, netherworker");
+		this.menuPerLevel = builder.defineInRange("menuPerLevel", RestaurantMenuModule.STOCK_PER_LEVEL, 0, Integer.MAX_VALUE);
 
 		builder.push("builder");
 		builder.comment("builder's blockMiningDelay = commonBlockingMiningDelay * buff");
