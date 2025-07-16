@@ -13,6 +13,7 @@
 		"minecolonies.AbstractEntityAIStructureAccessor",
 		"minecolonies.AbstractEntityAIStructureMixin",
 		"minecolonies.AbstractEntityMinecoloniesRaiderMixin",
+		"minecolonies.BuildingDyerCraftingModuleMixin",
 		"minecolonies.BuildingExtensionsModuleMixin",
 		"minecolonies.BuildingStructureHandlerMixin",
 		"minecolonies.CitizenMournHandlerMixin",
