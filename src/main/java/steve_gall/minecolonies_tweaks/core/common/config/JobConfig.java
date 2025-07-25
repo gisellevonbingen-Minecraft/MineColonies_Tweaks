@@ -13,6 +13,7 @@ public class JobConfig
 	public final IntValue craftingProgressMultiplier;
 	public final IntValue craftingHittingTime;
 	public final IntValue sifterProgressMultiplier;
+	public final BooleanValue dyerDisableBleaching;
 	public final IntValue farmerWorkDelay;
 	public final DoubleValue farmerSkillDivider;
 	public final IntValue farmerActionsDoneUntilDumping;
@@ -33,6 +34,11 @@ public class JobConfig
 		builder.push("sifter");
 		builder.comment("siftingTicks = progressMultiplier - strengthLevel");
 		this.sifterProgressMultiplier = builder.defineInRange("progressMultiplier", EntityAIWorkSifterAccessor.getMaxLevel(), 0, Integer.MAX_VALUE);
+		builder.pop();
+
+		builder.push("dyer");
+		builder.comment("disables wool bleaching to avoid wool loop crafting. To take effect it requires using the command \"/mc colony requestsystem-reset-all\"");
+		this.dyerDisableBleaching = builder.define("dyerDisableBleaching", true);
 		builder.pop();
 
 		builder.push("farmer");

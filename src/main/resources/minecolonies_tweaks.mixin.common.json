@@ -11,6 +11,7 @@
 		"minecolonies.AbstractEntityAICraftingMixin",
 		"minecolonies.AbstractEntityAIStructureMixin",
 		"minecolonies.AbstractEntityRaiderMobMixin",
+		"minecolonies.BuildingDyerCraftingModuleMixin",
 		"minecolonies.BuildingStructureHandlerMixin",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
