@@ -11,7 +11,7 @@ public class CitizenConfig
 	public CitizenConfig(ForgeConfigSpec.Builder builder)
 	{
 		this.disableMourn = builder.define("disableMourn", false);
-		builder.comment("MineColonies's default value is false");
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
 		this.disableInteractionDelay = builder.define("disableInteractionDelay", true);
 	}
 

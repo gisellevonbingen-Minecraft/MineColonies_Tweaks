@@ -58,7 +58,7 @@ public abstract class ItemCropMixin extends BlockItem implements ItemCropExtensi
 	@WrapOperation(method = "canPlace", remap = true, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isCreative()Z", remap = true))
 	private boolean canPlace_isCreative(Player player, Operation<Boolean> operation)
 	{
-		if (MCTweaksConfigServer.INSTANCE.blocks.cropCanPlayerPlant.get().booleanValue())
+		if (MCTweaksConfigServer.INSTANCE.blocks.cropVanillaFarmland.get().booleanValue())
 		{
 			return true;
 		}
@@ -90,7 +90,7 @@ public abstract class ItemCropMixin extends BlockItem implements ItemCropExtensi
 	{
 		var config = MCTweaksConfigServer.INSTANCE.blocks;
 
-		if (config.cropCanPlayerPlant.get().booleanValue() && config.cropVanillaFarmland.get().booleanValue())
+		if (config.cropVanillaFarmland.get().booleanValue())
 		{
 			return line.getContents() instanceof TranslatableContents contents && contents.getKey().equals(TranslationConstants.CROP_TOOLTIP);
 		}

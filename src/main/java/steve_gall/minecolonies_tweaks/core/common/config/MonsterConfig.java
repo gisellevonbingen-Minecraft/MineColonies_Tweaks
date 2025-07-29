@@ -11,8 +11,10 @@ public class MonsterConfig
 	public MonsterConfig(ForgeConfigSpec.Builder builder)
 	{
 		builder.push("raider");
-		this.disableImmunity = builder.define("disableImmunity", false);
-		this.disableThorns = builder.define("disableThorns", false);
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
+		this.disableImmunity = builder.define("disableImmunity", true);
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
+		this.disableThorns = builder.define("disableThorns", true);
 		builder.pop();
 	}
 

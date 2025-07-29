@@ -7,16 +7,17 @@ public class BlockConfig
 {
 	public final BooleanValue cropVanillaFarmland;
 	public final BooleanValue cropIgnoreBiome;
-	public final BooleanValue cropCanPlayerPlant;
 	public final BooleanValue cropCanPerformBonemeal;
 
 	public BlockConfig(ForgeConfigSpec.Builder builder)
 	{
 		builder.push("crop");
 		builder.comment("Caution: if change this, all planted MineColonies crops when before are will break into item.");
-		this.cropVanillaFarmland = builder.define("vanillaFarmland", false);
-		this.cropIgnoreBiome = builder.define("ignoreBiome", false);
-		this.cropCanPlayerPlant = builder.define("canPlayerPlant", false);
+		builder.comment("If this is true, player be can plant crop.");
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
+		this.cropVanillaFarmland = builder.define("vanillaFarmland", true);
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
+		this.cropIgnoreBiome = builder.define("ignoreBiome", true);
 		this.cropCanPerformBonemeal = builder.define("canPerformBonemeal", true);
 		builder.pop();
 	}

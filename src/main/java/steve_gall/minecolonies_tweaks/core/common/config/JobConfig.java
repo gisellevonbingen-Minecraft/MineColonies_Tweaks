@@ -50,8 +50,9 @@ public class JobConfig
 		builder.comment("craftingTicks = progressMultiplier / craftSkillLevel * hittingTime");
 		this.craftingProgressMultiplier = builder.defineInRange("progressMultiplier", AbstractEntityAICraftingAccessor.getProgressMultiplier(), 0, Integer.MAX_VALUE);
 		this.craftingHittingTime = builder.defineInRange("hittingTime", AbstractEntityAICraftingAccessor.getHittingTime(), 0, Integer.MAX_VALUE);
-		builder.comment("The delay ticks for go to work again after Citizen returned at hut", "This was 0 when 1.19.2");
-		this.craftingDecideDelay = builder.defineInRange("decideDelay", 400, 0, 400);
+		builder.comment("The delay ticks for go to work again after Citizen returned at hut", "This was 0 in 1.19.2");
+		builder.comment(ConfigConstants.VANILLA_IS(400));
+		this.craftingDecideDelay = builder.defineInRange("decideDelay", 0, 0, 400);
 		builder.pop();
 
 		builder.push("sifter");
@@ -61,6 +62,7 @@ public class JobConfig
 
 		builder.push("dyer");
 		builder.comment("disables wool bleaching to avoid wool loop crafting. To take effect it requires using the command \"/mc colony requestsystem-reset-all\"");
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
 		this.dyerDisableBleaching = builder.define("dyerDisableBleaching", true);
 		builder.pop();
 
@@ -71,8 +73,10 @@ public class JobConfig
 		builder.comment("if harvested count reached to this, farmer will go to dump");
 		this.farmerActionsDoneUntilDumping = builder.defineInRange("actionsDoneUntilDumping", 256, EntityAIWorkFarmerAccessor.getMaxBlocksMined(), Integer.MAX_VALUE);
 		builder.comment("whether plant seed after hoeing dirt");
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
 		this.farmerPlantAfterHoe = builder.define("plantAfterHoe", true);
 		builder.comment("whether plant seed after harvest crop");
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
 		this.farmerPlantAfterHarvest = builder.define("plantAfterHarvest", true);
 		builder.pop();
 
