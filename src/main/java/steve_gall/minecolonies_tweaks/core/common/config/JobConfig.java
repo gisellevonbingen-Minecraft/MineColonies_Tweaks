@@ -38,6 +38,7 @@ public class JobConfig
 
 		builder.push("dyer");
 		builder.comment("disables wool bleaching to avoid wool loop crafting. To take effect it requires using the command \"/mc colony requestsystem-reset-all\"");
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
 		this.dyerDisableBleaching = builder.define("dyerDisableBleaching", true);
 		builder.pop();
 
@@ -48,8 +49,10 @@ public class JobConfig
 		builder.comment("if harvested count reached to this, farmer will go to dump");
 		this.farmerActionsDoneUntilDumping = builder.defineInRange("actionsDoneUntilDumping", 256, EntityAIWorkFarmerAccessor.getMaxBlocksMined(), Integer.MAX_VALUE);
 		builder.comment("whether plant seed after hoeing dirt");
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
 		this.farmerPlantAfterHoe = builder.define("plantAfterHoe", true);
 		builder.comment("whether plant seed after harvest crop");
+		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
 		this.farmerPlantAfterHarvest = builder.define("plantAfterHarvest", true);
 		builder.pop();
 
