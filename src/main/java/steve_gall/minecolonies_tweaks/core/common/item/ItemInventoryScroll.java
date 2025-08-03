@@ -1,188 +1,47 @@
 package steve_gall.minecolonies_tweaks.core.common.item;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.minecolonies.api.creativetab.ModCreativeTabs;
-import com.minecolonies.api.tileentities.AbstractTileEntityColonyBuilding;
+import com.minecolonies.api.colony.buildings.IBuilding;
+import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.core.client.gui.WindowHutAllInventory;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import steve_gall.minecolonies_tweaks.api.common.building.BuildingPos;
-import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
 
-public class ItemInventoryScroll extends Item
+public class ItemInventoryScroll extends ItemBuildingLinkScroll
 {
-	public static final List<Component> TOOLTIPS = Arrays.asList(//
-			Component.translatable("item.minecolonies_tweaks.inventoryscroll.tooltip1"), //
-			Component.translatable("item.minecolonies_tweaks.inventoryscroll.tooltip2")//
-	);
-
-	public static final Component MESSAGE_MISSING_POS = Component.translatable("item.minecolonies_tweaks.inventoryscroll.missing_pos");
-	public static final Component MESSAGE_MISSING_BUILDING = Component.translatable("item.minecolonies_tweaks.inventoryscroll.missing_building");
-
-	public static final Component TEXT_BUILDING_MISSING = Component.translatable("item.minecolonies_tweaks.inventoryscroll.building_missing").withStyle(ChatFormatting.GRAY);
-	public static final Component TEXT_LINKED = Component.translatable("item.minecolonies_tweaks.inventoryscroll.linked");
-
-	public static final String TAG_POS = "pos";
+	public static final Component TOOLTIP = Component.translatable("item.minecolonies_tweaks.inventoryscroll.tooltip");
 
 	public ItemInventoryScroll(Item.Properties properites)
 	{
-		super(properites.stacksTo(1).tab(ModCreativeTabs.MINECOLONIES));
+		super(properites);
 	}
 
-	public static void openWindow(@NotNull ItemStack stack, @Nullable Player player)
+	@Override
+	protected void openWindow(@NotNull ItemStack stack, @Nullable Player player, @Nullable IBuildingView buildingView)
 	{
-		var pos = getPos(stack);
-
-		if (pos == null)
-		{
-			if (player != null)
-			{
-				player.sendSystemMessage(MESSAGE_MISSING_POS);
-			}
-
-			return;
-		}
-
-		var buildingView = pos.getBuildingView();
-
-		if (buildingView == null)
-		{
-			if (player != null)
-			{
-				player.sendSystemMessage(MESSAGE_MISSING_BUILDING);
-			}
-
-			return;
-		}
-
 		new WindowHutAllInventory(buildingView, null).open();
 	}
 
-	@Nullable
-	public static void setPos(@NotNull ItemStack stack, @Nullable BuildingPos pos)
-	{
-		var tag = stack.getOrCreateTag();
-
-		if (pos != null)
-		{
-			tag.put(TAG_POS, pos.serializeNBT());
-		}
-		else
-		{
-			tag.remove(TAG_POS);
-		}
-
-	}
-
-	@Nullable
-	public static BuildingPos getPos(@NotNull ItemStack stack)
-	{
-		var tag = stack.getTag();
-
-		if (tag == null)
-		{
-			return null;
-		}
-
-		return new BuildingPos(tag.getCompound(TAG_POS));
-	}
-
 	@Override
-	public InteractionResult useOn(UseOnContext context)
+	public boolean testForLink(@NotNull IBuilding building)
 	{
-		var level = context.getLevel();
-		var stack = context.getItemInHand();
-		var blockEntity = level.getBlockEntity(context.getClickedPos());
-
-		if (level.isClientSide())
-		{
-			if (blockEntity instanceof AbstractTileEntityColonyBuilding)
-			{
-
-			}
-			else
-			{
-				openWindow(stack, context.getPlayer());
-			}
-
-		}
-		else if (blockEntity instanceof AbstractTileEntityColonyBuilding buildingEntity)
-		{
-			var building = buildingEntity.getBuilding();
-
-			if (building != null)
-			{
-				setPos(stack, new BuildingPos(building));
-				context.getPlayer().sendSystemMessage(TEXT_LINKED);
-			}
-
-		}
-
-		return InteractionResult.SUCCESS;
-	}
-
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
-	{
-		var stack = player.getItemInHand(hand);
-
-		if (level.isClientSide())
-		{
-			openWindow(stack, player);
-		}
-
-		return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+		return true;
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag)
 	{
+		tooltip.add(TOOLTIP);
 		super.appendHoverText(stack, level, tooltip, flag);
-		tooltip.addAll(TOOLTIPS);
-
-		if (level == null)
-		{
-			return;
-		}
-
-		var pos = getPos(stack);
-
-		if (pos == null)
-		{
-			return;
-		}
-
-		tooltip.add(Component.empty());
-		tooltip.add(Component.translatable("item.minecolonies_tweaks.inventoryscroll.linked_pos", pos.getX(), pos.getY(), pos.getZ()));
-
-		var buildingView = pos.getBuildingView();
-		Component buildingName = null;
-
-		if (buildingView == null)
-		{
-			buildingName = TEXT_BUILDING_MISSING;
-		}
-		else
-		{
-			buildingName = Component.empty().append(BuildingUtils.getDisplayName(buildingView)).withStyle(ChatFormatting.DARK_PURPLE);
-		}
-
-		tooltip.add(Component.translatable("item.minecolonies_tweaks.inventoryscroll.linked_building", buildingName));
 	}
 
 }

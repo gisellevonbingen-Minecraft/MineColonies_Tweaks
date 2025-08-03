@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElement;
 import steve_gall.minecolonies_tweaks.core.common.building.BuildingEmptySlotCounter;
 import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemBuildingLinkScroll;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemInventoryScroll;
 
 public class InventoryScrollElement extends ResourceScrollBookElement
@@ -31,7 +32,7 @@ public class InventoryScrollElement extends ResourceScrollBookElement
 	{
 		super.onOpenClicked();
 
-		ItemInventoryScroll.openWindow(this.stack, null);
+		((ItemBuildingLinkScroll) this.stack.getItem()).openWindow(this.stack, null);
 	}
 
 	@Override
