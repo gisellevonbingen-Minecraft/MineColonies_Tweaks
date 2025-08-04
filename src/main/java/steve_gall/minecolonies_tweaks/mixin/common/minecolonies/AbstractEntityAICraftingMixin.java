@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
+import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
@@ -11,10 +12,18 @@ import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
 public abstract class AbstractEntityAICraftingMixin
 {
-	@ModifyConstant(method = "decide", remap = false, constant = @Constant(intValue = 400))
-	private int decide_setDelay(int timeout)
+	@ModifyConstant(method = "idle", remap = false, constant = @Constant(intValue = 400))
+	private int idle_setDelay(int timeout)
 	{
-		return MCTweaksConfigServer.INSTANCE.jobs.craftingDecideDelay.get();
+		if (timeout == CitizenConstants.TICKS_20 * 20)
+		{
+			return MCTweaksConfigServer.INSTANCE.jobs.craftingDecideDelay.get();
+		}
+		else
+		{
+			return timeout;
+		}
+
 	}
 
 	@ModifyConstant(method = "getRequiredProgressForMakingRawMaterial", remap = false, constant = @Constant(intValue = 10))
