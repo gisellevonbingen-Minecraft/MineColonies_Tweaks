@@ -12,19 +12,19 @@ import com.minecolonies.api.colony.requestsystem.location.ILocation;
 import com.minecolonies.api.colony.requestsystem.manager.IRequestManager;
 import com.minecolonies.api.colony.requestsystem.request.IRequest;
 import com.minecolonies.api.colony.requestsystem.requestable.Stack;
+import com.minecolonies.api.colony.requestsystem.requester.IRequester;
 import com.minecolonies.api.colony.requestsystem.token.IToken;
 import com.minecolonies.api.research.IGlobalResearchTree;
-import com.minecolonies.core.colony.buildings.AbstractBuilding;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.IRequestableObject;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.resolvers.CustomizableRequestableBuildingResolver;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.resolvers.CustomizableRequestableResolver;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksBuildingModules;
 
-public class ResearchCostResolver extends CustomizableRequestableBuildingResolver<ResearchCost>
+public class ResearchCostResolver extends CustomizableRequestableResolver<ResearchCost>
 {
 	public static ResearchCostResolver deserialize(ILocation location, IToken<?> token, CompoundTag compound)
 	{
@@ -64,9 +64,9 @@ public class ResearchCostResolver extends CustomizableRequestableBuildingResolve
 	}
 
 	@Override
-	public boolean canResolveForBuilding(@NotNull IRequestManager manager, @NotNull IRequestableObject request, @NotNull AbstractBuilding building)
+	public boolean canResolveRequest(@NotNull IRequestManager manager, @NotNull IRequester requester, @NotNull IRequestableObject request)
 	{
-		return request instanceof ResearchCost;
+		return requester.getLocation().equals(this.getLocation()) && request instanceof ResearchCost;
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class ResearchCostResolver extends CustomizableRequestableBuildingResolve
 	}
 
 	@Override
-	public @Nullable List<IToken<?>> attemptResolveForBuilding(@NotNull IRequestManager manager, @NotNull ResearchCost request, @NotNull AbstractBuilding building)
+	public @Nullable List<IToken<?>> attemptResolveRequest(@NotNull IRequestManager manager, @NotNull IRequester requester, @NotNull ResearchCost request)
 	{
 		var list = new ArrayList<IToken<?>>();
 
@@ -107,13 +107,14 @@ public class ResearchCostResolver extends CustomizableRequestableBuildingResolve
 	}
 
 	@Override
-	public void resolveForBuilding(@NotNull IRequestManager manager, @NotNull ResearchCost request, @NotNull AbstractBuilding building)
+	public void resolveRequest(@NotNull IRequestManager manager, @NotNull IRequester requester, @NotNull ResearchCost request)
 	{
 		var uuid = request.getRequester();
 
 		if (uuid != null)
 		{
-			var player = building.getColony().getWorld().getServer().getPlayerList().getPlayer(uuid);
+			var colony = manager.getColony();
+			var player = colony.getWorld().getServer().getPlayerList().getPlayer(uuid);
 
 			if (player != null)
 			{
@@ -124,13 +125,13 @@ public class ResearchCostResolver extends CustomizableRequestableBuildingResolve
 				var researchName = research != null ? MutableComponent.create(research.getName()) : Component.literal(request.getResearchId().toString());
 				player.sendSystemMessage(Component.translatable("minecolonies_tweaks.text.research_cost.delivery_completed", branchName, researchName).withStyle(ChatFormatting.GRAY));
 
-				var colony = building.getColony();
 				var localTree = colony.getResearchManager().getResearchTree();
 
 				try
 				{
 					if (localTree instanceof LocalResearchTreeExtension extension)
 					{
+						var building = colony.getBuildingManager().getBuilding(this.getLocation().getInDimensionLocation());
 						extension.minecolonies_tweaks$setBuilding(building);
 					}
 
