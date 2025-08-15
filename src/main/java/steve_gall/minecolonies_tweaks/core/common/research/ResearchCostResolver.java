@@ -20,8 +20,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.IRequestableObject;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.resolvers.CustomizableRequestableResolver;
+import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksBuildingModules;
 
 public class ResearchCostResolver extends CustomizableRequestableResolver<ResearchCost>
@@ -150,6 +152,24 @@ public class ResearchCostResolver extends CustomizableRequestableResolver<Resear
 
 		}
 
+	}
+
+	@Override
+	public @NotNull MutableComponent getRequesterDisplayName(@NotNull IRequestManager manager, @NotNull IRequest<?> request)
+	{
+		if (request.getRequest() instanceof CustomizableRequestable custom && custom.getObject() instanceof ResearchCost)
+		{
+			var requester = manager.getColony().getRequesterBuildingForPosition(this.getLocation().getInDimensionLocation());
+			var displayName = BuildingUtils.getDisplayName(requester);
+
+			if (displayName != null)
+			{
+				return displayName;
+			}
+
+		}
+
+		return super.getRequesterDisplayName(manager, request);
 	}
 
 }
