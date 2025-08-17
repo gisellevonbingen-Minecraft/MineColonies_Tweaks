@@ -3,6 +3,7 @@
 		"minecolonies:clipboard",
 		"minecolonies:colonymap",
 		"#minecolonies_tweaks:resourcescrolls",
-		"#minecolonies_tweaks:inventoryscrolls"
+		"#minecolonies_tweaks:inventoryscrolls",
+		"minecolonies_tweaks:universityscroll"
 	]
 }

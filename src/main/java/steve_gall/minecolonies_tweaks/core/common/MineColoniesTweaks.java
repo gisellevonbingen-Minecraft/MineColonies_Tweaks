@@ -246,6 +246,7 @@ public class MineColoniesTweaks
 				e.accept(object.get());
 			}
 
+			e.accept(MCTweaksItems.UNIVERSITYSCROLL.get());
 			e.accept(MCTweaksItems.RESOURCESCROLL_BOOK.get());
 		}
 
