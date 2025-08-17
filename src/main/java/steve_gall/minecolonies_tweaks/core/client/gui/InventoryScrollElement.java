@@ -12,7 +12,6 @@ import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElement;
 import steve_gall.minecolonies_tweaks.core.common.building.BuildingEmptySlotCounter;
 import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemBuildingLinkScroll;
-import steve_gall.minecolonies_tweaks.core.common.item.ItemInventoryScroll;
 
 public class InventoryScrollElement extends ResourceScrollBookElement
 {
@@ -89,7 +88,7 @@ public class InventoryScrollElement extends ResourceScrollBookElement
 	@Nullable
 	public IBuildingView getBuildingView()
 	{
-		var pos = ItemInventoryScroll.getPos(this.stack);
+		var pos = ItemBuildingLinkScroll.getPos(this.stack);
 		return pos != null ? pos.getBuildingView() : null;
 	}
 
