@@ -94,6 +94,8 @@
 	"item.minecolonies_tweaks.inventoryscroll_red": "Red Inventory Scroll",
 	"item.minecolonies_tweaks.inventoryscroll_white": "White Inventory Scroll",
 	"item.minecolonies_tweaks.inventoryscroll_yellow": "Yellow Inventory Scroll",
+	"item.minecolonies_tweaks.universityscroll": "University Scroll",
+	"item.minecolonies_tweaks.universityscroll.tooltip": "Use: Open Linked University's Research Dashboard",
 	
 	"com.minecolonies.coremod.gui.workerhuts.maximumstock": "Maximum Stock",
 	

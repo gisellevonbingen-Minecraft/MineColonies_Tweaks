@@ -14,6 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemInventoryScroll;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemUniversityScroll;
 
 public class MCTweaksItems
 {
@@ -22,6 +23,7 @@ public class MCTweaksItems
 	public static final RegistryObject<ItemResourceScrollBook> RESOURCESCROLL_BOOK = REGISTER.register("resourcescroll_book", () -> new ItemResourceScrollBook(new Item.Properties(), 9 * 3));
 	public static final RegistryObject<ItemInventoryScroll> INVENTORYSCROLL = REGISTER.register("inventoryscroll", () -> new ItemInventoryScroll(new Item.Properties()));
 	public static final Map<DyeColor, RegistryObject<ItemInventoryScroll>> COLOR_INVENTORY_SCROLLS;
+	public static final RegistryObject<ItemUniversityScroll> UNIVERSITYSCROLL = REGISTER.register("universityscroll", () -> new ItemUniversityScroll(new Item.Properties()));
 
 	static
 	{
