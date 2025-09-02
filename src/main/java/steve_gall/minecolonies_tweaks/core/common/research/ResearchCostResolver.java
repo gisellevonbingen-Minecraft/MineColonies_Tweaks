@@ -100,7 +100,7 @@ public class ResearchCostResolver extends CustomizableRequestableResolver<Resear
 	{
 		var list = new ArrayList<IToken<?>>();
 
-		for (var stack : request.getStacks())
+		for (var stack : request.getItems())
 		{
 			list.add(manager.createRequest(this, new Stack(stack)));
 		}

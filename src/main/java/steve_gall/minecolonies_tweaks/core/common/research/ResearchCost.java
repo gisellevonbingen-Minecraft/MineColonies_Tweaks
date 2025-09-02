@@ -11,7 +11,9 @@ import com.google.common.collect.ImmutableList;
 import com.minecolonies.api.colony.IColonyView;
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.request.IRequest;
+import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.IGlobalResearchTree;
 import com.minecolonies.api.util.NBTUtils;
 
@@ -36,17 +38,29 @@ public class ResearchCost implements IRequestableObject
 	{
 		var branch = new ResourceLocation(compound.getString("branch"));
 		var research = new ResourceLocation(compound.getString("research"));
-		var stacks = NBTUtils.streamCompound(compound.getList("stacks", Tag.TAG_COMPOUND)).map(ItemStack::of).toList();
+		var stacksTag = compound.getList("stacks", Tag.TAG_COMPOUND);
+		List<ItemStorage> items;
+
+		if (compound.getInt("version") == 0)
+		{
+			items = NBTUtils.streamCompound(stacksTag).map(ItemStack::of).map(ItemStorage::new).toList();
+		}
+		else
+		{
+			items = NBTUtils.streamCompound(stacksTag).map(StandardFactoryController.getInstance()::<ItemStorage> deserialize).toList();
+		}
+
 		var requester = compound.hasUUID("requester") ? compound.getUUID("requester") : null;
 
-		return new ResearchCost(branch, research, stacks, requester);
+		return new ResearchCost(branch, research, items, requester);
 	}
 
 	public static void serialize(ResearchCost cost, CompoundTag compound)
 	{
+		compound.putInt("version", 1);
 		compound.putString("branch", cost.branchId.toString());
 		compound.putString("research", cost.researchId.toString());
-		compound.put("stacks", cost.stacks.stream().map(ItemStack::serializeNBT).collect(NBTUtils.toListNBT()));
+		compound.put("stacks", cost.items.stream().map(StandardFactoryController.getInstance()::serialize).collect(NBTUtils.toListNBT()));
 
 		if (cost.requester != null)
 		{
@@ -101,17 +115,17 @@ public class ResearchCost implements IRequestableObject
 
 	private final ResourceLocation branchId;
 	private final ResourceLocation researchId;
-	private final List<ItemStack> stacks;
+	private final List<ItemStorage> items;
 	private final UUID requester;
 
 	private final Component longText;
 	private final List<MutableComponent> tooltip;
 
-	public ResearchCost(ResourceLocation branchId, ResourceLocation researchId, List<ItemStack> stacks, UUID requester)
+	public ResearchCost(ResourceLocation branchId, ResourceLocation researchId, List<ItemStorage> items, UUID requester)
 	{
 		this.branchId = branchId;
 		this.researchId = researchId;
-		this.stacks = ImmutableList.copyOf(stacks);
+		this.items = ImmutableList.copyOf(items);
 		this.requester = requester;
 
 		var researchTree = IGlobalResearchTree.getInstance();
@@ -203,9 +217,9 @@ public class ResearchCost implements IRequestableObject
 		return this.researchId;
 	}
 
-	public List<ItemStack> getStacks()
+	public List<ItemStorage> getItems()
 	{
-		return this.stacks;
+		return this.items;
 	}
 
 	public UUID getRequester()

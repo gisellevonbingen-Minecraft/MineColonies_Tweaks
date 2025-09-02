@@ -195,9 +195,9 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 			else
 			{
 				var research = IGlobalResearchTree.getInstance().getResearch(branchId, researchId);
-				ResearchCostSelector.open(this.last, research, stacks ->
+				ResearchCostSelector.open(this.last, research, items ->
 				{
-					MineColoniesTweaks.network().sendToServer(new ResearchCostRequestMessage(new BuildingPos(this.building), research.getBranch(), research.getId(), stacks));
+					MineColoniesTweaks.network().sendToServer(new ResearchCostRequestMessage(new BuildingPos(this.building), research.getBranch(), research.getId(), items));
 				});
 			}
 

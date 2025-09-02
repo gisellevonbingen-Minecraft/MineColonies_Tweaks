@@ -5,15 +5,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.ldtteam.blockui.views.BOWindow;
+import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.IGlobalResearch;
 import com.minecolonies.api.research.IResearchCost;
 import com.minecolonies.core.client.gui.WindowSelectRes;
 
-import net.minecraft.world.item.ItemStack;
-
 public class ResearchCostSelector
 {
-	public static void open(BOWindow origin, IGlobalResearch research, Consumer<List<ItemStack>> consumer)
+	public static void open(BOWindow origin, IGlobalResearch research, Consumer<List<ItemStorage>> consumer)
 	{
 		new ResearchCostSelector(origin, research, consumer).open();
 	}
@@ -21,11 +20,11 @@ public class ResearchCostSelector
 	private final BOWindow origin;
 	private final IGlobalResearch research;
 	private final List<IResearchCost> costs;
-	private final Consumer<List<ItemStack>> consumer;
+	private final Consumer<List<ItemStorage>> consumer;
 
-	private List<ItemStack> selectedCosts;
+	private List<ItemStorage> selectedCosts;
 
-	private ResearchCostSelector(BOWindow origin, IGlobalResearch research, Consumer<List<ItemStack>> consumer)
+	private ResearchCostSelector(BOWindow origin, IGlobalResearch research, Consumer<List<ItemStorage>> consumer)
 	{
 		this.origin = origin;
 		this.research = research;
@@ -52,14 +51,14 @@ public class ResearchCostSelector
 			{
 				new WindowSelectRes(this.origin, stack -> items.contains(stack.getItem()), (stack, count) ->
 				{
-					this.selectedCosts.add(stack.copyWithCount(cost.getCount()));
+					this.selectedCosts.add(new ItemStorage(stack, cost.getCount()));
 					this.cycle();
 				}, false).open();
 				break;
 			}
 			else
 			{
-				this.selectedCosts.add(new ItemStack(items.get(0), cost.getCount()));
+				this.selectedCosts.add(new ItemStorage(items.get(0), cost.getCount()));
 			}
 
 		}
