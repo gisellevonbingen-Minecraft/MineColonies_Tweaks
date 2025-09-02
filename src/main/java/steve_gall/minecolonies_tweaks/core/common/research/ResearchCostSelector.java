@@ -5,15 +5,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.ldtteam.blockui.views.BOWindow;
+import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.IGlobalResearch;
 import com.minecolonies.api.research.costs.IResearchCost;
 import com.minecolonies.core.client.gui.WindowSelectRes;
 
-import net.minecraft.world.item.ItemStack;
-
 public class ResearchCostSelector
 {
-	public static void open(BOWindow origin, IGlobalResearch research, Consumer<List<ItemStack>> consumer)
+	public static void open(BOWindow origin, IGlobalResearch research, Consumer<List<ItemStorage>> consumer)
 	{
 		new ResearchCostSelector(origin, research, consumer).open();
 	}
@@ -21,11 +20,11 @@ public class ResearchCostSelector
 	private final BOWindow origin;
 	private final IGlobalResearch research;
 	private final List<IResearchCost> costs;
-	private final Consumer<List<ItemStack>> consumer;
+	private final Consumer<List<ItemStorage>> consumer;
 
-	private List<ItemStack> selectedCosts;
+	private List<ItemStorage> selectedCosts;
 
-	private ResearchCostSelector(BOWindow origin, IGlobalResearch research, Consumer<List<ItemStack>> consumer)
+	private ResearchCostSelector(BOWindow origin, IGlobalResearch research, Consumer<List<ItemStorage>> consumer)
 	{
 		this.origin = origin;
 		this.research = research;
@@ -52,16 +51,18 @@ public class ResearchCostSelector
 			{
 				new WindowSelectRes(this.origin, stack -> items.contains(stack.getItem()), (stack, count) ->
 				{
-					stack = stack.copy();
-					stack.setCount(cost.getCount());
-					this.selectedCosts.add(stack);
+					var storage = new ItemStorage(stack);
+					storage.setAmount(cost.getCount());
+					this.selectedCosts.add(storage);
 					this.cycle();
 				}, false).open();
 				break;
 			}
 			else
 			{
-				this.selectedCosts.add(new ItemStack(items.get(0), cost.getCount()));
+				var storage = new ItemStorage(items.get(0).getDefaultInstance());
+				storage.setAmount(cost.getCount());
+				this.selectedCosts.add(storage);
 			}
 
 		}

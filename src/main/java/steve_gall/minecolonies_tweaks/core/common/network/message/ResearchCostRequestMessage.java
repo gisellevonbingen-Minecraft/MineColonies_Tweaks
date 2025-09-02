@@ -3,6 +3,8 @@ package steve_gall.minecolonies_tweaks.core.common.network.message;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.IGlobalResearchTree;
 import com.minecolonies.api.util.SoundUtils;
 
@@ -11,7 +13,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import steve_gall.minecolonies_tweaks.api.common.building.BuildingPos;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
@@ -24,14 +25,14 @@ public class ResearchCostRequestMessage extends AbstractMessage
 	private final BuildingPos buildingPos;
 	private final ResourceLocation branch;
 	private final ResourceLocation research;
-	private final List<ItemStack> stacks;
+	private final List<ItemStorage> items;
 
-	public ResearchCostRequestMessage(BuildingPos buildingPos, ResourceLocation branch, ResourceLocation research, List<ItemStack> stacks)
+	public ResearchCostRequestMessage(BuildingPos buildingPos, ResourceLocation branch, ResourceLocation research, List<ItemStorage> items)
 	{
 		this.buildingPos = buildingPos;
 		this.branch = branch;
 		this.research = research;
-		this.stacks = new ArrayList<>(stacks);
+		this.items = new ArrayList<>(items);
 	}
 
 	public ResearchCostRequestMessage(FriendlyByteBuf buffer)
@@ -41,7 +42,7 @@ public class ResearchCostRequestMessage extends AbstractMessage
 		this.buildingPos = new BuildingPos(buffer);
 		this.branch = buffer.readResourceLocation();
 		this.research = buffer.readResourceLocation();
-		this.stacks = buffer.readList(FriendlyByteBuf::readItem);
+		this.items = buffer.readList(StandardFactoryController.getInstance()::deserialize);
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class ResearchCostRequestMessage extends AbstractMessage
 		this.buildingPos.serializeBuffer(buffer);
 		buffer.writeResourceLocation(this.branch);
 		buffer.writeResourceLocation(this.research);
-		buffer.writeCollection(this.stacks, FriendlyByteBuf::writeItem);
+		buffer.writeCollection(this.items, StandardFactoryController.getInstance()::serialize);
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class ResearchCostRequestMessage extends AbstractMessage
 		}
 
 		player.sendSystemMessage(Component.translatable("minecolonies_tweaks.gui.research_cost_requested", MutableComponent.create(branch.getName()), MutableComponent.create(research.getName())).withStyle(ChatFormatting.GRAY));
-		var request = new ResearchCost(this.branch, this.research, this.stacks, player.getUUID());
+		var request = new ResearchCost(this.branch, this.research, this.items, player.getUUID());
 		building.createRequest(new CustomizableRequestable(request), true);
 		SoundUtils.playSuccessSound(player, building.getPosition());
 	}
@@ -108,9 +109,9 @@ public class ResearchCostRequestMessage extends AbstractMessage
 		return this.research;
 	}
 
-	public List<ItemStack> getStacks()
+	public List<ItemStorage> getItems()
 	{
-		return this.stacks;
+		return this.items;
 	}
 
 }
