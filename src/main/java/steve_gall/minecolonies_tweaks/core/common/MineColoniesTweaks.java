@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.minecolonies.api.blocks.ModBlocks;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
@@ -14,38 +13,32 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.items.ModItems;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.fml.javafmlmod.FMLModContainer;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
+import steve_gall.minecolonies_tweaks.api.common.network.MessageRegistrar;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestableObjectRegistry;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.resolvers.CustomizableRequestResolverFactory;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
-import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventoryScreen;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
 import steve_gall.minecolonies_tweaks.core.common.command.MCTweaksCommands;
@@ -54,13 +47,14 @@ import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksBuildingModules;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksDataComponents;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksEquipmentTypes;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksRecipes;
 import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavior;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
-import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
+import steve_gall.minecolonies_tweaks.core.common.network.MCTweaksMessagesRegistrar;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequest;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequestFactory;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableRequestableRequest;
@@ -74,35 +68,35 @@ public class MineColoniesTweaks
 	public static final String MOD_ID = "minecolonies_tweaks";
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private static NetworkChannel NETWORK;
-
-	public MineColoniesTweaks()
+	public MineColoniesTweaks(FMLModContainer modContainer, Dist dist)
 	{
-		var modLoadingContext = ModLoadingContext.get();
-		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, MCTweaksConfigClient.SPEC);
-		modLoadingContext.registerConfig(ModConfig.Type.COMMON, MCTweaksConfigCommon.SPEC);
-		modLoadingContext.registerConfig(ModConfig.Type.SERVER, MCTweaksConfigServer.SPEC);
+		modContainer.registerConfig(ModConfig.Type.CLIENT, MCTweaksConfigClient.SPEC);
+		modContainer.registerConfig(ModConfig.Type.COMMON, MCTweaksConfigCommon.SPEC);
+		modContainer.registerConfig(ModConfig.Type.SERVER, MCTweaksConfigServer.SPEC);
 
-		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		var fml_bus = modContainer.getEventBus();
+		MCTweaksDataComponents.REGISTER.register(fml_bus);
 		MCTweaksItems.REGISTER.register(fml_bus);
 		MCTweaksRecipes.SERIALIZERS.register(fml_bus);
 		MCTweaksMenuTypes.REGISTER.register(fml_bus);
 		MCTweaksEquipmentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
-		fml_bus.addListener(this::onFMLClientSetup);
 		fml_bus.addListener(this::onRegister);
 		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
-		fml_bus.addListener(this::onInterModEnqueue);
+		fml_bus.addListener(this::onRegisterPayloadHandlers);
 
-		var forge_bus = MinecraftForge.EVENT_BUS;
+		var forge_bus = NeoForge.EVENT_BUS;
 		forge_bus.addListener((RegisterCommandsEvent e) -> MCTweaksCommands.register(e.getDispatcher()));
 		forge_bus.register(new CommonForgeEventHandler());
 
-		NETWORK = new NetworkChannel("main");
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
+		if (dist.isClient())
+		{
+			new MineColoniesTweaksClient(modContainer);
+		}
+
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
@@ -133,41 +127,7 @@ public class MineColoniesTweaks
 			ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
 
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
-
-			this.registerCompostables();
 		});
-	}
-
-	private void registerCompostables()
-	{
-		var leave = 0.30F;
-		this.registerCompostable(ModItems.mistletoe, leave);
-
-		var crop = 0.65F;
-		this.registerCompostable(ModBlocks.blockBellPepper, crop);
-		this.registerCompostable(ModBlocks.blockCabbage, crop);
-		this.registerCompostable(ModBlocks.blockChickpea, crop);
-		this.registerCompostable(ModBlocks.blockDurum, crop);
-		this.registerCompostable(ModBlocks.blockEggplant, crop);
-		this.registerCompostable(ModBlocks.blockGarlic, crop);
-		this.registerCompostable(ModBlocks.blockSoyBean, crop);
-		this.registerCompostable(ModBlocks.blockTomato, crop);
-		this.registerCompostable(ModBlocks.blockRice, crop);
-		this.registerCompostable(ModBlocks.blockButternutSquash, crop);
-		this.registerCompostable(ModBlocks.blockCorn, crop);
-		this.registerCompostable(ModBlocks.blockMint, crop);
-		this.registerCompostable(ModBlocks.blockNetherPepper, crop);
-		this.registerCompostable(ModBlocks.blockPeas, crop);
-
-		var food = 0.85F;
-		this.registerCompostable(ModItems.manchet_bread, food);
-		this.registerCompostable(ModItems.muffin, food);
-		this.registerCompostable(ModItems.lembas_scone, food);
-	}
-
-	private void registerCompostable(ItemLike itemLike, float chance)
-	{
-		ComposterBlock.COMPOSTABLES.put(itemLike.asItem(), chance);
 	}
 
 	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
@@ -208,7 +168,7 @@ public class MineColoniesTweaks
 	{
 		if (e.getConfig().getSpec() == MCTweaksConfigServer.SPEC)
 		{
-			for (var block : ForgeRegistries.BLOCKS.getValues())
+			for (var block : BuiltInRegistries.BLOCK)
 			{
 				if (block instanceof MinecoloniesCropBlockExtension extension)
 				{
@@ -217,7 +177,7 @@ public class MineColoniesTweaks
 
 			}
 
-			for (var item : ForgeRegistries.ITEMS.getValues())
+			for (var item : BuiltInRegistries.ITEM)
 			{
 				if (item instanceof ItemCropExtension extension)
 				{
@@ -252,28 +212,16 @@ public class MineColoniesTweaks
 
 	}
 
-	private void onFMLClientSetup(FMLClientSetupEvent e)
+	private void onRegisterPayloadHandlers(RegisterPayloadHandlersEvent event)
 	{
-		MenuScreens.register(MCTweaksMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
-	}
-
-	private void onInterModEnqueue(InterModEnqueueEvent event)
-	{
-		if (ModList.get().isLoaded(CuriosCompat.MOD_ID))
-		{
-			CuriosCompat.sendInterModComms();
-		}
-
-	}
-
-	public static NetworkChannel network()
-	{
-		return NETWORK;
+		var modVersion = ModList.get().getModContainerById(MOD_ID).get().getModInfo().getVersion().toString();
+		var registry = new MessageRegistrar(event.registrar(MOD_ID).versioned(modVersion));
+		MCTweaksMessagesRegistrar.register(registry);
 	}
 
 	public static ResourceLocation rl(String path)
 	{
-		return new ResourceLocation(MOD_ID, path);
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
 	}
 
 }

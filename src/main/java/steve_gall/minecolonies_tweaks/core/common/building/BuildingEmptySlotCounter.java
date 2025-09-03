@@ -6,12 +6,12 @@ import java.util.List;
 
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.tileentities.AbstractTileEntityRack;
+import com.minecolonies.api.util.IItemHandlerCapProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class BuildingEmptySlotCounter
 {
@@ -127,8 +127,7 @@ public class BuildingEmptySlotCounter
 		}
 		else
 		{
-			var cap = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER);
-			return cap == null ? null : cap.orElse(null);
+			return IItemHandlerCapProvider.wrap(blockEntity).getItemHandlerCap();
 		}
 
 	}

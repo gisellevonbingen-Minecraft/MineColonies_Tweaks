@@ -7,11 +7,16 @@ import com.minecolonies.api.colony.buildings.modules.IItemListModuleView;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.core.colony.buildings.modules.ItemListModule;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.util.SerializationHelper;
 
 public class AssignFilterableItemsMessage extends BuildingModuleMessage
 {
+	public static final CustomPacketPayload.Type<AssignFilterableItemsMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesTweaks.rl("assign_filterable_items"));
+
 	public enum Function
 	{
 		CLEAR,
@@ -30,25 +35,25 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 		this.storages = ImmutableList.copyOf(storages);
 	}
 
-	public AssignFilterableItemsMessage(FriendlyByteBuf buffer)
+	public AssignFilterableItemsMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
 		this.function = buffer.readEnum(Function.class);
-		this.storages = buffer.readList(reader -> new ItemStorage(reader.readItem()));
+		this.storages = buffer.readList(SerializationHelper::deserializer);
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
 		buffer.writeEnum(this.function);
-		buffer.writeCollection(this.storages, (writer, storage) -> writer.writeItem(storage.getItemStack()));
+		buffer.writeCollection(this.storages, SerializationHelper::serializer);
 	}
 
 	@Override
-	public void handle(NetworkEvent.Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
@@ -65,6 +70,12 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 
 		}
 
+	}
+
+	@Override
+	public CustomPacketPayload.Type<AssignFilterableItemsMessage> type()
+	{
+		return TYPE;
 	}
 
 	public Function getFunction()

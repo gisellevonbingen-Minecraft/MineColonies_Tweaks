@@ -1,0 +1,20 @@
+{
+	"type": "minecolonies_tweaks:component_merge_shapeless",
+	"ingredients": [
+		{
+			"type": "neoforge:difference",
+			"base": {
+				"tag": "minecolonies_tweaks:resourcescrolls"
+			},
+			"subtracted": {
+				"item": "minecolonies_tweaks:resourcescroll_orange"
+			}
+		},
+		{
+			"tag": "c:dyes/orange"
+		}
+	],
+	"result": {
+		"id": "minecolonies_tweaks:resourcescroll_orange"
+	}
+}

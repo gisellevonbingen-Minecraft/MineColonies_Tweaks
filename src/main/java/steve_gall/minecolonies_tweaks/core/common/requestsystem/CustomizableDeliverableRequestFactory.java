@@ -3,10 +3,10 @@ package steve_gall.minecolonies_tweaks.core.common.requestsystem;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.reflect.TypeToken;
-import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IFriendlyByteBufToObjectReader;
 import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.INBTToObjectConverter;
 import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IObjectToNBTConverter;
 import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IObjectToPackBufferWriter;
+import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IRegistryFriendlyByteBufToObjectReader;
 
 import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
@@ -55,7 +55,7 @@ public class CustomizableDeliverableRequestFactory extends CustomizableRequestFa
 	}
 
 	@Override
-	public IFriendlyByteBufToObjectReader<CustomizableDeliverable> getByteBufDeserializer()
+	public IRegistryFriendlyByteBufToObjectReader<CustomizableDeliverable> getByteBufDeserializer()
 	{
 		return CustomizableDeliverable::deserialize;
 	}

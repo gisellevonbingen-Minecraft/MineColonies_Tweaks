@@ -1,30 +1,30 @@
 <minecolonies_tweaks:addition>
 
-	<buttonimage id="dir-resize-up-north" size="14 14"
-		pos="147 41" textcolor="white" textalign="MIDDLE" label="+" />
-	<buttonimage id="dir-resize-down-north" size="14 14"
-		pos="161 41" textcolor="white" textalign="MIDDLE" label="-" />
+	<button id="dir-resize-up-north" size="14 14"
+		pos="147 41" color="white" textalign="MIDDLE" label="+" />
+	<button id="dir-resize-down-north" size="14 14"
+		pos="161 41" color="white" textalign="MIDDLE" label="-" />
 
-	<buttonimage id="dir-resize-up-south" size="14 14"
-		pos="127 117" textcolor="white" textalign="MIDDLE" label="+" />
-	<buttonimage id="dir-resize-down-south" size="14 14"
-		pos="141 117" textcolor="white" textalign="MIDDLE" label="-" />
+	<button id="dir-resize-up-south" size="14 14"
+		pos="127 117" color="white" textalign="MIDDLE" label="+" />
+	<button id="dir-resize-down-south" size="14 14"
+		pos="141 117" color="white" textalign="MIDDLE" label="-" />
 
-	<buttonimage id="dir-resize-up-west" size="14 14"
-		pos="91 69" textcolor="white" textalign="MIDDLE" label="+" />
-	<buttonimage id="dir-resize-down-west" size="14 14"
-		pos="91 83" textcolor="white" textalign="MIDDLE" label="-" />
+	<button id="dir-resize-up-west" size="14 14"
+		pos="91 69" color="white" textalign="MIDDLE" label="+" />
+	<button id="dir-resize-down-west" size="14 14"
+		pos="91 83" color="white" textalign="MIDDLE" label="-" />
 
-	<buttonimage id="dir-resize-up-east" size="14 14"
-		pos="177 69" textcolor="white" textalign="MIDDLE" label="+" />
-	<buttonimage id="dir-resize-down-east" size="14 14"
-		pos="177 83" textcolor="white" textalign="MIDDLE" label="-" />
+	<button id="dir-resize-up-east" size="14 14"
+		pos="177 69" color="white" textalign="MIDDLE" label="+" />
+	<button id="dir-resize-down-east" size="14 14"
+		pos="177 83" color="white" textalign="MIDDLE" label="-" />
 
-	<buttonimage id="dir-resize-up-all" size="14 14"
-		pos="163 103" textcolor="white" textalign="MIDDLE" label="+"
+	<button id="dir-resize-up-all" size="14 14"
+		pos="163 103" color="white" textalign="MIDDLE" label="+"
 		tooltip="$(minecolonies_tweaks.gui.up_all)" />
-	<buttonimage id="dir-resize-down-all" size="14 14"
-		pos="177 103" textcolor="white" textalign="MIDDLE" label="-"
+	<button id="dir-resize-down-all" size="14 14"
+		pos="177 103" color="white" textalign="MIDDLE" label="-"
 		tooltip="$(minecolonies_tweaks.gui.down_all)" />
 
 </minecolonies_tweaks:addition>

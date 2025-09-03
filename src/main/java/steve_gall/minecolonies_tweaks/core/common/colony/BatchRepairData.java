@@ -7,9 +7,11 @@ import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.NBTUtils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import steve_gall.minecolonies_tweaks.core.common.util.SerializationHelper;
 
 public class BatchRepairData
 {
@@ -25,37 +27,37 @@ public class BatchRepairData
 		this.markAsDontRepairs = new ArrayList<>();
 	}
 
-	public void deserializeNBT(CompoundTag tag)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag)
 	{
 		this.costs.clear();
-		NBTUtils.streamCompound(tag.getList(TAG_COSTS, Tag.TAG_COMPOUND)).map(BuildingCost::deserialize).forEach(this.costs::add);
+		NBTUtils.streamCompound(tag.getList(TAG_COSTS, Tag.TAG_COMPOUND)).map(SerializationHelper.apply(provider, BuildingCost::deserialize)).forEach(this.costs::add);
 
 		this.markAsDontRepairs.clear();
 		this.markAsDontRepairs.addAll(BlockPosUtil.readPosListFromNBT(tag, TAG_MARK_AS_DONT_REPAIRS));
 	}
 
-	public CompoundTag serializeNBT()
+	public CompoundTag serializeNBT(HolderLookup.Provider provider)
 	{
 		var tag = new CompoundTag();
-		tag.put(TAG_COSTS, this.costs.stream().map(BuildingCost::serialize).collect(NBTUtils.toListNBT()));
+		tag.put(TAG_COSTS, this.costs.stream().map(SerializationHelper.apply(provider, BuildingCost::serialize)).collect(NBTUtils.toListNBT()));
 		BlockPosUtil.writePosListToNBT(tag, TAG_MARK_AS_DONT_REPAIRS, this.markAsDontRepairs);
 
 		return tag;
 	}
 
-	public void deserializeBuffer(FriendlyByteBuf buffer)
+	public void deserializeBuffer(RegistryFriendlyByteBuf buffer)
 	{
 		this.costs.clear();
-		buffer.readList(BuildingCost::decode).forEach(this.costs::add);
+		buffer.readList(SerializationHelper.reader(BuildingCost::decode)).forEach(this.costs::add);
 
 		this.markAsDontRepairs.clear();
-		buffer.readList(FriendlyByteBuf::readBlockPos).forEach(this.markAsDontRepairs::add);
+		buffer.readList(RegistryFriendlyByteBuf::readBlockPos).forEach(this.markAsDontRepairs::add);
 	}
 
-	public void serializeBuffer(FriendlyByteBuf buffer)
+	public void serializeBuffer(RegistryFriendlyByteBuf buffer)
 	{
-		buffer.writeCollection(this.costs, BuildingCost::encode);
-		buffer.writeCollection(this.markAsDontRepairs, FriendlyByteBuf::writeBlockPos);
+		buffer.writeCollection(this.costs, SerializationHelper.writer(BuildingCost::encode));
+		buffer.writeCollection(this.markAsDontRepairs, RegistryFriendlyByteBuf::writeBlockPos);
 	}
 
 	public List<BuildingCost> getCosts()

@@ -12,7 +12,7 @@ import com.minecolonies.api.colony.buildings.modules.ICreatesResolversModule;
 import com.minecolonies.api.colony.requestsystem.resolver.IRequestResolver;
 import com.minecolonies.api.util.constant.TypeConstants;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import steve_gall.minecolonies_tweaks.core.common.research.ResearchCostResolver;
 
 public class ResearchCostResolverBuildingModule extends AbstractBuildingModule implements ICreatesResolversModule
@@ -39,7 +39,7 @@ public class ResearchCostResolverBuildingModule extends AbstractBuildingModule i
 	}
 
 	@Override
-	public void serializeToView(FriendlyByteBuf buf)
+	public void serializeToView(RegistryFriendlyByteBuf buf)
 	{
 		super.serializeToView(buf);
 
@@ -51,7 +51,7 @@ public class ResearchCostResolverBuildingModule extends AbstractBuildingModule i
 		private boolean hasResolver;
 
 		@Override
-		public void deserialize(@NotNull FriendlyByteBuf buf)
+		public void deserialize(@NotNull RegistryFriendlyByteBuf buf)
 		{
 			this.hasResolver = buf.readBoolean();
 		}

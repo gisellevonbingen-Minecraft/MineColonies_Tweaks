@@ -7,9 +7,11 @@ import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootTable;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
 
 public interface ICustomizedRecipeStorage
@@ -32,7 +34,7 @@ public interface ICustomizedRecipeStorage
 
 	ResourceLocation getRecipeType();
 
-	ResourceLocation getLootTable();
+	ResourceKey<LootTable> getLootTable();
 
 	EquipmentTypeEntry getRequiredTool();
 

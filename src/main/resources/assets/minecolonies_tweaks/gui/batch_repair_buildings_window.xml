@@ -7,11 +7,11 @@
 	<button id="exceptOpenablesOnlyChanged" size="20 17" pos="140 5"
 		label="X"
 		source="minecolonies:textures/gui/builderhut/builder_button_small.png"
-		textcolor="black" shadow="false" />
+		color="black" shadow="false" />
 	<text id="exceptOpenablesChangedOnlyText" size="200 17"
 		pos="161 5"
 		label="$(minecolonies_tweaks.gui.exceptOpenablesOnlyChanged)"
-		textcolor="white" wrap="true" />
+		color="white" wrap="true" />
 
 	<view size="100% 168" pos="0 31">
 		<view size="135 100%" pos="0 0">
@@ -69,24 +69,24 @@
 		size="80 24" pos="0 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
 		label="$(minecolonies_tweaks.gui.assign_all_automatically)"
-		textcolor="black" wrap="true" />
+		color="black" wrap="true" />
 
 	<button id="clearAssignments" align="BOTTOM_LEFT" size="80 24"
 		pos="85 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		label="$(minecolonies_tweaks.gui.clear_assignments)" textcolor="black"
+		label="$(minecolonies_tweaks.gui.clear_assignments)" color="black"
 		wrap="true" />
 
 	<button id="markAllDontRepair" align="BOTTOM_LEFT" size="80 24"
 		pos="170 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
 		label="$(minecolonies_tweaks.gui.mark_all_dont_repair)"
-		textcolor="black" wrap="true" />
+		color="black" wrap="true" />
 
 	<button id="clearDontRepair" align="BOTTOM_LEFT" size="80 24"
 		pos="255 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		label="$(minecolonies_tweaks.gui.clear_dont_repair)" textcolor="black"
+		label="$(minecolonies_tweaks.gui.clear_dont_repair)" color="black"
 		wrap="true" />
 
 	<text id="selectionText" align="BOTTOM_LEFT" size="200 8"
@@ -95,9 +95,9 @@
 	<button id="repair" align="BOTTOM_RIGHT" size="70 24" pos="5 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
 		label="$(minecolonies_tweaks.gui.repair_and_save)" wrap="true"
-		textcolor="black" />
+		color="black" />
 
 	<button id="cancel" align="TOP_RIGHT" size="14 15" pos="5 5"
-		source="minecolonies:textures/gui/button_x.png" textcolor="black" />
+	source="minecolonies:textures/gui/button_x.png" color="black" />
 
 </window>

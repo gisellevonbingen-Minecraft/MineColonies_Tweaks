@@ -10,8 +10,9 @@ import com.minecolonies.api.colony.requestsystem.resolver.IRequestResolverFactor
 import com.minecolonies.api.colony.requestsystem.token.IToken;
 import com.minecolonies.api.util.constant.TypeConstants;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public class CustomizableRequestResolverFactory<RESOLVER extends ICustomizableRequestResolver<?>> implements IRequestResolverFactory<RESOLVER>
 {
@@ -53,11 +54,11 @@ public class CustomizableRequestResolverFactory<RESOLVER extends ICustomizableRe
 	}
 
 	@Override
-	public @NotNull CompoundTag serialize(@NotNull IFactoryController controller, @NotNull RESOLVER output)
+	public @NotNull CompoundTag serialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull RESOLVER output)
 	{
 		var tag = new CompoundTag();
-		tag.put("location", controller.serialize(output.getLocation()));
-		tag.put("token", controller.serialize(output.getId()));
+		tag.put("location", controller.serializeTag(provider, output.getLocation()));
+		tag.put("token", controller.serializeTag(provider, output.getId()));
 
 		var impl = new CompoundTag();
 		this.serializer.serialize(output, impl);
@@ -66,23 +67,23 @@ public class CustomizableRequestResolverFactory<RESOLVER extends ICustomizableRe
 	}
 
 	@Override
-	public @NotNull RESOLVER deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag tag) throws Throwable
+	public @NotNull RESOLVER deserialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag) throws Throwable
 	{
-		ILocation location = controller.deserialize(tag.getCompound("location"));
-		IToken<?> token = controller.deserialize(tag.getCompound("token"));
+		ILocation location = controller.deserializeTag(provider, tag.getCompound("location"));
+		IToken<?> token = controller.deserializeTag(provider, tag.getCompound("token"));
 		return this.deserializer.deserialze(location, token, tag.getCompound("impl"));
 	}
 
 	@Override
-	public void serialize(@NotNull IFactoryController controller, @NotNull RESOLVER output, FriendlyByteBuf packetBuffer)
+	public void serialize(@NotNull IFactoryController controller, @NotNull RESOLVER output, RegistryFriendlyByteBuf packetBuffer)
 	{
-		packetBuffer.writeNbt(this.serialize(controller, output));
+		packetBuffer.writeNbt(this.serialize(packetBuffer.registryAccess(), controller, output));
 	}
 
 	@Override
-	public @NotNull RESOLVER deserialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer) throws Throwable
+	public @NotNull RESOLVER deserialize(@NotNull IFactoryController controller, @NotNull RegistryFriendlyByteBuf buffer) throws Throwable
 	{
-		return this.deserialize(controller, buffer.readNbt());
+		return this.deserialize(buffer.registryAccess(), controller, buffer.readNbt());
 	}
 
 	@FunctionalInterface

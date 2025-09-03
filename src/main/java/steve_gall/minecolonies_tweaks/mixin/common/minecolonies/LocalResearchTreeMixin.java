@@ -18,7 +18,7 @@ import com.minecolonies.core.research.LocalResearchTree;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import steve_gall.minecolonies_tweaks.core.common.inventory.InventoryUtils2;
 import steve_gall.minecolonies_tweaks.core.common.research.LocalResearchTreeExtension;
 
@@ -40,7 +40,7 @@ public abstract class LocalResearchTreeMixin implements LocalResearchTreeExtensi
 	@Unique
 	private IBuilding minecolonies_tweaks$building = null;
 
-	@WrapOperation(method = "attemptBeginResearch", remap = false, at = @At(value = "NEW", target = "net/minecraftforge/items/wrapper/InvWrapper", remap = false))
+	@WrapOperation(method = "attemptBeginResearch", remap = false, at = @At(value = "NEW", target = "net/neoforged/neoforge/items/wrapper/InvWrapper", remap = false))
 	private InvWrapper newInvWrapper(Container inv, Operation<InvWrapper> operation)
 	{
 		var original = operation.call(inv);

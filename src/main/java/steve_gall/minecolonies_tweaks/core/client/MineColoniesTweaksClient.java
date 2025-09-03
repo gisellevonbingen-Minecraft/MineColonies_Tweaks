@@ -4,35 +4,39 @@ import com.ldtteam.blockui.Loader;
 import com.minecolonies.api.items.ModItems;
 import com.minecolonies.core.items.ItemResourceScroll;
 
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.fml.javafmlmod.FMLModContainer;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElementEvent;
 import steve_gall.minecolonies_tweaks.core.client.gui.AbstractContainerScreenExtension;
 import steve_gall.minecolonies_tweaks.core.client.gui.ClipboardElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
 import steve_gall.minecolonies_tweaks.core.client.gui.ColonyMapElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.InventoryScrollElement;
+import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventoryScreen;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.UniversityScrollElement;
 import steve_gall.minecolonies_tweaks.core.client.view.Addition;
 import steve_gall.minecolonies_tweaks.core.client.view.FluidIcon;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemInventoryScroll;
 import steve_gall.minecolonies_tweaks.core.common.network.message.ResourcescrollBookOpenMessage;
 
 public class MineColoniesTweaksClient
 {
-	public MineColoniesTweaksClient()
+	public MineColoniesTweaksClient(FMLModContainer modContainer)
 	{
-		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		var fml_bus = modContainer.getEventBus();
+		fml_bus.addListener(this::onRegisterMenuScreens);
 		fml_bus.addListener(this::onRegisterKeyMappings);
 
-		var forge_bus = MinecraftForge.EVENT_BUS;
+		var forge_bus = NeoForge.EVENT_BUS;
 		forge_bus.addListener(this::onScreenInitPost);
 		forge_bus.addListener(this::onScreenOpening);
 		forge_bus.addListener(this::onClientTickEvent);
@@ -40,6 +44,11 @@ public class MineColoniesTweaksClient
 
 		Loader.INSTANCE.register(MineColoniesTweaks.rl("addition").toString(), Addition::new);
 		Loader.INSTANCE.register(MineColoniesTweaks.rl("fluidicon").toString(), FluidIcon::new);
+	}
+
+	private void onRegisterMenuScreens(RegisterMenuScreensEvent e)
+	{
+		e.register(MCTweaksMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
 	}
 
 	private void onRegisterKeyMappings(RegisterKeyMappingsEvent event)
@@ -68,15 +77,11 @@ public class MineColoniesTweaksClient
 
 	}
 
-	private void onClientTickEvent(ClientTickEvent event)
+	private void onClientTickEvent(ClientTickEvent.Pre event)
 	{
-		if (event.phase == Phase.START)
+		if (ModKeyMappings.RESOURCESCROLL_BOOK.get().consumeClick())
 		{
-			if (ModKeyMappings.RESOURCESCROLL_BOOK.get().consumeClick())
-			{
-				MineColoniesTweaks.network().sendToServer(new ResourcescrollBookOpenMessage());
-			}
-
+			PacketDistributor.sendToServer(new ResourcescrollBookOpenMessage());
 		}
 
 	}

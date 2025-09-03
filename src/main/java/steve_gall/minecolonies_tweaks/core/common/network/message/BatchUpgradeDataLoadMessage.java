@@ -7,18 +7,21 @@ import com.minecolonies.api.colony.IColonyView;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 import steve_gall.minecolonies_tweaks.core.client.gui.BatchUpgradeBuildingsWindow;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
 import steve_gall.minecolonies_tweaks.core.common.colony.ColonyExtension;
-import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
 
 public class BatchUpgradeDataLoadMessage extends AbstractMessage
 {
+	public static final CustomPacketPayload.Type<BatchUpgradeDataLoadMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesTweaks.rl("batch_upgrade_data_load"));
+
 	private final ResourceKey<Level> dimensionId;
 	private final int colonyId;
 	private final boolean request;
@@ -40,7 +43,7 @@ public class BatchUpgradeDataLoadMessage extends AbstractMessage
 		this.data = new BatchUpgradeData();
 	}
 
-	public BatchUpgradeDataLoadMessage(FriendlyByteBuf buffer)
+	public BatchUpgradeDataLoadMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
@@ -52,7 +55,7 @@ public class BatchUpgradeDataLoadMessage extends AbstractMessage
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
@@ -63,7 +66,7 @@ public class BatchUpgradeDataLoadMessage extends AbstractMessage
 	}
 
 	@Override
-	public void handle(NetworkEvent.Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
@@ -77,7 +80,7 @@ public class BatchUpgradeDataLoadMessage extends AbstractMessage
 			}
 
 			var response = new BatchUpgradeDataLoadMessage(colony);
-			MineColoniesTweaks.network().sendToPlayer(response, context.getSender());
+			context.reply(response);
 		}
 		else
 		{
@@ -90,6 +93,12 @@ public class BatchUpgradeDataLoadMessage extends AbstractMessage
 
 		}
 
+	}
+
+	@Override
+	public CustomPacketPayload.Type<BatchUpgradeDataLoadMessage> type()
+	{
+		return TYPE;
 	}
 
 	public ResourceKey<Level> getDimensionId()

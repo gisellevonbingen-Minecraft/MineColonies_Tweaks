@@ -126,11 +126,11 @@ public class UniversityDashboardWindow extends AbstractWindowSkeleton
 
 		if (button.getParent() != null)
 		{
-			var branchName = button.getParent().getID();
+			var branchName = button.getParent() == null ? null : ResourceLocation.tryParse(button.getParent().getID());
 
-			if (ResourceLocation.isValidResourceLocation(branchName) && IGlobalResearchTree.getInstance().getBranches().contains(new ResourceLocation(branchName)))
+			if (branchName != null && IGlobalResearchTree.getInstance().getBranches().contains(branchName))
 			{
-				new WindowResearchTree(new ResourceLocation(branchName), this.buildingView, this.fake).open();
+				new WindowResearchTree(branchName, this.buildingView, this.fake).open();
 			}
 
 		}

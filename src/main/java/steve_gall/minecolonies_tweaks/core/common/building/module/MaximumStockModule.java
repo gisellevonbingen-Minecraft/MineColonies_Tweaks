@@ -16,16 +16,18 @@ import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.ItemStackUtils;
+import com.minecolonies.api.util.Utils;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.client.gui.MaximumStockModuleWindow;
-import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.inventory.BlackHoleItemHandler;
 import steve_gall.minecolonies_tweaks.core.common.network.message.MaximumStockUpdateMessage;
@@ -118,7 +120,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag compound)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
 		this.maximumStock.clear();
 
@@ -127,7 +129,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 		for (var i = 0; i < maximumStackTag.size(); i++)
 		{
 			var entryTag = maximumStackTag.getCompound(i);
-			var stack = ItemStack.of(entryTag.getCompound("key"));
+			var stack = ItemStackUtils.deserializeFromNBT(entryTag.getCompound("key"), provider);
 
 			if (stack.isEmpty())
 			{
@@ -142,14 +144,14 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 	}
 
 	@Override
-	public void serializeNBT(CompoundTag compound)
+	public void serializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
 		var maximumStackTag = new ListTag();
 
 		for (var entry : this.maximumStock.object2IntEntrySet())
 		{
 			var entryTag = new CompoundTag();
-			entryTag.put("key", entry.getKey().getItemStack().serializeNBT());
+			entryTag.put("key", entry.getKey().getItemStack().saveOptional(provider));
 			entryTag.putInt("value", entry.getIntValue());
 			maximumStackTag.add(entryTag);
 		}
@@ -158,7 +160,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 	}
 
 	@Override
-	public void serializeToView(FriendlyByteBuf buf)
+	public void serializeToView(RegistryFriendlyByteBuf buf)
 	{
 		super.serializeToView(buf);
 
@@ -166,7 +168,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 		for (var entry : this.maximumStock.object2IntEntrySet())
 		{
-			buf.writeItem(entry.getKey().getItemStack());
+			Utils.serializeCodecMess(buf, entry.getKey().getItemStack());
 			buf.writeInt(entry.getIntValue());
 		}
 
@@ -177,7 +179,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 		protected final Object2IntMap<ItemStorage> maximumStock = new Object2IntOpenHashMap<>();
 
 		@Override
-		public void deserialize(@NotNull FriendlyByteBuf buf)
+		public void deserialize(@NotNull RegistryFriendlyByteBuf buf)
 		{
 			this.maximumStock.clear();
 
@@ -185,7 +187,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 			for (var i = 0; i < size; i++)
 			{
-				var key = new ItemStorage(buf.readItem());
+				var key = new ItemStorage(Utils.deserializeCodecMess(buf));
 				var value = buf.readInt();
 				this.maximumStock.put(key, value);
 			}
@@ -229,13 +231,13 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 			}
 
 			this.maximumStock.put(new ItemStorage(stack.copy()), quantity);
-			MineColoniesTweaks.network().sendToServer(MaximumStockUpdateMessage.add(this, stack, quantity));
+			PacketDistributor.sendToServer(MaximumStockUpdateMessage.add(this, stack, quantity));
 		}
 
 		public void remove(ItemStack stack)
 		{
 			this.maximumStock.removeInt(new ItemStorage(stack));
-			MineColoniesTweaks.network().sendToServer(MaximumStockUpdateMessage.remove(this, stack));
+			PacketDistributor.sendToServer(MaximumStockUpdateMessage.remove(this, stack));
 		}
 
 		@Override

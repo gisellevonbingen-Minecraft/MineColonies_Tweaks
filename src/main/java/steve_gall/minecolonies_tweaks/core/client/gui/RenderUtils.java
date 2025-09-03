@@ -3,6 +3,7 @@ package steve_gall.minecolonies_tweaks.core.client.gui;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -13,8 +14,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class RenderUtils
 {
@@ -104,13 +105,12 @@ public class RenderUtils
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
 		var tessellator = Tesselator.getInstance();
-		var bufferBuilder = tessellator.getBuilder();
-		bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-		bufferBuilder.vertex(matrix, xCoord, yCoord + f, zLevel).uv(u0, v1).endVertex();
-		bufferBuilder.vertex(matrix, xCoord + f - maskRight, yCoord + f, zLevel).uv(u1, v1).endVertex();
-		bufferBuilder.vertex(matrix, xCoord + f - maskRight, yCoord + maskTop, zLevel).uv(u1, v0).endVertex();
-		bufferBuilder.vertex(matrix, xCoord, yCoord + maskTop, zLevel).uv(u0, v0).endVertex();
-		tessellator.end();
+		var bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		bufferBuilder.addVertex(matrix, xCoord, yCoord + f, zLevel).setUv(u0, v1);
+		bufferBuilder.addVertex(matrix, xCoord + f - maskRight, yCoord + f, zLevel).setUv(u1, v1);
+		bufferBuilder.addVertex(matrix, xCoord + f - maskRight, yCoord + maskTop, zLevel).setUv(u1, v0);
+		bufferBuilder.addVertex(matrix, xCoord, yCoord + maskTop, zLevel).setUv(u0, v0);
+		BufferUploader.drawWithShader(bufferBuilder.build());
 	}
 
 	private RenderUtils()

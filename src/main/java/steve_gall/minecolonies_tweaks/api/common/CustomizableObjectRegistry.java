@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
@@ -41,19 +42,19 @@ public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends Customiza
 
 	protected abstract ResourceLocation getId(OBJECT object);
 
-	protected abstract void serializeObject(@NotNull IFactoryController controller, @NotNull ENTRY entry, @Nullable OBJECT object, @NotNull CompoundTag tag);
+	protected abstract void serializeObject(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag, @NotNull ENTRY entry, @Nullable OBJECT object);
 
-	protected abstract OBJECT deserializeObject(@NotNull IFactoryController controller, @NotNull ENTRY entry, @NotNull CompoundTag tag);
+	protected abstract OBJECT deserializeObject(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag, @NotNull ENTRY entry);
 
 	@NotNull
-	public CompoundTag serialize(@NotNull IFactoryController controller, @Nullable OBJECT object)
+	public CompoundTag serialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @Nullable OBJECT object)
 	{
 		var tag = new CompoundTag();
-		serialize(controller, object, tag);
+		serialize(provider, controller, tag, object);
 		return tag;
 	}
 
-	public void serialize(@NotNull IFactoryController controller, @Nullable OBJECT object, @NotNull CompoundTag tag)
+	public void serialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag, @Nullable OBJECT object)
 	{
 		if (object == null)
 		{
@@ -69,17 +70,17 @@ public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends Customiza
 		}
 
 		tag.putString(TAG_ID, id.toString());
-		tag.put(TAG_OBJECT, this.serializeWithoutId(controller, object));
+		tag.put(TAG_OBJECT, this.serializeWithoutId(provider, controller, object));
 	}
 
-	public CompoundTag serializeWithoutId(@NotNull IFactoryController controller, @Nullable OBJECT object)
+	public CompoundTag serializeWithoutId(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @Nullable OBJECT object)
 	{
 		var tag = new CompoundTag();
-		this.serializeWithoutId(controller, object, tag);
+		this.serializeWithoutId(provider, controller, tag, object);
 		return tag;
 	}
 
-	public void serializeWithoutId(@NotNull IFactoryController controller, @Nullable OBJECT object, @NotNull CompoundTag tag)
+	public void serializeWithoutId(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag, @Nullable OBJECT object)
 	{
 		if (object == null)
 		{
@@ -94,17 +95,17 @@ public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends Customiza
 			throw new IllegalArgumentException("ID " + id + " is not registered");
 		}
 
-		this.serializeObject(controller, entry, object, tag);
+		this.serializeObject(provider, controller, tag, entry, object);
 	}
 
 	@Nullable
-	public OBJECT deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag tag)
+	public OBJECT deserialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag)
 	{
-		var id = new ResourceLocation(tag.getString(TAG_ID));
-		return deserializeWithoutId(controller, tag.getCompound(TAG_OBJECT), id);
+		var id = ResourceLocation.parse(tag.getString(TAG_ID));
+		return deserializeWithoutId(provider, controller, tag.getCompound(TAG_OBJECT), id);
 	}
 
-	public OBJECT deserializeWithoutId(@NotNull IFactoryController controller, @NotNull CompoundTag tag, ResourceLocation id)
+	public OBJECT deserializeWithoutId(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag, ResourceLocation id)
 	{
 		var entry = this.map.get(id);
 
@@ -113,7 +114,7 @@ public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends Customiza
 			return null;
 		}
 
-		return this.deserializeObject(controller, entry, tag);
+		return this.deserializeObject(provider, controller, tag, entry);
 	}
 
 	public static abstract class Entry

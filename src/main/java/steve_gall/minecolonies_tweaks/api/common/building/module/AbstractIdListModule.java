@@ -8,11 +8,13 @@ import org.jetbrains.annotations.NotNull;
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IPersistentModule;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
@@ -32,20 +34,20 @@ public abstract class AbstractIdListModule extends AbstractBuildingModule implem
 	}
 
 	@Override
-	public void deserializeNBT(@NotNull CompoundTag compound)
+	public void deserializeNBT(@NotNull HolderLookup.Provider provider, @NotNull CompoundTag compound)
 	{
 		this.ids.clear();
 		var idsTag = compound.getList(TAG_IDS, Tag.TAG_STRING);
 
 		for (var i = 0; i < idsTag.size(); i++)
 		{
-			this.ids.add(new ResourceLocation(idsTag.getString(i)));
+			this.ids.add(ResourceLocation.parse(idsTag.getString(i)));
 		}
 
 	}
 
 	@Override
-	public void serializeNBT(@NotNull CompoundTag compound)
+	public void serializeNBT(@NotNull HolderLookup.Provider provider, @NotNull CompoundTag compound)
 	{
 		var idsTag = new ListTag();
 		compound.put(TAG_IDS, idsTag);
@@ -58,7 +60,7 @@ public abstract class AbstractIdListModule extends AbstractBuildingModule implem
 	}
 
 	@Override
-	public void serializeToView(@NotNull FriendlyByteBuf buf)
+	public void serializeToView(@NotNull RegistryFriendlyByteBuf buf)
 	{
 		super.serializeToView(buf);
 

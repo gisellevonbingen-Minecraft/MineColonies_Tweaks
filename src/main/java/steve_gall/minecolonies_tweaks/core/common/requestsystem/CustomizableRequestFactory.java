@@ -8,13 +8,14 @@ import com.minecolonies.api.colony.requestsystem.request.RequestState;
 import com.minecolonies.api.colony.requestsystem.requester.IRequester;
 import com.minecolonies.api.colony.requestsystem.token.IToken;
 import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories;
-import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IFriendlyByteBufToObjectReader;
 import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.INBTToObjectConverter;
 import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IObjectToNBTConverter;
 import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IObjectToPackBufferWriter;
+import com.minecolonies.core.colony.requestsystem.requests.StandardRequestFactories.IRegistryFriendlyByteBufToObjectReader;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.ICustomizableRequestable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestFactoryHelper;
 
@@ -26,7 +27,7 @@ public abstract class CustomizableRequestFactory<T extends ICustomizableRequesta
 
 	public abstract IObjectToNBTConverter<T> getNBTSerializer();
 
-	public abstract IFriendlyByteBufToObjectReader<T> getByteBufDeserializer();
+	public abstract IRegistryFriendlyByteBufToObjectReader<T> getByteBufDeserializer();
 
 	public abstract IObjectToPackBufferWriter<T> getByteBufSerializer();
 
@@ -38,28 +39,28 @@ public abstract class CustomizableRequestFactory<T extends ICustomizableRequesta
 
 	@NotNull
 	@Override
-	public R deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag nbt) throws Throwable
+	public R deserialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag nbt) throws Throwable
 	{
-		return StandardRequestFactories.deserializeFromNBT(controller, nbt, this.getNBTDeserializer(), RequestFactoryHelper.getObjectConstructor(controller, this.getFactoryOutputType()));
+		return StandardRequestFactories.deserializeFromNBT(provider, controller, nbt, this.getNBTDeserializer(), RequestFactoryHelper.getObjectConstructor(controller, this.getFactoryOutputType()));
 	}
 
 	@Override
 	@NotNull
-	public CompoundTag serialize(@NotNull IFactoryController controller, @NotNull R output)
+	public CompoundTag serialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull R output)
 	{
-		return StandardRequestFactories.serializeToNBT(controller, output, this.getNBTSerializer());
+		return StandardRequestFactories.serializeToNBT(provider, controller, output, this.getNBTSerializer());
 	}
 
 	@Override
-	public @NotNull R deserialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer) throws Throwable
+	public @NotNull R deserialize(@NotNull IFactoryController controller, @NotNull RegistryFriendlyByteBuf buffer) throws Throwable
 	{
-		return StandardRequestFactories.deserializeFromFriendlyByteBuf(controller, buffer, this.getByteBufDeserializer(), RequestFactoryHelper.getObjectConstructor(controller, this.getFactoryOutputType()));
+		return StandardRequestFactories.deserializeFromRegistryFriendlyByteBuf(controller, buffer, this.getByteBufDeserializer(), RequestFactoryHelper.getObjectConstructor(controller, this.getFactoryOutputType()));
 	}
 
 	@Override
-	public void serialize(@NotNull IFactoryController controller, @NotNull R output, FriendlyByteBuf packetBuffer)
+	public void serialize(@NotNull IFactoryController controller, @NotNull R output, RegistryFriendlyByteBuf packetBuffer)
 	{
-		StandardRequestFactories.serializeToFriendlyByteBuf(controller, output, packetBuffer, this.getByteBufSerializer());
+		StandardRequestFactories.serializeToRegistryFriendlyByteBuf(controller, output, packetBuffer, this.getByteBufSerializer());
 	}
 
 	@FunctionalInterface

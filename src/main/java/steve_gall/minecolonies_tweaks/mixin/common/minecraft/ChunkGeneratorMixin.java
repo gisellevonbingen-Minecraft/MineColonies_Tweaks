@@ -18,8 +18,8 @@ import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import steve_gall.minecolonies_tweaks.api.client.gui.Test;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
 
 @Mixin(value = ChunkGenerator.class, remap = true)
 public class ChunkGeneratorMixin
@@ -38,34 +38,11 @@ public class ChunkGeneratorMixin
 
 	private void testAndCancel(RandomState randomState, ResourceLocation randomKey, ChunkPos chunkPos, CallbackInfoReturnable<Boolean> cir)
 	{
-		var test = this.test(randomState, randomKey, chunkPos);
+		var test = Test.test(randomState, randomKey, chunkPos);
 
 		if (!test)
 		{
 			cir.setReturnValue(false);
-		}
-
-	}
-
-	private boolean test(RandomState randomState, ResourceLocation randomKey, ChunkPos chunkPos)
-	{
-		var chance = MCTweaksConfigCommon.INSTANCE.worldGens.emptyColoniesGenerationChance.get();
-
-		if (chance <= 0.0D)
-		{
-			return false;
-		}
-		else if (chance >= 1.0D)
-		{
-			return true;
-		}
-		else
-		{
-			var chunkBlockPos = chunkPos.getBlockAt(0, 0, 0);
-			var random = randomState.getOrCreateRandomFactory(randomKey).at(chunkBlockPos);
-			var next = random.nextDouble();
-
-			return 0 <= next && next <= chance;
 		}
 
 	}

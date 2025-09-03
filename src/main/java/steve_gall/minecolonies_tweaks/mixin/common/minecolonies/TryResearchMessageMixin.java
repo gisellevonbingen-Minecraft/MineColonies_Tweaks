@@ -12,6 +12,7 @@ import com.minecolonies.api.research.ILocalResearchTree;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingUniversity;
 import com.minecolonies.core.network.messages.server.colony.building.university.TryResearchMessage;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.research.LocalResearchTreeExtension;
@@ -19,8 +20,8 @@ import steve_gall.minecolonies_tweaks.core.common.research.LocalResearchTreeExte
 @Mixin(value = TryResearchMessage.class)
 public abstract class TryResearchMessageMixin
 {
-	@WrapOperation(method = "onExecute", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isCreative()Z", remap = true))
-	private boolean onExecute_isCreative(Player player, Operation<Boolean> operation)
+	@WrapOperation(method = "onExecute", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isCreative()Z", remap = true))
+	private boolean onExecute_isCreative(ServerPlayer player, Operation<Boolean> operation)
 	{
 		return operation.call(player) || MCTweaksConfigServer.INSTANCE.researches.ignoreConstraints.get();
 	}

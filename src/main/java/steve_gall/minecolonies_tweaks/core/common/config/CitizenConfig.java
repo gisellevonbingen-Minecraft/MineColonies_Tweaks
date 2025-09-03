@@ -1,14 +1,14 @@
 package steve_gall.minecolonies_tweaks.core.common.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 
 public class CitizenConfig
 {
 	public final BooleanValue disableMourn;
 	public final BooleanValue disableInteractionDelay;
 
-	public CitizenConfig(ForgeConfigSpec.Builder builder)
+	public CitizenConfig(ModConfigSpec.Builder builder)
 	{
 		this.disableMourn = builder.define("disableMourn", false);
 		builder.comment(ConfigConstants.VANILLA_IS_FALSE);

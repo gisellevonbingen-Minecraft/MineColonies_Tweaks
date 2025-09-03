@@ -15,7 +15,7 @@ import com.minecolonies.core.research.GlobalResearchEffect;
 import com.minecolonies.core.research.ResearchEffectManager;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import steve_gall.minecolonies_tweaks.api.common.research.ResearchEffectChangedEventArgs;
 import steve_gall.minecolonies_tweaks.core.common.research.ResearchEffectManagerExtension;
 
@@ -49,7 +49,7 @@ public abstract class ResearchEffectManagerMixin implements ResearchEffectManage
 
 			if (!this.effectMap.containsKey(id) || prev != next)
 			{
-				MinecraftForge.EVENT_BUS.post(new ResearchEffectChangedEventArgs(this.minecolonies_tweaks$colony, effect2, prev, next));
+				NeoForge.EVENT_BUS.post(new ResearchEffectChangedEventArgs(this.minecolonies_tweaks$colony, effect2, prev, next));
 			}
 
 		}
@@ -66,7 +66,7 @@ public abstract class ResearchEffectManagerMixin implements ResearchEffectManage
 				if (entry.getValue() instanceof GlobalResearchEffect effect2)
 				{
 					var prev = this.getEffectStrength(effect2.getId());
-					MinecraftForge.EVENT_BUS.post(new ResearchEffectChangedEventArgs(this.minecolonies_tweaks$colony, effect2, prev, 0.0D));
+					NeoForge.EVENT_BUS.post(new ResearchEffectChangedEventArgs(this.minecolonies_tweaks$colony, effect2, prev, 0.0D));
 				}
 
 			}

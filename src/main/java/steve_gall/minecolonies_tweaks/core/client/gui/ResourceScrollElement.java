@@ -1,9 +1,7 @@
 package steve_gall.minecolonies_tweaks.core.client.gui;
 
 import com.ldtteam.blockui.Pane;
-import com.minecolonies.api.colony.IColonyManager;
-import com.minecolonies.api.util.BlockPosUtil;
-import com.minecolonies.api.util.constant.NbtTagConstants;
+import com.minecolonies.api.items.component.BuildingId;
 import com.minecolonies.core.colony.buildings.moduleviews.BuildingResourcesModuleView;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingBuilder;
 
@@ -30,9 +28,8 @@ public class ResourceScrollElement extends ResourceScrollBookElement
 	{
 		super.onOpenClicked();
 
-		var compound = this.stack.getOrCreateTag();
 		var mc = Minecraft.getInstance();
-		ItemResourceScrollAccessor.invokeOpenWindow(compound, mc.player);
+		ItemResourceScrollAccessor.invokeOpenWindow(this.stack, mc.player);
 	}
 
 	@Override
@@ -98,25 +95,9 @@ public class ResourceScrollElement extends ResourceScrollBookElement
 
 	public BuildingBuilder.View getBuildingView()
 	{
-		var compound = this.stack.getTag();
-
-		if (compound != null)
+		if (BuildingId.readBuildingViewFromItemStack(this.stack) instanceof BuildingBuilder.View buildingView)
 		{
-			var colonyId = compound.getInt(NbtTagConstants.TAG_COLONY_ID);
-			var builderPos = compound.contains(NbtTagConstants.TAG_BUILDER) ? BlockPosUtil.read(compound, NbtTagConstants.TAG_BUILDER) : null;
-
-			if (builderPos != null)
-			{
-				var mc = Minecraft.getInstance();
-				var colonyView = IColonyManager.getInstance().getColonyView(colonyId, mc.level.dimension());
-
-				if (colonyView != null && colonyView.getBuilding(builderPos) instanceof BuildingBuilder.View buildingView)
-				{
-					return buildingView;
-				}
-
-			}
-
+			return buildingView;
 		}
 
 		return null;

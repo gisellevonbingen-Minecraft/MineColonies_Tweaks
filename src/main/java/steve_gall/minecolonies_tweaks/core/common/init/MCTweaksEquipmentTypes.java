@@ -2,7 +2,7 @@ package steve_gall.minecolonies_tweaks.core.common.init;
 
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
-import net.minecraftforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import steve_gall.minecolonies_tweaks.api.registries.DeferredRegisterHelper;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 

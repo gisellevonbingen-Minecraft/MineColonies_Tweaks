@@ -1,0 +1,20 @@
+{
+	"type": "minecolonies_tweaks:component_merge_shapeless",
+	"ingredients": [
+		{
+			"type": "neoforge:difference",
+			"base": {
+				"tag": "minecolonies_tweaks:inventoryscrolls"
+			},
+			"subtracted": {
+				"item": "minecolonies_tweaks:inventoryscroll_magenta"
+			}
+		},
+		{
+			"tag": "c:dyes/magenta"
+		}
+	],
+	"result": {
+		"id": "minecolonies_tweaks:inventoryscroll_magenta"
+	}
+}

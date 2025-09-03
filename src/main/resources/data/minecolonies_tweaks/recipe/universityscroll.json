@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"P": {
+			"tag": "c:leathers"
+		},
+		"C": {
+			"item": "minecraft:book"
+		},
+		"T": {
+			"item": "structurize:sceptergold"
+		},
+		"X": {
+			"item": "minecraft:stick"
+		}
+	},
+	"pattern": [
+		"XTX",
+		"XPX",
+		"XCX"
+	],
+	"result": {
+		"id": "minecolonies_tweaks:universityscroll"
+	},
+	"show_notification": true
+}

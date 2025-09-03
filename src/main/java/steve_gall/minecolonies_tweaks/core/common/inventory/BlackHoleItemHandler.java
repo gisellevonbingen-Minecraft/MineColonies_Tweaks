@@ -3,7 +3,7 @@ package steve_gall.minecolonies_tweaks.core.common.inventory;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 public class BlackHoleItemHandler implements IItemHandlerModifiable
 {

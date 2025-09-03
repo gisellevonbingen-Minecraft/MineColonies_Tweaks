@@ -5,7 +5,11 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.util.ItemStackUtils;
+
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -23,8 +27,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookListWindow;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksDataComponents;
 import steve_gall.minecolonies_tweaks.core.common.inventory.ResourceScrollBookInventoryMenu;
 
 public class ItemResourceScrollBook extends Item
@@ -42,9 +46,9 @@ public class ItemResourceScrollBook extends Item
 		this.slots = slots;
 	}
 
-	public Container getContainer(ItemStack stack)
+	public Container getContainer(HolderLookup.Provider provider, ItemStack stack)
 	{
-		return new Container(stack);
+		return new Container(provider, stack);
 	}
 
 	public int getSlots()
@@ -52,9 +56,10 @@ public class ItemResourceScrollBook extends Item
 		return this.slots;
 	}
 
-	public void setItems(ItemStack stack, List<ItemStack> slots)
+	public void setItems(HolderLookup.Provider provider, ItemStack stack, List<ItemStack> slots)
 	{
-		var compound = stack.getOrCreateTagElement("resourcebook");
+		var compound = new CompoundTag();
+
 		var slotsTag = new ListTag();
 		compound.put("slots", slotsTag);
 
@@ -64,14 +69,15 @@ public class ItemResourceScrollBook extends Item
 		for (var i = 0; i < size; i++)
 		{
 			var slot = i < count ? slots.get(i) : ItemStack.EMPTY;
-			slotsTag.add(slot.serializeNBT());
+			slotsTag.add(slot.saveOptional(provider));
 		}
 
+		stack.set(MCTweaksDataComponents.RESOURCESCROLL_BOOK_ITEMS, compound);
 	}
 
-	public NonNullList<ItemStack> getItems(ItemStack stack)
+	public NonNullList<ItemStack> getItems(HolderLookup.Provider provider, ItemStack stack)
 	{
-		var compound = stack.getTagElement("resourcebook");
+		var compound = stack.get(MCTweaksDataComponents.RESOURCESCROLL_BOOK_ITEMS);
 		var items = NonNullList.withSize(this.slots, ItemStack.EMPTY);
 
 		if (compound != null)
@@ -82,7 +88,7 @@ public class ItemResourceScrollBook extends Item
 			for (var i = 0; i < size; i++)
 			{
 				var slotTag = slots.getCompound(i);
-				var slot = ItemStack.of(slotTag);
+				var slot = ItemStackUtils.deserializeFromNBT(slotTag, provider);
 				items.set(i, slot);
 			}
 
@@ -92,9 +98,9 @@ public class ItemResourceScrollBook extends Item
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag)
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag)
 	{
-		super.appendHoverText(stack, level, tooltip, flag);
+		super.appendHoverText(stack, context, tooltip, flag);
 
 		tooltip.addAll(TOOLTIPS);
 	}
@@ -116,7 +122,7 @@ public class ItemResourceScrollBook extends Item
 		}
 		else if (!player.isShiftKeyDown())
 		{
-			this.openWindow(stack);
+			this.openWindow(context.getLevel().registryAccess(), stack);
 		}
 
 		return InteractionResult.SUCCESS;
@@ -137,20 +143,20 @@ public class ItemResourceScrollBook extends Item
 		}
 		else if (!player.isShiftKeyDown())
 		{
-			this.openWindow(stack);
+			this.openWindow(level.registryAccess(), stack);
 		}
 
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 	}
 
-	public void openWindow(ItemStack stack)
+	public void openWindow(HolderLookup.Provider provider, ItemStack stack)
 	{
-		new ResourceScrollBookListWindow(this.getItems(stack), null).open();
+		new ResourceScrollBookListWindow(this.getItems(provider, stack), null).open();
 	}
 
 	public void openInventory(ServerPlayer player, ItemStack stack, int slot)
 	{
-		NetworkHooks.openScreen(player, new MenuProvider()
+		player.openMenu(new MenuProvider()
 		{
 			@Override
 			public AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player)
@@ -190,13 +196,15 @@ public class ItemResourceScrollBook extends Item
 
 	public class Container implements net.minecraft.world.Container
 	{
+		private final HolderLookup.Provider provider;
 		private final ItemStack stack;
 		private final List<ItemStack> items;
 
-		public Container(ItemStack stack)
+		public Container(HolderLookup.Provider provider, ItemStack stack)
 		{
+			this.provider = provider;
 			this.stack = stack;
-			this.items = getItems(stack);
+			this.items = getItems(provider, stack);
 		}
 
 		@Override
@@ -290,7 +298,7 @@ public class ItemResourceScrollBook extends Item
 		@Override
 		public void setChanged()
 		{
-			setItems(this.stack, this.items);
+			setItems(this.provider, this.stack, this.items);
 		}
 
 		@Override

@@ -1,7 +1,7 @@
 package steve_gall.minecolonies_tweaks.core.common.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 
 public class BlockConfig
 {
@@ -9,7 +9,7 @@ public class BlockConfig
 	public final BooleanValue cropIgnoreBiome;
 	public final BooleanValue cropCanPerformBonemeal;
 
-	public BlockConfig(ForgeConfigSpec.Builder builder)
+	public BlockConfig(ModConfigSpec.Builder builder)
 	{
 		builder.push("crop");
 		builder.comment("Caution: if change this, all planted MineColonies crops when before are will break into item.");

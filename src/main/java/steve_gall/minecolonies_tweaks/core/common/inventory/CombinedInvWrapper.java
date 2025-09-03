@@ -3,9 +3,9 @@ package steve_gall.minecolonies_tweaks.core.common.inventory;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.EmptyHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class CombinedInvWrapper extends InvWrapper
 {
@@ -62,7 +62,7 @@ public class CombinedInvWrapper extends InvWrapper
 	{
 		if (index < 0 || index >= itemHandler.length)
 		{
-			return (IItemHandlerModifiable) EmptyHandler.INSTANCE;
+			return (IItemHandlerModifiable) EmptyItemHandler.INSTANCE;
 		}
 
 		return itemHandler[index];

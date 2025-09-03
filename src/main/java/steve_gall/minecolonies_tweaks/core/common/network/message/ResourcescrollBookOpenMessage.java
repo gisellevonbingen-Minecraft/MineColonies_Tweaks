@@ -1,17 +1,22 @@
 package steve_gall.minecolonies_tweaks.core.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import com.minecolonies.api.util.Utils;
+
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 import steve_gall.minecolonies_tweaks.core.common.CuriosCompat;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
-import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
 
 public class ResourcescrollBookOpenMessage extends AbstractMessage
 {
+	public static final CustomPacketPayload.Type<ResourcescrollBookOpenMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesTweaks.rl("resourcescroll_book_open"));
+
 	private final boolean request;
 	private final ItemStack stack;
 
@@ -27,42 +32,42 @@ public class ResourcescrollBookOpenMessage extends AbstractMessage
 		this.stack = stack.copy();
 	}
 
-	public ResourcescrollBookOpenMessage(FriendlyByteBuf buffer)
+	public ResourcescrollBookOpenMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
 		this.request = buffer.readBoolean();
-		this.stack = buffer.readItem();
+		this.stack = Utils.deserializeCodecMess(buffer);
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
 		buffer.writeBoolean(this.request);
-		buffer.writeItem(this.stack);
+		Utils.serializeCodecMess(buffer, this.stack);
 	}
 
 	@Override
-	public void handle(NetworkEvent.Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
 		if (this.request)
 		{
-			var player = context.getSender();
+			var player = context.player();
 			var stack = this.findResourcescrollBook(player);
 
 			if (!stack.isEmpty())
 			{
-				MineColoniesTweaks.network().sendToPlayer(new ResourcescrollBookOpenMessage(stack), player);
+				context.reply(new ResourcescrollBookOpenMessage(stack));
 			}
 
 		}
 		else if (this.stack.getItem() instanceof ItemResourceScrollBook item)
 		{
-			item.openWindow(this.stack);
+			item.openWindow(context.player().registryAccess(), this.stack);
 		}
 
 	}
@@ -109,6 +114,12 @@ public class ResourcescrollBookOpenMessage extends AbstractMessage
 	public boolean testResourcescrollBook(ItemStack stack)
 	{
 		return stack.getItem() instanceof ItemResourceScrollBook;
+	}
+
+	@Override
+	public CustomPacketPayload.Type<ResourcescrollBookOpenMessage> type()
+	{
+		return TYPE;
 	}
 
 	public boolean isRequest()

@@ -6,11 +6,12 @@ import java.util.List;
 import com.minecolonies.api.colony.IColony;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 import steve_gall.minecolonies_tweaks.core.common.colony.BuildingCost;
-import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
+import steve_gall.minecolonies_tweaks.core.common.util.SerializationHelper;
 
 public abstract class BatchBuildingCostsMessage extends AbstractMessage
 {
@@ -25,23 +26,23 @@ public abstract class BatchBuildingCostsMessage extends AbstractMessage
 		this.buildings = new ArrayList<>();
 	}
 
-	public BatchBuildingCostsMessage(FriendlyByteBuf buffer)
+	public BatchBuildingCostsMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
 		this.dimensionId = buffer.readResourceKey(Registries.DIMENSION);
 		this.colonyId = buffer.readInt();
-		this.buildings = buffer.readCollection(ArrayList::new, BuildingCost::decode);
+		this.buildings = buffer.readCollection(ArrayList::new, SerializationHelper.reader(BuildingCost::decode));
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
 		buffer.writeResourceKey(this.dimensionId);
 		buffer.writeInt(this.colonyId);
-		buffer.writeCollection(this.buildings, BuildingCost::encode);
+		buffer.writeCollection(this.buildings, SerializationHelper.writer(BuildingCost::encode));
 	}
 
 	public ResourceKey<Level> getDimensionId()

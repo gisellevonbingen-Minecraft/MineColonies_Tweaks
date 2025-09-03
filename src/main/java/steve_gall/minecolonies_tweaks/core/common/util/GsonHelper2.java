@@ -35,11 +35,11 @@ public class GsonHelper2
 
 			if (raw.contains(":"))
 			{
-				return new ResourceLocation(raw);
+				return ResourceLocation.parse(raw);
 			}
 			else
 			{
-				return new ResourceLocation(fallbackNamespace, raw);
+				return ResourceLocation.fromNamespaceAndPath(fallbackNamespace, raw);
 			}
 
 		}

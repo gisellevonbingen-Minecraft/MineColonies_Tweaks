@@ -13,13 +13,13 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.ItemStackUtils;
+import com.minecolonies.api.util.Utils;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingLumberjack;
 import com.minecolonies.core.colony.jobs.JobLumberjack;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.ai.workers.production.EntityAIWorkLumberjack;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -51,10 +51,10 @@ public abstract class EntityAIWorkLumberjackMixin extends AbstractEntityAICrafti
 				if (!tool.isEmpty() && this.shouldSilkTouchBlock(state))
 				{
 					rollTool = tool.copy();
-					rollTool.enchant(Enchantments.SILK_TOUCH, 1);
+					rollTool.enchant(Utils.getRegistryValue(Enchantments.SILK_TOUCH, this.world), 1);
 				}
 
-				var localItems = Block.getDrops(state, (ServerLevel) this.world, blockToMine, null, this.worker, rollTool);
+				var localItems = Block.getDrops(state, this.world, blockToMine, null, this.worker, rollTool);
 				localItems = this.increaseBlockDrops(localItems);
 
 				for (var item : localItems)

@@ -30,6 +30,7 @@ import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.research.IGlobalResearch;
 import com.minecolonies.api.research.IGlobalResearchTree;
 import com.minecolonies.api.research.ILocalResearchTree;
+import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.SoundUtils;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
@@ -40,9 +41,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.api.common.building.BuildingPos;
-import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.inventory.InventoryUtils2;
 import steve_gall.minecolonies_tweaks.core.common.network.message.ResearchCostRequestMessage;
@@ -140,7 +141,7 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 		return operation.call(building);
 	}
 
-	@WrapOperation(method = {"generateResearchTooltips", "getResearchButtonState", "onButtonClicked"}, remap = false, at = @At(value = "NEW", target = "net/minecraftforge/items/wrapper/InvWrapper", remap = false))
+	@WrapOperation(method = {"generateResearchTooltips", "getResearchButtonState", "onButtonClicked"}, remap = false, at = @At(value = "NEW", target = "net/neoforged/neoforge/items/wrapper/InvWrapper", remap = false))
 	private InvWrapper newInvWrapper(Container inv, Operation<InvWrapper> operation)
 	{
 		var original = operation.call(inv);
@@ -173,7 +174,7 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 		{
 			if (ResearchCostResolver.hasResolver(this.building))
 			{
-				var researchId = new ResourceLocation(buttonId.substring(minecolonies_tweaks$MISSING_COST_PREFIX.length()));
+				var researchId = ResourceLocation.parse(buttonId.substring(minecolonies_tweaks$MISSING_COST_PREFIX.length()));
 				var research = IGlobalResearchTree.getInstance().getResearch(this.branch, researchId);
 				this.minecolonies_tweaks$drawRequestButton(button, research);
 			}
@@ -184,7 +185,7 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 			this.close();
 
 			var branchId = this.branch;
-			var researchId = new ResourceLocation(buttonId.substring(minecolonies_tweaks$REQUEST_PREFIX.length()));
+			var researchId = ResourceLocation.parse(buttonId.substring(minecolonies_tweaks$REQUEST_PREFIX.length()));
 			var player = this.mc.player;
 
 			if (ResearchCost.isRequested(this.building, branchId, researchId))
@@ -197,7 +198,7 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 				var research = IGlobalResearchTree.getInstance().getResearch(branchId, researchId);
 				ResearchCostSelector.open(this.last, research, items ->
 				{
-					MineColoniesTweaks.network().sendToServer(new ResearchCostRequestMessage(new BuildingPos(this.building), research.getBranch(), research.getId(), items));
+					PacketDistributor.sendToServer(new ResearchCostRequestMessage(new BuildingPos(this.building), research.getBranch(), research.getId(), items));
 				});
 			}
 
@@ -209,7 +210,7 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 	private void minecolonies_tweaks$drawRequestButton(Button parent, IGlobalResearch research)
 	{
 		var undoButton = this.undoButton;
-		undoButton.setImage(new ResourceLocation(Constants.MOD_ID, MEDIUM_SIZED_BUTTON_RES), false);
+		undoButton.setImage(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, MEDIUM_SIZED_BUTTON_RES));
 		undoButton.setSize(BUTTON_LENGTH, BUTTON_HEIGHT);
 		undoButton.setPosition(parent.getX() + (GRADIENT_WIDTH - BUTTON_LENGTH) / 2, parent.getY() + TEXT_Y_OFFSET + (GRADIENT_HEIGHT - BUTTON_HEIGHT) / 2);
 		undoButton.setID(minecolonies_tweaks$REQUEST_PREFIX + research.getId().toString());
@@ -234,7 +235,7 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 
 		for (var cost : research.getCostList())
 		{
-			var text = Component.literal(" - ").append(Component.translatable("com.minecolonies.coremod.research.limit.requirement", cost.getCount(), cost.getTranslatedName()));
+			var text = Component.literal(" - ").append(Component.translatable("com.minecolonies.coremod.research.limit.cost", ItemStackUtils.getTranslatedName(cost)));
 			tooltip.paragraphBreak().append(text);
 		}
 

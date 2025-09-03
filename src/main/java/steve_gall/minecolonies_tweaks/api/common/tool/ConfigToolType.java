@@ -27,7 +27,7 @@ public class ConfigToolType extends CustomToolType
 
 	public ConfigToolType(Builder builder, String namespace)
 	{
-		super(new ResourceLocation(namespace, builder.name));
+		super(ResourceLocation.fromNamespaceAndPath(namespace, builder.name));
 
 		this.autoLevelType = builder.autoLevelType;
 		this.translationKey = builder.translationKey.orElseGet(() -> getFallbackTranslationKey(this.getName()));

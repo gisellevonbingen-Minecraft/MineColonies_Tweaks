@@ -17,13 +17,17 @@ import com.minecolonies.api.crafting.AbstractRecipeType;
 import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.RecipeStorage;
+import com.minecolonies.api.crafting.registry.RecipeTypeEntry;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
+import net.minecraft.core.DefaultedRegistry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.neoforged.neoforge.items.IItemHandler;
 import steve_gall.minecolonies_tweaks.core.common.crafting.RecipeStorageExtension;
 
 public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
@@ -61,11 +65,12 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 
 		if (type != null && recipeTypes.containsKey(type))
 		{
-			this.recipeType = recipeTypes.getValue(type).getHandlerProducer().apply(this);
+			this.recipeType = recipeTypes.get(type).getHandlerProducer().apply(this);
 		}
 		else
 		{
-			this.recipeType = recipeTypes.getValue(recipeTypes.getDefaultKey()).getHandlerProducer().apply(this);
+			var defaultKey = ((DefaultedRegistry<RecipeTypeEntry>) recipeTypes).getDefaultKey();
+			this.recipeType = recipeTypes.get(defaultKey).getHandlerProducer().apply(this);
 		}
 
 		this.hasHashCode = false;
@@ -217,7 +222,7 @@ public class CustomizableRecipeStorage implements ICustomizableRecipeStorage
 	}
 
 	@Override
-	public ResourceLocation getLootTable()
+	public ResourceKey<LootTable> getLootTable()
 	{
 		return this.delegate.getLootTable();
 	}

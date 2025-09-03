@@ -8,10 +8,15 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import steve_gall.minecolonies_tweaks.api.common.building.BuildingPos;
@@ -20,6 +25,17 @@ public class ModulePos
 {
 	public static final String TAG_BUILDING_POS = "buildingPos";
 	public static final String TAG_MODULE_NAME = "moduleName";
+
+	public static Codec<ModulePos> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
+			BuildingPos.CODEC.fieldOf("buildingPos").forGetter(ModulePos::getBuildingPos), //
+			Codec.STRING.fieldOf("moduleName").forGetter(ModulePos::getModuleName) //
+	).apply(builder, ModulePos::new));
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, ModulePos> STREAM_CODEC = StreamCodec.composite(//
+			BuildingPos.STREAM_CODEC, ModulePos::getBuildingPos, //
+			ByteBufCodecs.STRING_UTF8, ModulePos::getModuleName, //
+			ModulePos::new);
+
 	@NotNull
 	private final BuildingPos buildingPos;
 	private final String moduleName;

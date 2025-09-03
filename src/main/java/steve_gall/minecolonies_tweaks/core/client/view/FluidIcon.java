@@ -17,13 +17,13 @@ import com.ldtteam.blockui.util.ToggleableTextComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.fluids.FluidStack;
 import steve_gall.minecolonies_tweaks.core.client.gui.RenderUtils;
 
 public class FluidIcon extends Pane
@@ -50,7 +50,7 @@ public class FluidIcon extends Pane
 
 		if (fluidName != null)
 		{
-			var fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidName));
+			var fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(fluidName));
 
 			if (fluid != null)
 			{
@@ -171,12 +171,12 @@ public class FluidIcon extends Pane
 		}
 
 		var fluid = this.fluidStack.getFluid();
-		var id = ForgeRegistries.FLUIDS.getKey(fluid);
+		var id = BuiltInRegistries.FLUID.getKey(fluid);
 		var namespace = id.getNamespace();
 		var nameOffset = 1;
 
 		var tooltipList = new ArrayList<Component>();
-		tooltipList.add(this.fluidStack.getDisplayName());
+		tooltipList.add(this.fluidStack.getHoverName());
 
 		if (tooltipFlags.isAdvanced())
 		{
@@ -197,7 +197,7 @@ public class FluidIcon extends Pane
 		if (tooltipFlags.isAdvanced() && tooltipFlags.isCreative())
 		{
 			var c = nameOffset + 1;
-			ForgeRegistries.FLUIDS.getHolder(fluid).map(Holder::getTagKeys).ifPresent(tags -> tags.forEach(tag -> tooltipList.add(c, wrapShift(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_PURPLE)))));
+			BuiltInRegistries.FLUID.getHolder(id).map(Holder::tags).ifPresent(tags -> tags.forEach(tag -> tooltipList.add(c, wrapShift(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_PURPLE)))));
 		}
 
 		prevTooltipSize = this.appendTooltip(tooltipList, tooltipFlags, prevTooltipSize);

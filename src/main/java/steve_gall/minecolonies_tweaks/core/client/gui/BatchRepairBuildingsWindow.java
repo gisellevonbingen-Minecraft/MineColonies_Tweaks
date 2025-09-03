@@ -29,24 +29,21 @@ import com.ldtteam.blockui.controls.Tooltip.AutomaticTooltip;
 import com.ldtteam.blockui.views.BOWindow;
 import com.ldtteam.blockui.views.Box;
 import com.ldtteam.blockui.views.ScrollingList;
+import com.ldtteam.structurize.api.RotationMirror;
 import com.ldtteam.structurize.placement.AbstractBlueprintIterator;
 import com.ldtteam.structurize.placement.BlockPlacementResult;
 import com.ldtteam.structurize.placement.StructurePhasePlacementResult;
 import com.ldtteam.structurize.placement.StructurePlacer;
 import com.ldtteam.structurize.storage.ClientFutureProcessor;
 import com.ldtteam.structurize.storage.StructurePacks;
-import com.ldtteam.structurize.util.PlacementSettings;
-import com.ldtteam.structurize.util.RotationMirror;
 import com.minecolonies.api.colony.ICitizenDataView;
 import com.minecolonies.api.colony.IColonyView;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.colony.jobs.ModJobs;
 import com.minecolonies.api.crafting.ItemStorage;
-import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.LoadOnlyStructureHandler;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.WindowConstants;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.network.messages.server.colony.building.BuildRequestMessage;
 
@@ -58,15 +55,14 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchRepairData;
 import steve_gall.minecolonies_tweaks.core.common.colony.BuildingCost;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
 
-@SuppressWarnings("removal")
 public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 {
 	public static final Component O = Component.literal("O");
@@ -256,7 +252,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		this.nameField.setFocus();
 		this.onExceptOpenablesOnlyChangedChanged();
 
-		MineColoniesTweaks.network().sendToServer(new BatchRepairDataLoadMessage(this.colony));
+		PacketDistributor.sendToServer(new BatchRepairDataLoadMessage(this.colony));
 	}
 
 	@Override
@@ -325,17 +321,14 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 				this.updateCount++;
 				buildingName = buildingName.substring(0, buildingName.length() - 1) + building.getBuildingLevel() + ".blueprint";
-				ClientFutureProcessor.queueBlueprint(new ClientFutureProcessor.BlueprintProcessingData(StructurePacks.getBlueprintFuture(building.getStructurePack(), buildingName), blueprint ->
+				ClientFutureProcessor.queueBlueprint(new ClientFutureProcessor.BlueprintProcessingData(StructurePacks.getBlueprintFuture(building.getStructurePack(), buildingName, level.registryAccess()), blueprint ->
 				{
 					var repairResources = new HashMap<ItemStorage, AtomicInteger>();
 
 					if (blueprint != null)
 					{
-						var buildingRotation = BlockPosUtil.getRotationFromRotations(building.getRotation());
-						var buldingMirror = building.isMirrored() ? Mirror.FRONT_BACK : Mirror.NONE;
-						blueprint.setRotationMirrorRelative(RotationMirror.of(buildingRotation, buldingMirror), level);
-
-						var placer = new StructurePlacer(new LoadOnlyStructureHandler(level, building.getPosition(), blueprint, new PlacementSettings(), true));
+						blueprint.setRotationMirror(building.getRotationMirror(), level);
+						var placer = new StructurePlacer(new LoadOnlyStructureHandler(level, building.getPosition(), blueprint, RotationMirror.NONE, true));
 						StructurePhasePlacementResult result;
 						var progressPos = AbstractBlueprintIterator.NULL_POS;
 
@@ -346,7 +339,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 							for (var stack : result.getBlockResult().getRequiredItems())
 							{
-								var existing = repairResources.computeIfAbsent(new ItemStorage(stack), s -> new AtomicInteger());
+								var existing = repairResources.computeIfAbsent(new ItemStorage(stack.copyWithCount(1)), s -> new AtomicInteger());
 								existing.addAndGet(stack.getCount());
 							}
 
@@ -557,7 +550,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 			for (var entry : this.assignments.entrySet())
 			{
-				Network.getNetwork().sendToServer(new BuildRequestMessage(entry.getKey().building, BuildRequestMessage.Mode.REPAIR, entry.getValue().building.getPosition()));
+				new BuildRequestMessage(entry.getKey().building, BuildRequestMessage.Mode.REPAIR, entry.getValue().building.getPosition()).sendToServer();
 			}
 
 			var data = new BatchRepairData();
@@ -574,7 +567,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 			}
 
 			this.savedDontRepairs.forEach(data.getMarkAsDontRepairs()::add);
-			MineColoniesTweaks.network().sendToServer(new BatchRepairDataSaveMessage(this.colony, data));
+			PacketDistributor.sendToServer(new BatchRepairDataSaveMessage(this.colony, data));
 
 			this.close();
 		}

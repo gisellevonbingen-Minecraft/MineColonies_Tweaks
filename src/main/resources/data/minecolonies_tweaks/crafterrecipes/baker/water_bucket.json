@@ -3,10 +3,12 @@
 	"crafter": "baker_crafting",
 	"inputs": [
 		{
-			"item": "minecraft:bucket"
+			"id": "minecraft:bucket"
 		}
 	],
 	"intermediate": "minecraft:air",
 	"min-building-level": 3,
-	"result": "minecraft:water_bucket"
+	"result": {
+		"id": "minecraft:water_bucket"
+	}
 }

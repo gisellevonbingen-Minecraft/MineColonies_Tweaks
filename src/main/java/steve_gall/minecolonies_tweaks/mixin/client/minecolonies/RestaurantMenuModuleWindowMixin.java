@@ -31,8 +31,8 @@ public abstract class RestaurantMenuModuleWindowMixin
 		ci.cancel();
 		displayedList.sort((o1, o2) ->
 		{
-			int score1 = FoodUtils2.getTierRepresentedFood(o1.getItemStack()) instanceof IMinecoloniesFoodItem foodItem ? foodItem.getTier() * -100 : -o1.getItemStack().getFoodProperties(null).getNutrition();
-			int score2 = FoodUtils2.getTierRepresentedFood(o2.getItemStack()) instanceof IMinecoloniesFoodItem foodItem2 ? foodItem2.getTier() * -100 : -o2.getItemStack().getFoodProperties(null).getNutrition();
+			int score1 = FoodUtils2.getTierRepresentedFood(o1.getItemStack()) instanceof IMinecoloniesFoodItem foodItem ? foodItem.getTier() * -100 : -o1.getItemStack().getFoodProperties(null).nutrition();
+			int score2 = FoodUtils2.getTierRepresentedFood(o2.getItemStack()) instanceof IMinecoloniesFoodItem foodItem2 ? foodItem2.getTier() * -100 : -o2.getItemStack().getFoodProperties(null).nutrition();
 
 			final int scoreComparison = Integer.compare(score1, score2);
 			if (scoreComparison != 0)

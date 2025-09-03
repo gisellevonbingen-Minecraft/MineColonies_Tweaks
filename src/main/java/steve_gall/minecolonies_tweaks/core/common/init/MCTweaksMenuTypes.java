@@ -1,17 +1,17 @@
 package steve_gall.minecolonies_tweaks.core.common.init;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.inventory.ResourceScrollBookInventoryMenu;
 
 public class MCTweaksMenuTypes
 {
-	public static final DeferredRegister<MenuType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MineColoniesTweaks.MOD_ID);
-	public static final RegistryObject<MenuType<ResourceScrollBookInventoryMenu>> RESOURCESCROLL_BOOK_INVENTORY = REGISTER.register("resourcescroll_book_inventory", () -> IForgeMenuType.create(ResourceScrollBookInventoryMenu::create));
+	public static final DeferredRegister<MenuType<?>> REGISTER = DeferredRegister.create(Registries.MENU, MineColoniesTweaks.MOD_ID);
+	public static final DeferredHolder<MenuType<?>, MenuType<ResourceScrollBookInventoryMenu>> RESOURCESCROLL_BOOK_INVENTORY = REGISTER.register("resourcescroll_book_inventory", () -> IMenuTypeExtension.create(ResourceScrollBookInventoryMenu::create));
 
 	private MCTweaksMenuTypes()
 	{

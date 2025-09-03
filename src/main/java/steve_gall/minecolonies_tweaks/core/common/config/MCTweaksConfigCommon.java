@@ -1,15 +1,15 @@
 package steve_gall.minecolonies_tweaks.core.common.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class MCTweaksConfigCommon
 {
 	public static final MCTweaksConfigCommon INSTANCE;
-	public static final ForgeConfigSpec SPEC;
+	public static final ModConfigSpec SPEC;
 
 	static
 	{
-		var common = new ForgeConfigSpec.Builder().configure(MCTweaksConfigCommon::new);
+		var common = new ModConfigSpec.Builder().configure(MCTweaksConfigCommon::new);
 		INSTANCE = common.getLeft();
 		SPEC = common.getRight();
 	}
@@ -17,7 +17,7 @@ public class MCTweaksConfigCommon
 	public final BuildingConfig buildings;
 	public final WorldGenConfig worldGens;
 
-	public MCTweaksConfigCommon(ForgeConfigSpec.Builder builder)
+	public MCTweaksConfigCommon(ModConfigSpec.Builder builder)
 	{
 		builder.push("buildings");
 		this.buildings = new BuildingConfig(builder);

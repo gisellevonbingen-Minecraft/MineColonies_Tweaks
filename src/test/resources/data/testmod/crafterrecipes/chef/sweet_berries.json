@@ -4,13 +4,15 @@
 	"crafter": "chef_test",
 	"inputs": [
 		{
-			"item": "minecraft:sweet_berries"
+			"id": "minecraft:sweet_berries"
 		},
 		{
-			"item": "minecraft:glowstone_dust"
+			"id": "minecraft:glowstone_dust"
 		}
 	],
 	"intermediate": "minecraft:air",
 	"min-building-level": 1,
-	"result": "minecraft:glow_berries"
+	"result": {
+		"id": "minecraft:glow_berries"
+	}
 }

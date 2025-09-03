@@ -3,10 +3,10 @@ package steve_gall.minecolonies_tweaks.core.common.config;
 import com.minecolonies.core.colony.buildings.modules.RestaurantMenuModule;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.AbstractEntityAICraftingAccessor;
 import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.AbstractEntityAIStructureAccessor;
 import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.EntityAIStructureBuilderAccessor;
@@ -34,7 +34,7 @@ public class JobConfig
 	public final IntValue warehouseCouriersPerLevel;
 	public final IntValue maximumStockKindsPerLevel;
 
-	public JobConfig(ForgeConfigSpec.Builder builder)
+	public JobConfig(ModConfigSpec.Builder builder)
 	{
 		this.blockMiningDelay = builder.defineInRange("blockMiningDelay", AbstractEntityAIInteract.BLOCK_MINING_DELAY, 0, Integer.MAX_VALUE);
 		this.blockBuildingDelay = builder.defineInRange("blockBuildingDelay", AbstractEntityAIStructureAccessor.getBuildBlockDelay(), 0, Integer.MAX_VALUE);

@@ -22,6 +22,7 @@ import com.minecolonies.core.client.gui.AbstractModuleWindow;
 import com.minecolonies.core.client.gui.modules.ItemListModuleWindow;
 import com.minecolonies.core.colony.buildings.moduleviews.ItemListModuleView;
 
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.network.message.AssignFilterableItemsMessage;
@@ -79,8 +80,8 @@ public abstract class ItemListModuleWindowMixin extends AbstractModuleWindow imp
 
 		}
 
-		MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.REMOVE, toRemoves));
-		MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.ADD, toAdds));
+		PacketDistributor.sendToServer(new AssignFilterableItemsMessage(module, Function.REMOVE, toRemoves));
+		PacketDistributor.sendToServer(new AssignFilterableItemsMessage(module, Function.ADD, toAdds));
 		this.resourceList.refreshElementPanes();
 	}
 
@@ -91,7 +92,7 @@ public abstract class ItemListModuleWindowMixin extends AbstractModuleWindow imp
 
 		list.removeAll(this.currentDisplayedList);
 
-		MineColoniesTweaks.network().sendToServer(new AssignFilterableItemsMessage(module, Function.REMOVE, this.currentDisplayedList));
+		PacketDistributor.sendToServer(new AssignFilterableItemsMessage(module, Function.REMOVE, this.currentDisplayedList));
 		this.resourceList.refreshElementPanes();
 	}
 

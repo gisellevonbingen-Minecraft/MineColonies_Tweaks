@@ -22,8 +22,8 @@ public abstract class ColonyViewMixin implements IColonyViewExtension
 	@Unique
 	private final Map<BlockPos, IBuildingExtension> minecolonies_tweaks$pos2buildingExtensions = new HashMap<>();
 
-	@Inject(method = "handleColonyBuildingExtensionViewUpdateMessage", remap = false, at = @At(value = "TAIL"), cancellable = false)
-	private void handleColonyBuildingExtensionViewUpdateMessage(Set<IBuildingExtension> fields, CallbackInfo ci)
+	@Inject(method = "handleColonyBuildingExtensionsViewUpdateMessage", remap = false, at = @At(value = "TAIL"), cancellable = false)
+	private void handleColonyBuildingExtensionsViewUpdateMessage(Set<IBuildingExtension> fields, CallbackInfo ci)
 	{
 		this.minecolonies_tweaks$pos2buildingExtensions.clear();
 

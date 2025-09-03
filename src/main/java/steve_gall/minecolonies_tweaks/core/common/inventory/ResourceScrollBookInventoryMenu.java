@@ -1,6 +1,6 @@
 package steve_gall.minecolonies_tweaks.core.common.inventory;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,7 +17,7 @@ public class ResourceScrollBookInventoryMenu extends AbstractContainerMenu
 	private final int bookSlot;
 	private final ItemResourceScrollBook.Container container;
 
-	public static ResourceScrollBookInventoryMenu create(int windowId, Inventory inventory, FriendlyByteBuf extraData)
+	public static ResourceScrollBookInventoryMenu create(int windowId, Inventory inventory, RegistryFriendlyByteBuf extraData)
 	{
 		var bookSlot = extraData.readInt();
 		return new ResourceScrollBookInventoryMenu(windowId, inventory, bookSlot);
@@ -29,7 +29,7 @@ public class ResourceScrollBookInventoryMenu extends AbstractContainerMenu
 
 		this.inventory = inventory;
 		this.bookSlot = bookSlot;
-		this.container = MCTweaksItems.RESOURCESCROLL_BOOK.get().getContainer(this.getBook());
+		this.container = MCTweaksItems.RESOURCESCROLL_BOOK.get().getContainer(inventory.player.registryAccess(), this.getBook());
 
 		for (var i = 0; i < this.container.getContainerSize(); i++)
 		{

@@ -11,10 +11,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import steve_gall.minecolonies_tweaks.api.common.research.ResearchEffectChangedEventArgs;
 import steve_gall.minecolonies_tweaks.core.common.colony.ColonyExtension;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
@@ -51,7 +51,7 @@ public class CommonForgeEventHandler
 	{
 		if (e.getEntity() instanceof TamableAnimal animal && animal.getOwner() instanceof Player player)
 		{
-			if (e.getNewTarget() instanceof EntityCitizen citizen)
+			if (e.getNewAboutToBeSetTarget() instanceof EntityCitizen citizen)
 			{
 				var citizenColonyHandler = citizen.getCitizenColonyHandler();
 

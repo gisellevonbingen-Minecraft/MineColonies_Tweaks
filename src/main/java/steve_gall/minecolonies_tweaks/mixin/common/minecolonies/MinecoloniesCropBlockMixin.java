@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
+import static com.minecolonies.api.util.constant.CitizenConstants.BLOCK_BREAK_SOUND_RANGE;
+
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Final;
@@ -14,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.blocks.AbstractBlockMinecolonies;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.blocks.MinecoloniesCropBlock;
 import com.minecolonies.core.blocks.MinecoloniesFarmland;
 import com.minecolonies.core.network.messages.client.VanillaParticleMessage;
@@ -32,8 +33,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 
@@ -87,10 +88,10 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 	{
 		var placed = false;
 
-		if (ForgeHooks.onCropsGrowPre(level, pos, state, true))
+		if (CommonHooks.canCropGrow(level, pos, state, true))
 		{
 			placed = original.call(level, pos, state, i);
-			ForgeHooks.onCropsGrowPost(level, pos, state);
+			CommonHooks.fireCropGrowPost(level, pos, state);
 		}
 
 		return placed;
@@ -115,7 +116,7 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 			if (random.nextInt(100) <= growthChance)
 			{
 				this.attemptGrow(state, level, pos);
-				Network.getNetwork().sendToPosition(new VanillaParticleMessage(pos.getX() + 0.5D, pos.getY() - 0.5D, pos.getZ() + 0.5D, ParticleTypes.HAPPY_VILLAGER), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 16.0, level.dimension()));
+				PacketDistributor.sendToPlayersNear(level, null, pos.getX(), pos.getY(), pos.getZ(), BLOCK_BREAK_SOUND_RANGE, new VanillaParticleMessage(pos.getX() + 0.5D, pos.getY() - 0.5D, pos.getZ() + 0.5D, ParticleTypes.HAPPY_VILLAGER));
 			}
 
 		}
@@ -123,7 +124,7 @@ public abstract class MinecoloniesCropBlockMixin extends AbstractBlockMinecoloni
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClientSide)
+	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state)
 	{
 		return MCTweaksConfigServer.INSTANCE.blocks.cropCanPerformBonemeal.get().booleanValue() && !this.isMaxAge(state);
 	}

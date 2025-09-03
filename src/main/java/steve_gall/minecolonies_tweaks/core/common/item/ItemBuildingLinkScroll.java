@@ -22,6 +22,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import steve_gall.minecolonies_tweaks.api.common.building.BuildingPos;
 import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksDataComponents;
 
 public abstract class ItemBuildingLinkScroll extends Item
 {
@@ -33,8 +34,6 @@ public abstract class ItemBuildingLinkScroll extends Item
 	public static final Component TEXT_BUILDING_MISSING = Component.translatable("item.minecolonies_tweaks.buildingscroll.building_missing").withStyle(ChatFormatting.GRAY);
 	public static final Component TEXT_LINKED = Component.translatable("item.minecolonies_tweaks.buildingscroll.linked");
 
-	public static final String TAG_POS = "pos";
-
 	public ItemBuildingLinkScroll(Item.Properties properites)
 	{
 		super(properites.stacksTo(1));
@@ -43,30 +42,13 @@ public abstract class ItemBuildingLinkScroll extends Item
 	@Nullable
 	public static void setPos(@NotNull ItemStack stack, @Nullable BuildingPos pos)
 	{
-		var tag = stack.getOrCreateTag();
-
-		if (pos != null)
-		{
-			tag.put(TAG_POS, pos.serializeNBT());
-		}
-		else
-		{
-			tag.remove(TAG_POS);
-		}
-
+		stack.set(MCTweaksDataComponents.BUILDING_POS, pos);
 	}
 
 	@Nullable
 	public static BuildingPos getPos(@NotNull ItemStack stack)
 	{
-		var tag = stack.getTag();
-
-		if (tag == null)
-		{
-			return null;
-		}
-
-		return new BuildingPos(tag.getCompound(TAG_POS));
+		return stack.get(MCTweaksDataComponents.BUILDING_POS);
 	}
 
 	protected abstract void openWindow(@NotNull ItemStack stack, @Nullable Player player, @Nullable IBuildingView buildingView);
@@ -150,15 +132,10 @@ public abstract class ItemBuildingLinkScroll extends Item
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag)
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag)
 	{
-		super.appendHoverText(stack, level, tooltip, flag);
+		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(TOOLIP_HOW_TO_LINK);
-
-		if (level == null)
-		{
-			return;
-		}
 
 		var pos = getPos(stack);
 

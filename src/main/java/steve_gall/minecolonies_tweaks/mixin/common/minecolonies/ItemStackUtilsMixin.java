@@ -12,7 +12,7 @@ import com.minecolonies.api.items.IMinecoloniesFoodItem;
 import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.HappinessConstants;
 
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
 
@@ -20,7 +20,7 @@ import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
 public abstract class ItemStackUtilsMixin
 {
 	@Inject(method = "consumeFood", remap = false, at = @At(value = "HEAD"), cancellable = false)
-	private static void consumeFood(ItemStack foodStack, AbstractEntityCitizen citizen, Inventory inventory, CallbackInfo ci)
+	private static void consumeFood(ItemStack foodStack, AbstractEntityCitizen citizen, Player player, CallbackInfo ci)
 	{
 		if (!(foodStack.getItem() instanceof IMinecoloniesFoodItem) && MCTweaksTags.Items.getFoodTier(foodStack::is) >= 3)
 		{

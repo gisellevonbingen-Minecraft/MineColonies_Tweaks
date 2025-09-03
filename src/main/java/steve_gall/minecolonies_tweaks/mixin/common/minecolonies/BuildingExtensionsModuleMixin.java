@@ -34,8 +34,8 @@ public abstract class BuildingExtensionsModuleMixin
 	@NotNull
 	public abstract List<IBuildingExtension> getOwnedExtensions();
 
-	@Inject(method = "getExtensionToWorkOn", remap = false, at = @At(value = "HEAD"), cancellable = true)
-	private void getExtensionToWorkOn(CallbackInfoReturnable<IBuildingExtension> cir)
+	@Inject(method = "getBuildingExtensionToWorkOn", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	private void getBuildingExtensionToWorkOn(CallbackInfoReturnable<IBuildingExtension> cir)
 	{
 		if (!MCTweaksConfigServer.INSTANCE.fields.newRetrieveMethod.get().booleanValue())
 		{

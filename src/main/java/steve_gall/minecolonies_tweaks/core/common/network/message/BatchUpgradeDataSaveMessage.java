@@ -4,16 +4,20 @@ import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.IColonyView;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
+import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
 import steve_gall.minecolonies_tweaks.core.common.colony.ColonyExtension;
-import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
 
 public class BatchUpgradeDataSaveMessage extends AbstractMessage
 {
+	public static final CustomPacketPayload.Type<BatchUpgradeDataSaveMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesTweaks.rl("batch_upgrade_data_save"));
+
 	private final ResourceKey<Level> dimensionId;
 	private final int colonyId;
 	private final BatchUpgradeData data;
@@ -25,7 +29,7 @@ public class BatchUpgradeDataSaveMessage extends AbstractMessage
 		this.data = data;
 	}
 
-	public BatchUpgradeDataSaveMessage(FriendlyByteBuf buffer)
+	public BatchUpgradeDataSaveMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
@@ -36,7 +40,7 @@ public class BatchUpgradeDataSaveMessage extends AbstractMessage
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
@@ -46,7 +50,7 @@ public class BatchUpgradeDataSaveMessage extends AbstractMessage
 	}
 
 	@Override
-	public void handle(NetworkEvent.Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
@@ -58,7 +62,14 @@ public class BatchUpgradeDataSaveMessage extends AbstractMessage
 		}
 
 		var data = ((ColonyExtension) colony).minecolonies_tweaks$getBatchUpgrade();
-		data.deserializeNBT(this.data.serializeNBT());
+		var registryAccess = colony.getWorld().registryAccess();
+		data.deserializeNBT(registryAccess, this.data.serializeNBT(registryAccess));
+	}
+
+	@Override
+	public CustomPacketPayload.Type<BatchUpgradeDataSaveMessage> type()
+	{
+		return TYPE;
 	}
 
 	public ResourceKey<Level> getDimensionId()

@@ -9,12 +9,19 @@ import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
+import com.minecolonies.api.items.component.BuildingId;
+import com.minecolonies.api.items.component.ColonyId;
 import com.minecolonies.api.util.BlockPosUtil;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -25,6 +32,18 @@ public class BuildingPos
 	public static final String TAG_COLONY_ID = "colonyId";
 	public static final String TAG_BUILDING_ID = "buildingId";
 
+	public static Codec<BuildingPos> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
+			Level.RESOURCE_KEY_CODEC.fieldOf("dimensionId").forGetter(BuildingPos::getDimensionId), //
+			Codec.INT.fieldOf("colonyId").forGetter(BuildingPos::getColonyId), //
+			BlockPos.CODEC.fieldOf("buildingId").forGetter(BuildingPos::getBuildingId) //
+	).apply(builder, BuildingPos::new));
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, BuildingPos> STREAM_CODEC = StreamCodec.composite(//
+			ResourceKey.streamCodec(Registries.DIMENSION), BuildingPos::getDimensionId, //
+			ByteBufCodecs.VAR_INT, BuildingPos::getColonyId, //
+			BlockPos.STREAM_CODEC, BuildingPos::getBuildingId, //
+			BuildingPos::new);
+
 	@NotNull
 	private final ResourceKey<Level> dimensionId;
 	private final int colonyId;
@@ -33,7 +52,7 @@ public class BuildingPos
 
 	public BuildingPos(@NotNull CompoundTag tag)
 	{
-		this.dimensionId = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(tag.getString(TAG_DIMENSION_ID)));
+		this.dimensionId = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(tag.getString(TAG_DIMENSION_ID)));
 		this.colonyId = tag.getInt(TAG_COLONY_ID);
 		this.buildingId = BlockPosUtil.read(tag, TAG_BUILDING_ID);
 	}
@@ -43,6 +62,13 @@ public class BuildingPos
 		this.dimensionId = buffer.readResourceKey(Registries.DIMENSION);
 		this.colonyId = buffer.readInt();
 		this.buildingId = buffer.readBlockPos();
+	}
+
+	public BuildingPos(@NotNull ColonyId colonyId, @NotNull BuildingId buildingId)
+	{
+		this.dimensionId = colonyId.dimension();
+		this.colonyId = colonyId.id();
+		this.buildingId = buildingId.id();
 	}
 
 	public BuildingPos(@NotNull ResourceKey<Level> dimensionId, int colonyId, @NotNull BlockPos buildingId)

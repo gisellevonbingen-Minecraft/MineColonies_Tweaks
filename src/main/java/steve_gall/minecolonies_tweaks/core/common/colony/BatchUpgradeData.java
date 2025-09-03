@@ -6,8 +6,9 @@ import java.util.List;
 import com.minecolonies.api.util.BlockPosUtil;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public class BatchUpgradeData
 {
@@ -20,13 +21,13 @@ public class BatchUpgradeData
 		this.markAsDontUpgrades = new ArrayList<>();
 	}
 
-	public void deserializeNBT(CompoundTag tag)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag)
 	{
 		this.markAsDontUpgrades.clear();
 		this.markAsDontUpgrades.addAll(BlockPosUtil.readPosListFromNBT(tag, TAG_MARK_AS_DONT_UPGRADES));
 	}
 
-	public CompoundTag serializeNBT()
+	public CompoundTag serializeNBT(HolderLookup.Provider provider)
 	{
 		var tag = new CompoundTag();
 		BlockPosUtil.writePosListToNBT(tag, TAG_MARK_AS_DONT_UPGRADES, this.markAsDontUpgrades);
@@ -34,15 +35,15 @@ public class BatchUpgradeData
 		return tag;
 	}
 
-	public void deserializeBuffer(FriendlyByteBuf buffer)
+	public void deserializeBuffer(RegistryFriendlyByteBuf buffer)
 	{
 		this.markAsDontUpgrades.clear();
-		buffer.readList(FriendlyByteBuf::readBlockPos).forEach(this.markAsDontUpgrades::add);
+		buffer.readList(RegistryFriendlyByteBuf::readBlockPos).forEach(this.markAsDontUpgrades::add);
 	}
 
-	public void serializeBuffer(FriendlyByteBuf buffer)
+	public void serializeBuffer(RegistryFriendlyByteBuf buffer)
 	{
-		buffer.writeCollection(this.markAsDontUpgrades, FriendlyByteBuf::writeBlockPos);
+		buffer.writeCollection(this.markAsDontUpgrades, RegistryFriendlyByteBuf::writeBlockPos);
 	}
 
 	public List<BlockPos> getMarkAsDontUpgrades()

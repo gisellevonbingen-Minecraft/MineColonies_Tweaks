@@ -3,9 +3,9 @@ package steve_gall.minecolonies_tweaks.core.client;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.common.util.Lazy;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
+import net.neoforged.neoforge.common.util.Lazy;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 public class ModKeyMappings

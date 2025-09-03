@@ -9,16 +9,16 @@
 		source="minecolonies:textures/gui/builderhut/builder_charcoal_chalk.png"
 		size="19 59" pos="245 180" />
 
-	<label size="100% 11" pos="0 13" color="black" textalign="MIDDLE"
+	<text size="100% 11" pos="0 13" color="black" textalign="MIDDLE"
 		label="$(item.minecolonies_tweaks.resourcescroll_book)" />
 
 	<box size="244 200" linewidth="1" pos="13 26">
 		<list id="resources" size="100% 100%">
 			<box size="100% 30" linewidth="1">
 				<itemicon id="resourceIcon" size="16 16" pos="1 6" />
-				<label id="desc1" size="173 9" pos="20 2" color="black" />
-				<label id="desc2" size="173 9" pos="20 11" color="black" />
-				<label id="desc3" size="173 9" pos="20 20" color="black" />
+				<text id="desc1" size="173 9" pos="20 2" color="black" />
+				<text id="desc2" size="173 9" pos="20 11" color="black" />
+				<text id="desc3" size="173 9" pos="20 20" color="black" />
 				<button id="open" size="40 18" pos="193 6"
 					label="$(minecolonies_tweaks.gui.resourcebook.open)" />
 			</box>

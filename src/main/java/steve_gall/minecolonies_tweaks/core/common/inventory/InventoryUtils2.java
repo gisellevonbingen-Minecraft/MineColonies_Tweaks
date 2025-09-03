@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class InventoryUtils2
 {
@@ -26,15 +26,7 @@ public class InventoryUtils2
 
 	private static IItemHandler getBlockEntityItemHandler(Level level, BlockPos pos)
 	{
-		var be = level.getBlockEntity(pos);
-
-		if (be != null)
-		{
-			var cap = be.getCapability(ForgeCapabilities.ITEM_HANDLER);
-			return cap == null ? null : cap.orElse(null);
-		}
-
-		return null;
+		return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
 	}
 
 	private InventoryUtils2()

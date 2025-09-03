@@ -60,24 +60,24 @@
 		size="80 24" pos="0 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
 		label="$(minecolonies_tweaks.gui.assign_all_automatically)"
-		textcolor="black" wrap="true" />
+		color="black" wrap="true" />
 
 	<button id="clearAssignments" align="BOTTOM_LEFT" size="80 24"
 		pos="85 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		label="$(minecolonies_tweaks.gui.clear_assignments)" textcolor="black"
+		label="$(minecolonies_tweaks.gui.clear_assignments)" color="black"
 		wrap="true" />
 
 	<button id="markAllDontUpgrade" align="BOTTOM_LEFT" size="80 24"
 		pos="170 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		label="$(minecolonies_tweaks.gui.mark_all_dont_upgrade)"
-		textcolor="black" wrap="true" />
+		label="$(minecolonies_tweaks.gui.mark_all_dont_upgrade)" color="black"
+		wrap="true" />
 
 	<button id="clearDontUpgrade" align="BOTTOM_LEFT" size="80 24"
 		pos="255 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		label="$(minecolonies_tweaks.gui.clear_dont_upgrade)" textcolor="black"
+		label="$(minecolonies_tweaks.gui.clear_dont_upgrade)" color="black"
 		wrap="true" />
 
 	<text id="selectionText" align="BOTTOM_LEFT" size="200 8"
@@ -86,9 +86,9 @@
 	<button id="upgrade" align="BOTTOM_RIGHT" size="70 24" pos="5 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
 		label="$(minecolonies_tweaks.gui.upgrade_and_save)" wrap="true"
-		textcolor="black" />
+		color="black" />
 
 	<button id="cancel" align="TOP_RIGHT" size="14 15" pos="5 5"
-		source="minecolonies:textures/gui/button_x.png" textcolor="black" />
+		source="minecolonies:textures/gui/button_x.png" color="black" />
 
 </window>

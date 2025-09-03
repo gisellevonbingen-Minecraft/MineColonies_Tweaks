@@ -128,12 +128,12 @@ public class MaximumStockModuleWindow extends AbstractModuleWindow
 		if (this.moduleView.hasReachedLimit())
 		{
 			button.setText(Component.translatable(LABEL_LIMIT_REACHED));
-			button.setImage(new ResourceLocation(Constants.MOD_ID, "textures/gui/builderhut/builder_button_medium_disabled.png"), false);
+			button.setImage(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/builderhut/builder_button_medium_disabled.png"));
 		}
 		else
 		{
 			button.setText(Component.translatable(LABEL_ADD));
-			button.setImage(new ResourceLocation(Constants.MOD_ID, "textures/gui/builderhut/builder_button_medium.png"), false);
+			button.setImage(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/builderhut/builder_button_medium.png"));
 		}
 
 		var kindsText = this.findPaneOfTypeByID("kinds", Text.class);

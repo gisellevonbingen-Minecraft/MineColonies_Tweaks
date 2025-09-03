@@ -5,11 +5,11 @@ import org.jetbrains.annotations.NotNull;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.research.IResearchEffect;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.neoforge.common.NeoForge;
 
 /**
- * {@link MinecraftForge#EVENT_BUS}
+ * {@link NeoForge#EVENT_BUS}
  */
 public class ResearchEffectChangedEventArgs extends Event
 {

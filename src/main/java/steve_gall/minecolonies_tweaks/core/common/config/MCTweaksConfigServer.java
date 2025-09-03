@@ -1,15 +1,15 @@
 package steve_gall.minecolonies_tweaks.core.common.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class MCTweaksConfigServer
 {
 	public static final MCTweaksConfigServer INSTANCE;
-	public static final ForgeConfigSpec SPEC;
+	public static final ModConfigSpec SPEC;
 
 	static
 	{
-		var common = new ForgeConfigSpec.Builder().configure(MCTweaksConfigServer::new);
+		var common = new ModConfigSpec.Builder().configure(MCTweaksConfigServer::new);
 		INSTANCE = common.getLeft();
 		SPEC = common.getRight();
 	}
@@ -21,7 +21,7 @@ public class MCTweaksConfigServer
 	public final MonsterConfig monsters;
 	public final BlockConfig blocks;
 
-	public MCTweaksConfigServer(ForgeConfigSpec.Builder builder)
+	public MCTweaksConfigServer(ModConfigSpec.Builder builder)
 	{
 		builder.push("researches");
 		this.researches = new ResearchConfig(builder);

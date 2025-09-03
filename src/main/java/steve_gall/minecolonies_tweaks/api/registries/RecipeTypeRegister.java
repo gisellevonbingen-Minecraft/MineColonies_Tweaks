@@ -13,9 +13,9 @@ import com.minecolonies.api.crafting.registry.RecipeTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import steve_gall.minecolonies_tweaks.api.common.crafting.OutputDisplayStackModifier;
 
 public class RecipeTypeRegister
@@ -33,12 +33,12 @@ public class RecipeTypeRegister
 		this.getRecipeTypeEntries().register(bus);
 	}
 
-	public RegistryObject<RecipeTypeEntry> registerBuilder(@NotNull String name, @NotNull BiConsumer<ResourceLocation, RecipeTypeEntry.Builder> consumer)
+	public DeferredHolder<RecipeTypeEntry, RecipeTypeEntry> registerBuilder(@NotNull String name, @NotNull BiConsumer<ResourceLocation, RecipeTypeEntry.Builder> consumer)
 	{
 		return DeferredRegisterHelper.registerRecipeTypeEntry(this.getRecipeTypeEntries(), name, consumer);
 	}
 
-	public RegistryObject<RecipeTypeEntry> registerProducer(@NotNull String name, @NotNull BiFunction<ResourceLocation, IRecipeStorage, AbstractRecipeType<IRecipeStorage>> producer)
+	public DeferredHolder<RecipeTypeEntry, RecipeTypeEntry> registerProducer(@NotNull String name, @NotNull BiFunction<ResourceLocation, IRecipeStorage, AbstractRecipeType<IRecipeStorage>> producer)
 	{
 		return this.registerBuilder(name, (id, builder) ->
 		{
@@ -46,7 +46,7 @@ public class RecipeTypeRegister
 		});
 	}
 
-	public RegistryObject<RecipeTypeEntry> registerOutputStacks(@NotNull String name, @NotNull Function<IRecipeStorage, List<ItemStack>> outputDisplayStacksFunc)
+	public DeferredHolder<RecipeTypeEntry, RecipeTypeEntry> registerOutputStacks(@NotNull String name, @NotNull Function<IRecipeStorage, List<ItemStack>> outputDisplayStacksFunc)
 	{
 		return this.registerProducer(name, (id, recipe) ->
 		{

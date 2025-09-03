@@ -17,13 +17,13 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.colony.ICitizenDataView;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.entity.citizen.Skill;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.client.gui.citizen.AbstractWindowCitizen;
 import com.minecolonies.core.client.gui.citizen.MainWindowCitizen;
 import com.minecolonies.core.network.messages.server.colony.citizen.AdjustSkillCitizenMessage;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
@@ -54,7 +54,7 @@ public abstract class MainWindowCitizenMixin extends AbstractWindowCitizen imple
 		{
 			for (var skill : Skill.values())
 			{
-				Network.getNetwork().sendToServer(new AdjustSkillCitizenMessage(this.colony, this.citizen, this.getSkillQuantity(+1), skill));
+				PacketDistributor.sendToServer(new AdjustSkillCitizenMessage(this.colony, this.citizen, this.getSkillQuantity(+1), skill));
 			}
 
 		}
@@ -62,7 +62,7 @@ public abstract class MainWindowCitizenMixin extends AbstractWindowCitizen imple
 		{
 			for (var skill : Skill.values())
 			{
-				Network.getNetwork().sendToServer(new AdjustSkillCitizenMessage(this.colony, this.citizen, this.getSkillQuantity(-1), skill));
+				PacketDistributor.sendToServer(new AdjustSkillCitizenMessage(this.colony, this.citizen, this.getSkillQuantity(-1), skill));
 			}
 
 		}

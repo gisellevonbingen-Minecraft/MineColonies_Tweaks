@@ -1,14 +1,17 @@
 package steve_gall.minecolonies_tweaks.core.common.research;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
 import com.ldtteam.blockui.views.BOWindow;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.IGlobalResearch;
-import com.minecolonies.api.research.IResearchCost;
 import com.minecolonies.core.client.gui.WindowSelectRes;
+
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
 public class ResearchCostSelector
 {
@@ -19,7 +22,7 @@ public class ResearchCostSelector
 
 	private final BOWindow origin;
 	private final IGlobalResearch research;
-	private final List<IResearchCost> costs;
+	private final List<SizedIngredient> costs;
 	private final Consumer<List<ItemStorage>> consumer;
 
 	private List<ItemStorage> selectedCosts;
@@ -45,20 +48,20 @@ public class ResearchCostSelector
 		for (; this.selectedCosts.size() < costsCount;)
 		{
 			var cost = this.costs.get(this.selectedCosts.size());
-			var items = cost.getItems();
+			var items = Arrays.stream(cost.getItems()).map(ItemStack::getItem).toList();
 
 			if (items.size() > 1)
 			{
 				new WindowSelectRes(this.origin, stack -> items.contains(stack.getItem()), (stack, count) ->
 				{
-					this.selectedCosts.add(new ItemStorage(stack, cost.getCount()));
+					this.selectedCosts.add(new ItemStorage(stack, cost.count()));
 					this.cycle();
 				}, false).open();
 				break;
 			}
 			else
 			{
-				this.selectedCosts.add(new ItemStorage(items.get(0), cost.getCount()));
+				this.selectedCosts.add(new ItemStorage(items.get(0), cost.count()));
 			}
 
 		}

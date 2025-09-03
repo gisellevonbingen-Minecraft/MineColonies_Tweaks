@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import steve_gall.minecolonies_tweaks.core.client.gui.UniversityDashboardWindow;
 
 public class ItemUniversityScroll extends ItemBuildingLinkScroll
@@ -40,10 +39,10 @@ public class ItemUniversityScroll extends ItemBuildingLinkScroll
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag)
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag)
 	{
 		tooltip.add(TOOLTIP);
-		super.appendHoverText(stack, level, tooltip, flag);
+		super.appendHoverText(stack, context, tooltip, flag);
 
 		var buildingPos = getPos(stack);
 		var buildingView = buildingPos != null ? buildingPos.getBuildingView() : null;

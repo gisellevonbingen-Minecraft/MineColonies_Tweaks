@@ -1,9 +1,8 @@
 package steve_gall.minecolonies_tweaks.core.client.gui;
 
 import com.ldtteam.blockui.Pane;
-import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.IColonyView;
-import com.minecolonies.core.items.ItemClipboard;
+import com.minecolonies.api.items.component.ColonyId;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -27,9 +26,8 @@ public class ClipboardElement extends ResourceScrollBookElement
 	{
 		super.onOpenClicked();
 
-		var compound = this.stack.getOrCreateTag();
 		var mc = Minecraft.getInstance();
-		ItemClipboardAccessor.invokeOpenWindow(compound, mc.level, mc.player);
+		ItemClipboardAccessor.invokeOpenWindow(this.stack, mc.level, mc.player);
 	}
 
 	@Override
@@ -70,16 +68,7 @@ public class ClipboardElement extends ResourceScrollBookElement
 
 	public IColonyView getColonyView()
 	{
-		var compound = this.stack.getTag();
-
-		if (compound != null && compound.contains(ItemClipboard.TAG_COLONY))
-		{
-			var colonyId = compound.getInt(ItemClipboard.TAG_COLONY);
-			var mc = Minecraft.getInstance();
-			return IColonyManager.getInstance().getColonyView(colonyId, mc.level.dimension());
-		}
-
-		return null;
+		return ColonyId.readColonyViewFromItemStack(this.stack);
 	}
 
 }

@@ -18,8 +18,8 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.ModLoader;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.ModLoader;
+import net.neoforged.fml.loading.FMLPaths;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 public class CustomToolType
@@ -73,7 +73,7 @@ public class CustomToolType
 			MineColoniesTweaks.LOGGER.error("Exception during load CustomToolType", e);
 		}
 
-		ModLoader.get().postEvent(new CustomToolTypeRegisterEvent(CustomToolType::register));
+		ModLoader.postEvent(new CustomToolTypeRegisterEvent(CustomToolType::register));
 	}
 
 	private static void register(CustomToolType data)

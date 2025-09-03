@@ -23,7 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
@@ -70,7 +69,7 @@ public abstract class ItemCropMixin extends BlockItem implements ItemCropExtensi
 	}
 
 	@Inject(method = "appendHoverText", remap = true, at = @At(value = "RETURN"), cancellable = true)
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn, CallbackInfo ci)
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn, CallbackInfo ci)
 	{
 		for (var i = 0; i < tooltip.size(); i++)
 		{

@@ -7,9 +7,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.controls.ButtonImage;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.client.gui.ButtonImageExtension;
 
 @Mixin(value = ButtonImage.class, remap = false)
@@ -18,18 +18,23 @@ public class ButtonImageMixin extends Button implements ButtonImageExtension
 	@Unique
 	private boolean minecolonies_tweaks$flipX;
 
-	@Redirect(method = "drawSelf", remap = false, at = @At(value = "INVOKE", target = "blit"))
-	public void drawSelf_blit(PoseStack ps, ResourceLocation rl, int x, int y, int w, int h, int u, int v, int uW, int vH, int mapW, int mapH)
+	@Redirect(method = "drawSelf", remap = false, at = @At(value = "INVOKE", target = "Lcom/ldtteam/blockui/UiRenderMacros$ResolvedBlit;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIII)V"))
+	public void drawSelf_blit(ResolvedBlit self, PoseStack ps, int x, int y, int w, int h)
 	{
+		ps.pushPose();
+
 		if (this.minecolonies_tweaks$flipX)
 		{
-			blit(ps, rl, x, y, w, h, u - uW, v, -uW, vH, mapW, mapH);
+			RenderSystem.disableCull();
+			self.blit(ps, x + w, y, -w, h);
+			RenderSystem.enableCull();
 		}
 		else
 		{
-			blit(ps, rl, x, y, w, h, u, v, uW, vH, mapW, mapH);
+			self.blit(ps, x, y, w, h);
 		}
 
+		ps.popPose();
 	}
 
 	@Override

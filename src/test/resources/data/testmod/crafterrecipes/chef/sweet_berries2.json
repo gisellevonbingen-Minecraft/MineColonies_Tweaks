@@ -1,0 +1,20 @@
+{
+	"type": "recipe",
+	"additional-output": [],
+	"crafter": "chef_test2",
+	"inputs": [
+		{
+			"count": 2,
+			"id": "minecraft:sweet_berries"
+		},
+		{
+			"id": "minecraft:glowstone_dust"
+		}
+	],
+	"intermediate": "minecraft:air",
+	"min-building-level": 1,
+	"result": {
+		"count": 2,
+		"id": "minecraft:glow_berries"
+	}
+}

@@ -88,14 +88,14 @@ public class CustomCraftingModule extends AbstractCraftingBuildingModule.Custom
 			var jobId = GsonHelper2.getAsResourceLocation(json, "jobId", Constants.MOD_ID);
 			this.forceVisible = GsonHelper.getAsBoolean(json, "forceVisible", false);
 
-			this.buildingEntry = IMinecoloniesAPI.getInstance().getBuildingRegistry().getValue(buildinId);
+			this.buildingEntry = IMinecoloniesAPI.getInstance().getBuildingRegistry().get(buildinId);
 
 			if (this.buildingEntry == null)
 			{
 				throw new RuntimeException("BuildingEntry '" + buildinId + "' is not found during load CustomCraftingModule");
 			}
 
-			this.jobEntry = IMinecoloniesAPI.getInstance().getJobRegistry().getValue(jobId);
+			this.jobEntry = IMinecoloniesAPI.getInstance().getJobRegistry().get(jobId);
 
 			if (this.jobEntry == null)
 			{

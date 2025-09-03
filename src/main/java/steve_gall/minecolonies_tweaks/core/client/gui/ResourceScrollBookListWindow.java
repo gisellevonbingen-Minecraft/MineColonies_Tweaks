@@ -17,7 +17,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElement;
 import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElementEvent;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
@@ -50,7 +50,7 @@ public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 			}
 			else if (stack.is(MCTweaksTags.Items.RESOURCESCROLLBOOK_ELEMENT))
 			{
-				MinecraftForge.EVENT_BUS.post(new ResourceScrollBookElementEvent(stack, this.elements::add));
+				NeoForge.EVENT_BUS.post(new ResourceScrollBookElementEvent(stack, this.elements::add));
 			}
 
 		}

@@ -14,10 +14,10 @@ import com.minecolonies.api.util.Tuple;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class JobRegister
 {
@@ -45,7 +45,7 @@ public class JobRegister
 		bus.addListener(this::onFMLCommonSetup);
 	}
 
-	public RegistryObject<JobEntry> register(@NotNull String name, @NotNull Consumer<JobEntry.Builder> consumer)
+	public DeferredHolder<JobEntry, JobEntry> register(@NotNull String name, @NotNull Consumer<JobEntry.Builder> consumer)
 	{
 		var job = DeferredRegisterHelper.registerJobEntry(this.getJobs(), name, consumer);
 		var soundEvents = DeferredRegisterHelper.registerJobSoundEvents(this.getSounds(), name);

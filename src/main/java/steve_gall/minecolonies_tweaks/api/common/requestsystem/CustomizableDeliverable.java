@@ -12,10 +12,12 @@ import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
 import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.ReflectionUtils;
+import com.minecolonies.api.util.Utils;
 import com.minecolonies.api.util.constant.TypeConstants;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.api.common.CustomizableObjectRegistry;
@@ -52,37 +54,37 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	}
 
 	@NotNull
-	public static CompoundTag serialize(@NotNull IFactoryController controller, @NotNull CustomizableDeliverable input)
+	public static CompoundTag serialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CustomizableDeliverable input)
 	{
 		var compound = new CompoundTag();
 		compound.putString(TAG_ID, input.getId().toString());
-		compound.put(TAG_OBJECT, DeliverableObjectRegistry.INSTANCE.serializeWithoutId(controller, input.getObject()));
-		compound.put(TAG_RESULT, input.getResult().serializeNBT());
+		compound.put(TAG_OBJECT, DeliverableObjectRegistry.INSTANCE.serializeWithoutId(provider, controller, input.getObject()));
+		compound.put(TAG_RESULT, input.getResult().saveOptional(provider));
 		return compound;
 	}
 
 	@NotNull
-	public static CustomizableDeliverable deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag compound)
+	public static CustomizableDeliverable deserialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag compound)
 	{
-		var id = new ResourceLocation(compound.getString(TAG_ID));
-		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(controller, compound.getCompound(TAG_OBJECT), id);
-		var result = ItemStack.of(compound.getCompound(TAG_RESULT));
+		var id = ResourceLocation.parse(compound.getString(TAG_ID));
+		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(provider, controller, compound.getCompound(TAG_OBJECT), id);
+		var result = ItemStackUtils.deserializeFromNBT(compound.getCompound(TAG_RESULT), provider);
 		return new CustomizableDeliverable(id, object, result);
 	}
 
-	public static void serialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer, @NotNull CustomizableDeliverable input)
+	public static void serialize(@NotNull IFactoryController controller, @NotNull RegistryFriendlyByteBuf buffer, @NotNull CustomizableDeliverable input)
 	{
 		buffer.writeResourceLocation(input.getId());
-		buffer.writeNbt(DeliverableObjectRegistry.INSTANCE.serializeWithoutId(controller, input.getObject()));
-		buffer.writeItem(input.getResult());
+		buffer.writeNbt(DeliverableObjectRegistry.INSTANCE.serializeWithoutId(buffer.registryAccess(), controller, input.getObject()));
+		Utils.serializeCodecMess(buffer, input.getResult());
 	}
 
 	@NotNull
-	public static CustomizableDeliverable deserialize(@NotNull IFactoryController controller, @NotNull FriendlyByteBuf buffer)
+	public static CustomizableDeliverable deserialize(@NotNull IFactoryController controller, @NotNull RegistryFriendlyByteBuf buffer)
 	{
 		var id = buffer.readResourceLocation();
-		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(controller, buffer.readNbt(), id);
-		var result = buffer.readItem();
+		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(buffer.registryAccess(), controller, buffer.readNbt(), id);
+		var result = Utils.deserializeCodecMess(buffer);
 		return new CustomizableDeliverable(id, object, result);
 	}
 

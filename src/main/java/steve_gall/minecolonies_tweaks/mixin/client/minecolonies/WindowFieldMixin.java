@@ -15,7 +15,6 @@ import com.ldtteam.blockui.PaneParams;
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.views.View;
 import com.minecolonies.api.tileentities.AbstractTileEntityScarecrow;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.client.gui.containers.WindowField;
 import com.minecolonies.core.colony.buildingextensions.FarmField;
@@ -25,6 +24,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
@@ -103,7 +103,7 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 		var arrowButton = this.findPaneOfTypeByID(DIRECTIONAL_BUTTON_ID_PREFIX + direction.getName(), Button.class);
 		arrowButton.setText(Component.literal(String.valueOf(newRadius)));
 
-		Network.getNetwork().sendToServer(new FarmFieldPlotResizeMessage(this.tileEntityScarecrow.getCurrentColony(), newRadius, direction, farmField.getPosition()));
+		PacketDistributor.sendToServer(new FarmFieldPlotResizeMessage(this.tileEntityScarecrow.getCurrentColony(), newRadius, direction, farmField.getPosition()));
 	}
 
 	@Unique

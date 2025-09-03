@@ -11,10 +11,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.core.colony.Colony;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchRepairData;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
@@ -31,10 +33,11 @@ public abstract class ColonyMixin implements ColonyExtension
 	private final ArrayList<String> minecolonies_tweaks$commandQueue = new ArrayList<>();
 
 	@Inject(method = "read", remap = false, at = @At(value = "TAIL"), cancellable = true)
-	public void read(CompoundTag compound, CallbackInfo ci)
+	public void read(CompoundTag compound, HolderLookup.Provider provider, CallbackInfo ci)
 	{
-		this.minecolonies_tweaks$batchRepair.deserializeNBT(compound.getCompound(MineColoniesTweaks.rl("batch_repair").toString()));
-		this.minecolonies_tweaks$batchUpgrade.deserializeNBT(compound.getCompound(MineColoniesTweaks.rl("batch_upgrade").toString()));
+		var registryAccess = ServerLifecycleHooks.getCurrentServer().registryAccess();
+		this.minecolonies_tweaks$batchRepair.deserializeNBT(registryAccess, compound.getCompound(MineColoniesTweaks.rl("batch_repair").toString()));
+		this.minecolonies_tweaks$batchUpgrade.deserializeNBT(registryAccess, compound.getCompound(MineColoniesTweaks.rl("batch_upgrade").toString()));
 
 		var commandQueue = compound.getList(MineColoniesTweaks.rl("command_queue").toString(), Tag.TAG_STRING);
 		this.minecolonies_tweaks$commandQueue.clear();
@@ -47,10 +50,11 @@ public abstract class ColonyMixin implements ColonyExtension
 	}
 
 	@Inject(method = "write", remap = false, at = @At(value = "TAIL"), cancellable = true)
-	public void write(CompoundTag compound, CallbackInfoReturnable<CompoundTag> cir)
+	public void write(CompoundTag compound, HolderLookup.Provider provider, CallbackInfoReturnable<CompoundTag> cir)
 	{
-		compound.put(MineColoniesTweaks.rl("batch_repair").toString(), this.minecolonies_tweaks$batchRepair.serializeNBT());
-		compound.put(MineColoniesTweaks.rl("batch_upgrade").toString(), this.minecolonies_tweaks$batchUpgrade.serializeNBT());
+		var registryAccess = ServerLifecycleHooks.getCurrentServer().registryAccess();
+		compound.put(MineColoniesTweaks.rl("batch_repair").toString(), this.minecolonies_tweaks$batchRepair.serializeNBT(registryAccess));
+		compound.put(MineColoniesTweaks.rl("batch_upgrade").toString(), this.minecolonies_tweaks$batchUpgrade.serializeNBT(registryAccess));
 
 		var commandQueue = new ListTag();
 

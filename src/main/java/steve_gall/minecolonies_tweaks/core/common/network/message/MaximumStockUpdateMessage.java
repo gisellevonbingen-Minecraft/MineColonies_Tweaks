@@ -1,12 +1,18 @@
 package steve_gall.minecolonies_tweaks.core.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import com.minecolonies.api.util.Utils;
+
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.building.module.MaximumStockModule;
 
 public class MaximumStockUpdateMessage extends BuildingModuleMessage
 {
+	public static final CustomPacketPayload.Type<MaximumStockUpdateMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesTweaks.rl("maximum_stock_update"));
+
 	private final ItemStack stack;
 	private final boolean add;
 	private final int quantity;
@@ -30,27 +36,27 @@ public class MaximumStockUpdateMessage extends BuildingModuleMessage
 		this.quantity = quantity;
 	}
 
-	public MaximumStockUpdateMessage(FriendlyByteBuf buffer)
+	public MaximumStockUpdateMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
-		this.stack = buffer.readItem();
+		this.stack = Utils.deserializeCodecMess(buffer);
 		this.add = buffer.readBoolean();
 		this.quantity = buffer.readInt();
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
-		buffer.writeItem(this.stack);
+		Utils.serializeCodecMess(buffer, this.stack);
 		buffer.writeBoolean(this.add);
 		buffer.writeInt(this.quantity);
 	}
 
 	@Override
-	public void handle(NetworkEvent.Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
@@ -67,6 +73,12 @@ public class MaximumStockUpdateMessage extends BuildingModuleMessage
 
 		}
 
+	}
+
+	@Override
+	public CustomPacketPayload.Type<MaximumStockUpdateMessage> type()
+	{
+		return TYPE;
 	}
 
 	public ItemStack getStack()
