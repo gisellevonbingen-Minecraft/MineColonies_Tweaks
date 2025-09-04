@@ -16,6 +16,7 @@ import steve_gall.minecolonies_tweaks.core.client.gui.ClipboardElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
 import steve_gall.minecolonies_tweaks.core.client.gui.ColonyMapElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.InventoryScrollElement;
+import steve_gall.minecolonies_tweaks.core.client.gui.QuestLogElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollElement;
 import steve_gall.minecolonies_tweaks.core.client.gui.UniversityScrollElement;
 import steve_gall.minecolonies_tweaks.core.client.view.Addition;
@@ -96,6 +97,10 @@ public class MineColoniesTweaksClient
 		else if (stack.is(ModItems.colonyMap))
 		{
 			event.register(new ColonyMapElement(stack));
+		}
+		else if (stack.is(ModItems.questLog))
+		{
+			event.register(new QuestLogElement(stack));
 		}
 		else if (stack.getItem() instanceof ItemInventoryScroll)
 		{

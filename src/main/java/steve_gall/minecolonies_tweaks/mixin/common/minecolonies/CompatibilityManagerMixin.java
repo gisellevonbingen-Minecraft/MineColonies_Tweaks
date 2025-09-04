@@ -13,6 +13,7 @@ import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 
 @Mixin(value = CompatibilityManager.class, remap = false)
 public abstract class CompatibilityManagerMixin
@@ -20,8 +21,8 @@ public abstract class CompatibilityManagerMixin
 	@Shadow(remap = false)
 	private List<ItemStorage> saplings;
 
-	@Inject(method = "discoverSaplings", remap = false, at = @At(value = "TAIL"), cancellable = false)
-	private void discoverSaplings(CallbackInfo ci)
+	@Inject(method = "discoverAllItems", remap = false, at = @At(value = "TAIL"), cancellable = false)
+	private void discoverAllItems(Level level, CallbackInfo ci)
 	{
 		this.saplings.add(new ItemStorage(new ItemStack(Items.CHORUS_FLOWER), false, true));
 	}

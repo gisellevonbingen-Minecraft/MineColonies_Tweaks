@@ -9,7 +9,6 @@ import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.AbstractEntityAICraftingAccessor;
 import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.AbstractEntityAIStructureAccessor;
-import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.EntityAIStructureBuilderAccessor;
 import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.EntityAIWorkFarmerAccessor;
 import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.EntityAIWorkSifterAccessor;
 
@@ -19,7 +18,6 @@ public class JobConfig
 	public final IntValue blockBuildingDelay;
 	public final IntValue menuPerLevel;
 
-	public final DoubleValue builderBlockMiningDelayBuff;
 	public final IntValue craftingProgressMultiplier;
 	public final IntValue craftingHittingTime;
 	public final IntValue craftingDecideDelay;
@@ -40,11 +38,6 @@ public class JobConfig
 		this.blockBuildingDelay = builder.defineInRange("blockBuildingDelay", AbstractEntityAIStructureAccessor.getBuildBlockDelay(), 0, Integer.MAX_VALUE);
 		builder.comment("for restaurant, netherworker");
 		this.menuPerLevel = builder.defineInRange("menuPerLevel", RestaurantMenuModule.STOCK_PER_LEVEL, 0, Integer.MAX_VALUE);
-
-		builder.push("builder");
-		builder.comment("builder's blockMiningDelay = commonBlockingMiningDelay * buff");
-		this.builderBlockMiningDelayBuff = builder.defineInRange("blockMiningDelayBuff", EntityAIStructureBuilderAccessor.getSpeedBuff0(), 0.0D, 1.0D);
-		builder.pop();
 
 		builder.push("crafing");
 		builder.comment("craftingTicks = progressMultiplier / craftSkillLevel * hittingTime");
@@ -69,7 +62,7 @@ public class JobConfig
 		builder.push("farmer");
 		builder.comment("finalDelay = workDelay - (skillDivider * staminaLevel)");
 		this.farmerWorkDelay = builder.defineInRange("workDelay", EntityAIWorkFarmerAccessor.getStandardDelay(), 0, Integer.MAX_VALUE);
-		this.farmerSkillDivider = builder.defineInRange("skillDivider", 2.0D, 1.0D, Integer.MAX_VALUE);
+		this.farmerSkillDivider = builder.defineInRange("skillDivider", 2.0D, 0.0D, Integer.MAX_VALUE);
 		builder.comment("if harvested count reached to this, farmer will go to dump");
 		this.farmerActionsDoneUntilDumping = builder.defineInRange("actionsDoneUntilDumping", 256, EntityAIWorkFarmerAccessor.getMaxBlocksMined(), Integer.MAX_VALUE);
 		builder.comment("whether plant seed after hoeing dirt");

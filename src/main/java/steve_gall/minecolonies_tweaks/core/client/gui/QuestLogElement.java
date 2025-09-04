@@ -10,13 +10,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.api.client.gui.ResourceScrollBookElement;
-import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.ItemColonyMapAccessor;
+import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.ItemQuestLogAccessor;
 
-public class ColonyMapElement extends ResourceScrollBookElement
+public class QuestLogElement extends ResourceScrollBookElement
 {
 	private Component text1 = EMPTY;
 
-	public ColonyMapElement(ItemStack stack)
+	public QuestLogElement(ItemStack stack)
 	{
 		super(stack);
 	}
@@ -26,9 +26,8 @@ public class ColonyMapElement extends ResourceScrollBookElement
 	{
 		super.onOpenClicked();
 
-		var compound = this.stack.getOrCreateTag();
 		var mc = Minecraft.getInstance();
-		ItemColonyMapAccessor.invokeOpenWindow(compound, mc.level, mc.player);
+		ItemQuestLogAccessor.invokeOpenWindow(this.stack.getTag(), mc.level, mc.player);
 	}
 
 	@Override
