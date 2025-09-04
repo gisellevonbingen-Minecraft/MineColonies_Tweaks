@@ -2,6 +2,7 @@
 	"values": [
 		"minecolonies:clipboard",
 		"minecolonies:colonymap",
+		"minecolonies:questlog",
 		"#minecolonies_tweaks:resourcescrolls",
 		"#minecolonies_tweaks:inventoryscrolls",
 		"minecolonies_tweaks:universityscroll"
