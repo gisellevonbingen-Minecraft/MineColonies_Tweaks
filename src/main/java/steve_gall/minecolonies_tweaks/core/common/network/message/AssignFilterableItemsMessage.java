@@ -40,7 +40,7 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 		super(buffer);
 
 		this.function = buffer.readEnum(Function.class);
-		this.storages = buffer.readList(SerializationHelper::deserializer);
+		this.storages = buffer.readList(SerializationHelper::deserialize);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 		super.encode(buffer);
 
 		buffer.writeEnum(this.function);
-		buffer.writeCollection(this.storages, SerializationHelper::serializer);
+		buffer.writeCollection(this.storages, SerializationHelper::serialize);
 	}
 
 	@Override

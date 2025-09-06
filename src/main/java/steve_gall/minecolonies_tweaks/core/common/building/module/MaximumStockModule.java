@@ -16,7 +16,6 @@ import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.ItemStackUtils;
-import com.minecolonies.api.util.Utils;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -30,6 +29,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.client.gui.MaximumStockModuleWindow;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.inventory.BlackHoleItemHandler;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 import steve_gall.minecolonies_tweaks.core.common.network.message.MaximumStockUpdateMessage;
 
 public class MaximumStockModule extends AbstractBuildingModule implements IPersistentModule, ITickingModule
@@ -129,7 +129,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 		for (var i = 0; i < maximumStackTag.size(); i++)
 		{
 			var entryTag = maximumStackTag.getCompound(i);
-			var stack = ItemStackUtils.deserializeFromNBT(entryTag.getCompound("key"), provider);
+			var stack = ItemSerializationHelper.deserializeTag(provider, entryTag.getCompound("key"));
 
 			if (stack.isEmpty())
 			{
@@ -151,7 +151,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 		for (var entry : this.maximumStock.object2IntEntrySet())
 		{
 			var entryTag = new CompoundTag();
-			entryTag.put("key", entry.getKey().getItemStack().saveOptional(provider));
+			entryTag.put("key", ItemSerializationHelper.serializeTag(provider, entry.getKey().getItemStack()));
 			entryTag.putInt("value", entry.getIntValue());
 			maximumStackTag.add(entryTag);
 		}
@@ -168,7 +168,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 		for (var entry : this.maximumStock.object2IntEntrySet())
 		{
-			Utils.serializeCodecMess(buf, entry.getKey().getItemStack());
+			ItemSerializationHelper.serialize(buf, entry.getKey().getItemStack());
 			buf.writeInt(entry.getIntValue());
 		}
 
@@ -187,7 +187,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 			for (var i = 0; i < size; i++)
 			{
-				var key = new ItemStorage(Utils.deserializeCodecMess(buf));
+				var key = new ItemStorage(ItemSerializationHelper.deserialize(buf));
 				var value = buf.readInt();
 				this.maximumStock.put(key, value);
 			}

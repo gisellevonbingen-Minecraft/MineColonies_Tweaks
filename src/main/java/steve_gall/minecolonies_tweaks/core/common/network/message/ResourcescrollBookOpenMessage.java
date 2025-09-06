@@ -1,6 +1,6 @@
 package steve_gall.minecolonies_tweaks.core.common.network.message;
 
-import com.minecolonies.api.util.Utils;
+import java.util.ArrayList;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -12,6 +12,7 @@ import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 import steve_gall.minecolonies_tweaks.core.common.CuriosCompat;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
 public class ResourcescrollBookOpenMessage extends AbstractMessage
 {
@@ -37,7 +38,7 @@ public class ResourcescrollBookOpenMessage extends AbstractMessage
 		super(buffer);
 
 		this.request = buffer.readBoolean();
-		this.stack = Utils.deserializeCodecMess(buffer);
+		this.stack = ItemSerializationHelper.deserialize(buffer);
 	}
 
 	@Override
@@ -45,8 +46,9 @@ public class ResourcescrollBookOpenMessage extends AbstractMessage
 	{
 		super.encode(buffer);
 
+		buffer.writeCollection(new ArrayList<>(), ItemSerializationHelper::serialize);
 		buffer.writeBoolean(this.request);
-		Utils.serializeCodecMess(buffer, this.stack);
+		ItemSerializationHelper.serialize(buffer, this.stack);
 	}
 
 	@Override

@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.util.ItemStackUtils;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -69,7 +67,7 @@ public class ItemResourceScrollBook extends Item
 		for (var i = 0; i < size; i++)
 		{
 			var slot = i < count ? slots.get(i) : ItemStack.EMPTY;
-			slotsTag.add(slot.saveOptional(provider));
+			slotsTag.add(ItemSerializationHelper.serializeTag(provider, slot));
 		}
 
 		stack.set(MCTweaksDataComponents.RESOURCESCROLL_BOOK_ITEMS, compound);
@@ -88,7 +86,7 @@ public class ItemResourceScrollBook extends Item
 			for (var i = 0; i < size; i++)
 			{
 				var slotTag = slots.getCompound(i);
-				var slot = ItemStackUtils.deserializeFromNBT(slotTag, provider);
+				var slot = ItemSerializationHelper.deserializeTag(provider, slotTag);
 				items.set(i, slot);
 			}
 

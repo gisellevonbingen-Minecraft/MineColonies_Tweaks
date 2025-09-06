@@ -38,14 +38,14 @@ public record BuildingCost(BlockPos id, List<ItemStorage> costs)
 	public static BuildingCost decode(RegistryFriendlyByteBuf buffer)
 	{
 		var id = buffer.readBlockPos();
-		var costs = buffer.readList(SerializationHelper::<ItemStorage> deserializer);
+		var costs = buffer.readList(SerializationHelper::<ItemStorage> deserialize);
 		return new BuildingCost(id, costs);
 	}
 
 	public static void encode(RegistryFriendlyByteBuf buffer, BuildingCost data)
 	{
 		buffer.writeBlockPos(data.id);
-		buffer.writeCollection(data.costs, SerializationHelper::serializer);
+		buffer.writeCollection(data.costs, SerializationHelper::serialize);
 	}
 
 }

@@ -28,12 +28,12 @@ public class SerializationHelper
 		return input -> apply.apply(provider, input);
 	}
 
-	public static <OUTPUT> OUTPUT deserializer(FriendlyByteBuf buf)
+	public static <OUTPUT> OUTPUT deserialize(FriendlyByteBuf buf)
 	{
 		return StandardFactoryController.getInstance().deserialize((RegistryFriendlyByteBuf) buf);
 	}
 
-	public static <INPUT> void serializer(FriendlyByteBuf buf, INPUT input)
+	public static <INPUT> void serialize(FriendlyByteBuf buf, INPUT input)
 	{
 		StandardFactoryController.getInstance().serialize((RegistryFriendlyByteBuf) buf, input);
 	}

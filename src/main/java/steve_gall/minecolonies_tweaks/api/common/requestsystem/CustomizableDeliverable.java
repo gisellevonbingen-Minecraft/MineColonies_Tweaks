@@ -12,7 +12,6 @@ import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
 import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.ReflectionUtils;
-import com.minecolonies.api.util.Utils;
 import com.minecolonies.api.util.constant.TypeConstants;
 
 import net.minecraft.core.HolderLookup;
@@ -21,6 +20,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.api.common.CustomizableObjectRegistry;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
 public class CustomizableDeliverable implements ICustomizableRequestable, IDeliverable
 {
@@ -59,7 +59,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 		var compound = new CompoundTag();
 		compound.putString(TAG_ID, input.getId().toString());
 		compound.put(TAG_OBJECT, DeliverableObjectRegistry.INSTANCE.serializeWithoutId(provider, controller, input.getObject()));
-		compound.put(TAG_RESULT, input.getResult().saveOptional(provider));
+		compound.put(TAG_RESULT, ItemSerializationHelper.serializeTag(provider, input.getResult()));
 		return compound;
 	}
 
@@ -68,7 +68,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	{
 		var id = ResourceLocation.parse(compound.getString(TAG_ID));
 		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(provider, controller, compound.getCompound(TAG_OBJECT), id);
-		var result = ItemStackUtils.deserializeFromNBT(compound.getCompound(TAG_RESULT), provider);
+		var result = ItemSerializationHelper.deserializeTag(provider, compound.getCompound(TAG_RESULT));
 		return new CustomizableDeliverable(id, object, result);
 	}
 
@@ -76,7 +76,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	{
 		buffer.writeResourceLocation(input.getId());
 		buffer.writeNbt(DeliverableObjectRegistry.INSTANCE.serializeWithoutId(buffer.registryAccess(), controller, input.getObject()));
-		Utils.serializeCodecMess(buffer, input.getResult());
+		ItemSerializationHelper.serialize(buffer, input.getResult());
 	}
 
 	@NotNull
@@ -84,7 +84,7 @@ public class CustomizableDeliverable implements ICustomizableRequestable, IDeliv
 	{
 		var id = buffer.readResourceLocation();
 		var object = DeliverableObjectRegistry.INSTANCE.deserializeWithoutId(buffer.registryAccess(), controller, buffer.readNbt(), id);
-		var result = Utils.deserializeCodecMess(buffer);
+		var result = ItemSerializationHelper.deserialize(buffer);
 		return new CustomizableDeliverable(id, object, result);
 	}
 

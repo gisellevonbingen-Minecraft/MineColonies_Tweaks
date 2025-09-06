@@ -1,17 +1,18 @@
 {
 	"values": [
-		"#c:crops/bellpepper",
-		"#c:crops/cabbage",
-		"#c:crops/chickpea",
-		"#c:crops/corn",
-		"#c:crops/eggplant",
-		"#c:crops/garlic",
-		"#c:crops/onion",
-		"#c:crops/pea",
-		"#c:crops/peas",
-		"#c:crops/rice",
-		"#c:crops/soybean",
-		"#c:crops/tomato",
-		"#c:crops/wheat"
+		"#c:foods/bellpepper",
+		"#c:foods/cabbage",
+		"#c:foods/chickpea",
+		"#c:foods/corn",
+		"#c:foods/dough",
+		"#c:foods/eggplant",
+		"#c:foods/garlic",
+		"#c:foods/onion",
+		"#c:foods/pea",
+		"#c:foods/peas",
+		"#c:foods/rice",
+		"#c:foods/soybean",
+		"#c:foods/tomato",
+		"#c:foods/wheat"
 	]
 }

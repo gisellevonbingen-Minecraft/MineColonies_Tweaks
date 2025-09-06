@@ -32,7 +32,7 @@ public class BuildingPos
 	public static final String TAG_COLONY_ID = "colonyId";
 	public static final String TAG_BUILDING_ID = "buildingId";
 
-	public static Codec<BuildingPos> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
+	public static final Codec<BuildingPos> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
 			Level.RESOURCE_KEY_CODEC.fieldOf("dimensionId").forGetter(BuildingPos::getDimensionId), //
 			Codec.INT.fieldOf("colonyId").forGetter(BuildingPos::getColonyId), //
 			BlockPos.CODEC.fieldOf("buildingId").forGetter(BuildingPos::getBuildingId) //

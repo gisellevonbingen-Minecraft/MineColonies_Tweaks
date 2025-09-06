@@ -1,13 +1,12 @@
 package steve_gall.minecolonies_tweaks.core.common.network.message;
 
-import com.minecolonies.api.util.Utils;
-
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.building.module.MaximumStockModule;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
 public class MaximumStockUpdateMessage extends BuildingModuleMessage
 {
@@ -40,7 +39,7 @@ public class MaximumStockUpdateMessage extends BuildingModuleMessage
 	{
 		super(buffer);
 
-		this.stack = Utils.deserializeCodecMess(buffer);
+		this.stack = ItemSerializationHelper.deserialize(buffer);
 		this.add = buffer.readBoolean();
 		this.quantity = buffer.readInt();
 	}
@@ -50,7 +49,7 @@ public class MaximumStockUpdateMessage extends BuildingModuleMessage
 	{
 		super.encode(buffer);
 
-		Utils.serializeCodecMess(buffer, this.stack);
+		ItemSerializationHelper.serialize(buffer, this.stack);
 		buffer.writeBoolean(this.add);
 		buffer.writeInt(this.quantity);
 	}

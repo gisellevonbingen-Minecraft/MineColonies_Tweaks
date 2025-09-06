@@ -26,7 +26,7 @@ public class ModulePos
 	public static final String TAG_BUILDING_POS = "buildingPos";
 	public static final String TAG_MODULE_NAME = "moduleName";
 
-	public static Codec<ModulePos> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
+	public static final Codec<ModulePos> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
 			BuildingPos.CODEC.fieldOf("buildingPos").forGetter(ModulePos::getBuildingPos), //
 			Codec.STRING.fieldOf("moduleName").forGetter(ModulePos::getModuleName) //
 	).apply(builder, ModulePos::new));

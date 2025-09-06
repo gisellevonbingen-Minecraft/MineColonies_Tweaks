@@ -46,7 +46,7 @@ public class ResearchCostRequestMessage extends AbstractMessage
 		this.buildingPos = new BuildingPos(buffer);
 		this.branch = buffer.readResourceLocation();
 		this.research = buffer.readResourceLocation();
-		this.items = buffer.readList(SerializationHelper::deserializer);
+		this.items = buffer.readList(SerializationHelper::deserialize);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ResearchCostRequestMessage extends AbstractMessage
 		this.buildingPos.serializeBuffer(buffer);
 		buffer.writeResourceLocation(this.branch);
 		buffer.writeResourceLocation(this.research);
-		buffer.writeCollection(this.items, SerializationHelper::serializer);
+		buffer.writeCollection(this.items, SerializationHelper::serialize);
 	}
 
 	@Override
