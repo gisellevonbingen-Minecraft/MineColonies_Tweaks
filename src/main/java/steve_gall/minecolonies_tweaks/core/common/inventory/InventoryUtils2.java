@@ -2,9 +2,10 @@ package steve_gall.minecolonies_tweaks.core.common.inventory;
 
 import java.util.ArrayList;
 
+import com.minecolonies.api.util.IItemHandlerCapProvider;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -26,7 +27,14 @@ public class InventoryUtils2
 
 	private static IItemHandler getBlockEntityItemHandler(Level level, BlockPos pos)
 	{
-		return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+		var be = level.getBlockEntity(pos);
+
+		if (be != null)
+		{
+			return IItemHandlerCapProvider.wrap(be).getItemHandlerCap();
+		}
+
+		return null;
 	}
 
 	private InventoryUtils2()
