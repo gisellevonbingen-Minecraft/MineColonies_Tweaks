@@ -12,8 +12,8 @@ import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModuleView;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.network.message.AssignIdListUpdateMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.AssignIdListUpdateMessage.Function;
+import steve_gall.minecolonies_tweaks.core.common.network.message.AssignIdListMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.AssignIdListMessage.Function;
 
 public abstract class AbstractIdListModuleView extends AbstractBuildingModuleView implements IIdListModuleView
 {
@@ -38,7 +38,7 @@ public abstract class AbstractIdListModuleView extends AbstractBuildingModuleVie
 	@Override
 	public void addIds(@NotNull Collection<ResourceLocation> ids)
 	{
-		MineColoniesTweaks.network().sendToServer(new AssignIdListUpdateMessage(this, Function.ADD, ids));
+		MineColoniesTweaks.network().sendToServer(new AssignIdListMessage(this, Function.ADD, ids));
 		this.ids.addAll(ids);
 	}
 
@@ -51,14 +51,14 @@ public abstract class AbstractIdListModuleView extends AbstractBuildingModuleVie
 	@Override
 	public boolean removeIds(@NotNull Collection<ResourceLocation> ids)
 	{
-		MineColoniesTweaks.network().sendToServer(new AssignIdListUpdateMessage(this, Function.REMOVE, ids));
+		MineColoniesTweaks.network().sendToServer(new AssignIdListMessage(this, Function.REMOVE, ids));
 		return this.ids.removeAll(ids);
 	}
 
 	@Override
 	public void clearIds()
 	{
-		MineColoniesTweaks.network().sendToServer(new AssignIdListUpdateMessage(this, Function.CLEAR, Collections.emptyList()));
+		MineColoniesTweaks.network().sendToServer(new AssignIdListMessage(this, Function.CLEAR, Collections.emptyList()));
 		this.ids.clear();
 	}
 

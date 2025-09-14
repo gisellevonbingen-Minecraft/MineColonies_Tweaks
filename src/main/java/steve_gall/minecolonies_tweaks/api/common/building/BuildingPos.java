@@ -10,6 +10,8 @@ import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.util.BlockPosUtil;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -24,6 +26,12 @@ public class BuildingPos
 	public static final String TAG_DIMENSION_ID = "dimensionId";
 	public static final String TAG_COLONY_ID = "colonyId";
 	public static final String TAG_BUILDING_ID = "buildingId";
+
+	public static final Codec<BuildingPos> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
+			Level.RESOURCE_KEY_CODEC.fieldOf("dimensionId").forGetter(BuildingPos::getDimensionId), //
+			Codec.INT.fieldOf("colonyId").forGetter(BuildingPos::getColonyId), //
+			BlockPos.CODEC.fieldOf("buildingId").forGetter(BuildingPos::getBuildingId) //
+	).apply(builder, BuildingPos::new));
 
 	@NotNull
 	private final ResourceKey<Level> dimensionId;

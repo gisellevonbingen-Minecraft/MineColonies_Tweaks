@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.guardtype.GuardType;
@@ -52,7 +53,7 @@ public class DeferredRegisterHelper
 		return registerGuardType(register, jobEntry.getId().getPath(), jobEntry, consumer);
 	}
 
-	public static RegistryObject<GuardType> registerGuardType(DeferredRegister<GuardType> register, String name, RegistryObject<JobEntry> jobEntry, Consumer<GuardType.Builder> consumer)
+	public static RegistryObject<GuardType> registerGuardType(DeferredRegister<GuardType> register, String name, Supplier<JobEntry> jobEntry, Consumer<GuardType.Builder> consumer)
 	{
 		var rl = register.createTagKey(name).location();
 		return register.register(name, () ->

@@ -5,10 +5,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkEvent;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 import steve_gall.minecolonies_tweaks.core.common.CuriosCompat;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
-import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
 
 public class ResourcescrollBookOpenMessage extends AbstractMessage
 {

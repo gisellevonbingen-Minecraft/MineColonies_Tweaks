@@ -9,8 +9,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 import steve_gall.minecolonies_tweaks.core.common.colony.BuildingCost;
-import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
 
 public abstract class BatchBuildingCostsMessage extends AbstractMessage
 {

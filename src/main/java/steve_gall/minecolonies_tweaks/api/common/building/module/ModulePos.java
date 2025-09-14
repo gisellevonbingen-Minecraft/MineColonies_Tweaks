@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +22,12 @@ public class ModulePos
 {
 	public static final String TAG_BUILDING_POS = "buildingPos";
 	public static final String TAG_MODULE_NAME = "moduleName";
+
+	public static final Codec<ModulePos> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
+			BuildingPos.CODEC.fieldOf("buildingPos").forGetter(ModulePos::getBuildingPos), //
+			Codec.STRING.fieldOf("moduleName").forGetter(ModulePos::getModuleName) //
+	).apply(builder, ModulePos::new));
+
 	@NotNull
 	private final BuildingPos buildingPos;
 	private final String moduleName;
