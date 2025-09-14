@@ -12,6 +12,7 @@ import com.minecolonies.api.colony.IColonyView;
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.colony.requestsystem.request.IRequest;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.IGlobalResearchTree;
@@ -34,7 +35,7 @@ public class ResearchCost implements IRequestableObject
 	public static final Component DISPLAY_STRING = Component.translatable("minecolonies_tweaks.text.research_cost");
 	public static final ResourceLocation ICON = new ResourceLocation("textures/item/book.png");
 
-	public static ResearchCost deserialize(CompoundTag compound)
+	public static ResearchCost deserialize(IFactoryController controller, CompoundTag compound)
 	{
 		var branch = new ResourceLocation(compound.getString("branch"));
 		var research = new ResourceLocation(compound.getString("research"));
@@ -55,7 +56,7 @@ public class ResearchCost implements IRequestableObject
 		return new ResearchCost(branch, research, items, requester);
 	}
 
-	public static void serialize(ResearchCost cost, CompoundTag compound)
+	public static void serialize(IFactoryController controller, CompoundTag compound, ResearchCost cost)
 	{
 		compound.putInt("version", 1);
 		compound.putString("branch", cost.branchId.toString());

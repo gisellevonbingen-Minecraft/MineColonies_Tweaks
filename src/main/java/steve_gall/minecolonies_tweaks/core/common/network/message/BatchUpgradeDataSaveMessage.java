@@ -8,9 +8,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
 import steve_gall.minecolonies_tweaks.core.common.colony.ColonyExtension;
-import steve_gall.minecolonies_tweaks.core.common.network.AbstractMessage;
 
 public class BatchUpgradeDataSaveMessage extends AbstractMessage
 {

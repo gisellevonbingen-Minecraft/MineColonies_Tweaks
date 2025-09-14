@@ -41,19 +41,19 @@ public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends Customiza
 
 	protected abstract ResourceLocation getId(OBJECT object);
 
-	protected abstract void serializeObject(@NotNull IFactoryController controller, @NotNull ENTRY entry, @Nullable OBJECT object, @NotNull CompoundTag tag);
+	protected abstract void serializeObject(@NotNull IFactoryController controller, @NotNull CompoundTag tag, @NotNull ENTRY entry, @Nullable OBJECT object);
 
-	protected abstract OBJECT deserializeObject(@NotNull IFactoryController controller, @NotNull ENTRY entry, @NotNull CompoundTag tag);
+	protected abstract OBJECT deserializeObject(@NotNull IFactoryController controller, @NotNull CompoundTag tag, @NotNull ENTRY entry);
 
 	@NotNull
 	public CompoundTag serialize(@NotNull IFactoryController controller, @Nullable OBJECT object)
 	{
 		var tag = new CompoundTag();
-		serialize(controller, object, tag);
+		serialize(controller, tag, object);
 		return tag;
 	}
 
-	public void serialize(@NotNull IFactoryController controller, @Nullable OBJECT object, @NotNull CompoundTag tag)
+	public void serialize(@NotNull IFactoryController controller, @NotNull CompoundTag tag, @Nullable OBJECT object)
 	{
 		if (object == null)
 		{
@@ -75,11 +75,11 @@ public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends Customiza
 	public CompoundTag serializeWithoutId(@NotNull IFactoryController controller, @Nullable OBJECT object)
 	{
 		var tag = new CompoundTag();
-		this.serializeWithoutId(controller, object, tag);
+		this.serializeWithoutId(controller, tag, object);
 		return tag;
 	}
 
-	public void serializeWithoutId(@NotNull IFactoryController controller, @Nullable OBJECT object, @NotNull CompoundTag tag)
+	public void serializeWithoutId(@NotNull IFactoryController controller, @NotNull CompoundTag tag, @Nullable OBJECT object)
 	{
 		if (object == null)
 		{
@@ -94,7 +94,7 @@ public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends Customiza
 			throw new IllegalArgumentException("ID " + id + " is not registered");
 		}
 
-		this.serializeObject(controller, entry, object, tag);
+		this.serializeObject(controller, tag, entry, object);
 	}
 
 	@Nullable
@@ -113,7 +113,7 @@ public abstract class CustomizableObjectRegistry<OBJECT, ENTRY extends Customiza
 			return null;
 		}
 
-		return this.deserializeObject(controller, entry, tag);
+		return this.deserializeObject(controller, tag, entry);
 	}
 
 	public static abstract class Entry

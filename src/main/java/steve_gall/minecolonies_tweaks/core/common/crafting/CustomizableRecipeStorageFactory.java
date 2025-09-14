@@ -3,7 +3,6 @@ package steve_gall.minecolonies_tweaks.core.common.crafting;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.reflect.TypeToken;
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.factory.IFactory;
 import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.colony.requestsystem.token.IToken;
@@ -50,7 +49,7 @@ public class CustomizableRecipeStorageFactory implements IFactory<IToken<?>, Cus
 	{
 		var tag = new CompoundTag();
 		tag.put(TAG_IMPL, CustomizedRecipeStorageRegistry.INSTANCE.serialize(controller, output.getImpl()));
-		tag.put(TAG_TOKEN, StandardFactoryController.getInstance().serialize(output.getToken()));
+		tag.put(TAG_TOKEN, controller.serialize(output.getToken()));
 		return tag;
 	}
 
@@ -58,7 +57,7 @@ public class CustomizableRecipeStorageFactory implements IFactory<IToken<?>, Cus
 	public @NotNull CustomizableRecipeStorage deserialize(@NotNull IFactoryController controller, @NotNull CompoundTag tag) throws Throwable
 	{
 		var impl = CustomizedRecipeStorageRegistry.INSTANCE.deserialize(controller, tag.getCompound(TAG_IMPL));
-		IToken<?> token = StandardFactoryController.getInstance().deserialize(tag.getCompound(TAG_TOKEN));
+		IToken<?> token = controller.deserialize(tag.getCompound(TAG_TOKEN));
 		return new CustomizableRecipeStorage(token, impl);
 	}
 

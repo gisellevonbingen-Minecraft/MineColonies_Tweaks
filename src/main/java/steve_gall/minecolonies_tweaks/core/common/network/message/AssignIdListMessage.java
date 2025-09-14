@@ -8,7 +8,7 @@ import net.minecraftforge.network.NetworkEvent.Context;
 import steve_gall.minecolonies_tweaks.api.common.building.module.IIdListModule;
 import steve_gall.minecolonies_tweaks.api.common.building.module.IIdListModuleView;
 
-public class AssignIdListUpdateMessage extends BuildingModuleMessage
+public class AssignIdListMessage extends BuildingModuleMessage
 {
 	public enum Function
 	{
@@ -20,7 +20,7 @@ public class AssignIdListUpdateMessage extends BuildingModuleMessage
 	private final Function function;
 	private final Collection<ResourceLocation> ids;
 
-	public AssignIdListUpdateMessage(IIdListModuleView module, Function function, Collection<ResourceLocation> ids)
+	public AssignIdListMessage(IIdListModuleView module, Function function, Collection<ResourceLocation> ids)
 	{
 		super(module);
 
@@ -28,7 +28,7 @@ public class AssignIdListUpdateMessage extends BuildingModuleMessage
 		this.ids = ids.stream().toList();
 	}
 
-	public AssignIdListUpdateMessage(FriendlyByteBuf buffer)
+	public AssignIdListMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
 

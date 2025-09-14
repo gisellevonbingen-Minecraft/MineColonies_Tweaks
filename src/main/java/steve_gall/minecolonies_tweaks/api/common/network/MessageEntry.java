@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.core.common.network;
+package steve_gall.minecolonies_tweaks.api.common.network;
 
 import java.util.function.Function;
 

@@ -14,7 +14,6 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.items.ModItems;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +30,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -39,13 +37,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
+import steve_gall.minecolonies_tweaks.api.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestableObjectRegistry;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.resolvers.CustomizableRequestResolverFactory;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 import steve_gall.minecolonies_tweaks.core.client.MineColoniesTweaksClient;
-import steve_gall.minecolonies_tweaks.core.client.gui.ResourceScrollBookInventoryScreen;
 import steve_gall.minecolonies_tweaks.core.common.block.MinecoloniesCropBlockExtension;
 import steve_gall.minecolonies_tweaks.core.common.building.module.CustomCraftingModule;
 import steve_gall.minecolonies_tweaks.core.common.command.MCTweaksCommands;
@@ -60,7 +58,7 @@ import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksRecipes;
 import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavior;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
-import steve_gall.minecolonies_tweaks.core.common.network.NetworkChannel;
+import steve_gall.minecolonies_tweaks.core.common.network.MCTweaksMessagesRegistrar;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequest;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequestFactory;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableRequestableRequest;
@@ -90,7 +88,6 @@ public class MineColoniesTweaks
 		MCTweaksEquipmentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
-		fml_bus.addListener(this::onFMLClientSetup);
 		fml_bus.addListener(this::onRegister);
 		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
@@ -101,7 +98,8 @@ public class MineColoniesTweaks
 		forge_bus.addListener((RegisterCommandsEvent e) -> MCTweaksCommands.register(e.getDispatcher()));
 		forge_bus.register(new CommonForgeEventHandler());
 
-		NETWORK = new NetworkChannel("main");
+		NETWORK = new NetworkChannel(MOD_ID, "main");
+		MCTweaksMessagesRegistrar.register(NETWORK);
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
 	}
 
@@ -250,11 +248,6 @@ public class MineColoniesTweaks
 			e.accept(MCTweaksItems.RESOURCESCROLL_BOOK.get());
 		}
 
-	}
-
-	private void onFMLClientSetup(FMLClientSetupEvent e)
-	{
-		MenuScreens.register(MCTweaksMenuTypes.RESOURCESCROLL_BOOK_INVENTORY.get(), ResourceScrollBookInventoryScreen::new);
 	}
 
 	private void onInterModEnqueue(InterModEnqueueEvent event)

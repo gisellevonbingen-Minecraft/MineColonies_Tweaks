@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_tweaks.core.common.network;
+package steve_gall.minecolonies_tweaks.api.common.network;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,24 +13,17 @@ import com.google.common.cache.CacheBuilder;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
-import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.network.message.AssignFilterableItemsMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.AssignIdListUpdateMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataLoadMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataLoadMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataSaveMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.MaximumStockUpdateMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.ResearchCostRequestMessage;
-import steve_gall.minecolonies_tweaks.core.common.network.message.ResourcescrollBookOpenMessage;
 
 public class NetworkChannel
 {
+	private final String modId;
+	private final String name;
 	private final SimpleChannel rawChannel;
 	private final AtomicInteger rawMessageId;
 
@@ -40,12 +33,15 @@ public class NetworkChannel
 	private final Map<Class<?>, MessageEntry<?>> classToIdMap;
 	private final AtomicInteger messageId;
 
-	public NetworkChannel(String channelName)
+	public NetworkChannel(String modId, String name)
 	{
-		var modVersion = ModList.get().getModContainerById(MineColoniesTweaks.MOD_ID).get().getModInfo().getVersion().toString();
-		this.rawChannel = NetworkRegistry.newSimpleChannel(MineColoniesTweaks.rl(channelName), () -> modVersion, modVersion::equals, modVersion::equals);
+		this.modId = modId;
+		this.name = name;
+
+		var modVersion = ModList.get().getModContainerById(modId).get().getModInfo().getVersion().toString();
+		this.rawChannel = NetworkRegistry.newSimpleChannel(new ResourceLocation(modId, name), () -> modVersion, modVersion::equals, modVersion::equals);
 		this.rawMessageId = new AtomicInteger();
-		this.rawChannel.registerMessage(this.rawMessageId.incrementAndGet(), FrameMessage.class, FrameMessage::encode, FrameMessage::new, (msg, supplier) ->
+		this.rawChannel.registerMessage(this.rawMessageId.incrementAndGet(), FrameMessage.class, FrameMessage::encode, buffer -> new FrameMessage(this, buffer), (msg, supplier) ->
 		{
 			var context = supplier.get();
 			context.setPacketHandled(true);
@@ -57,16 +53,6 @@ public class NetworkChannel
 		this.idToEntryMap = new HashMap<>();
 		this.classToIdMap = new HashMap<>();
 		this.transactionId = new AtomicInteger();
-
-		this.registerMessage(AssignFilterableItemsMessage.class, AssignFilterableItemsMessage::new);
-		this.registerMessage(AssignIdListUpdateMessage.class, AssignIdListUpdateMessage::new);
-		this.registerMessage(BatchRepairDataLoadMessage.class, BatchRepairDataLoadMessage::new);
-		this.registerMessage(BatchRepairDataSaveMessage.class, BatchRepairDataSaveMessage::new);
-		this.registerMessage(BatchUpgradeDataLoadMessage.class, BatchUpgradeDataLoadMessage::new);
-		this.registerMessage(BatchUpgradeDataSaveMessage.class, BatchUpgradeDataSaveMessage::new);
-		this.registerMessage(ResourcescrollBookOpenMessage.class, ResourcescrollBookOpenMessage::new);
-		this.registerMessage(ResearchCostRequestMessage.class, ResearchCostRequestMessage::new);
-		this.registerMessage(MaximumStockUpdateMessage.class, MaximumStockUpdateMessage::new);
 	}
 
 	public void handleSplit(AbstractMessage message, Consumer<FrameMessage> consumer)
@@ -100,7 +86,7 @@ public class NetworkChannel
 		{
 			var splitLength = Math.min(max_packet_size, messageBytes.length - currentIndex);
 			var splitBytes = Arrays.copyOfRange(messageBytes, currentIndex, currentIndex + splitLength);
-			var splitMessage = new FrameMessage(transactionId, packetIndex++, (currentIndex + splitLength) >= messageBytes.length, entry.getMessageId(), splitBytes);
+			var splitMessage = new FrameMessage(this, transactionId, packetIndex++, (currentIndex + splitLength) >= messageBytes.length, entry.getMessageId(), splitBytes);
 			consumer.accept(splitMessage);
 			currentIndex += splitLength;
 		}
@@ -123,6 +109,16 @@ public class NetworkChannel
 		var entry = new MessageEntry<>(id, messageClass, decoder);
 		this.getIdToEntryMap().put(id, entry);
 		this.getClassToIdMap().put(messageClass, entry);
+	}
+
+	public String getModId()
+	{
+		return modId;
+	}
+
+	public String getName()
+	{
+		return this.name;
 	}
 
 	public Cache<Integer, Map<Integer, byte[]>> getMessageCache()

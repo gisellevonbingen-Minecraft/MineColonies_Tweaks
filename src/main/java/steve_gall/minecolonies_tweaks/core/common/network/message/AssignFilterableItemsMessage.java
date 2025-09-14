@@ -9,6 +9,7 @@ import com.minecolonies.core.colony.buildings.modules.ItemListModule;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
+import steve_gall.minecolonies_tweaks.core.common.util.SerializationHelper;
 
 public class AssignFilterableItemsMessage extends BuildingModuleMessage
 {
@@ -35,7 +36,7 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 		super(buffer);
 
 		this.function = buffer.readEnum(Function.class);
-		this.storages = buffer.readList(reader -> new ItemStorage(reader.readItem()));
+		this.storages = buffer.readList(SerializationHelper.deserializer());
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class AssignFilterableItemsMessage extends BuildingModuleMessage
 		super.encode(buffer);
 
 		buffer.writeEnum(this.function);
-		buffer.writeCollection(this.storages, (writer, storage) -> writer.writeItem(storage.getItemStack()));
+		buffer.writeCollection(this.storages, SerializationHelper.serializer());
 	}
 
 	@Override
