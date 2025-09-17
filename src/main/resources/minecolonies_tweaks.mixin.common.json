@@ -16,6 +16,7 @@
 		"minecolonies.BuildingDyerCraftingModuleMixin",
 		"minecolonies.BuildingExtensionsModuleMixin",
 		"minecolonies.BuildingStructureHandlerMixin",
+		"minecolonies.CitizenDataMixin",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
 		"minecolonies.ColonyViewMixin",
