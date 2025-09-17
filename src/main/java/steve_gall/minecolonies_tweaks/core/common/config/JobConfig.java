@@ -17,6 +17,7 @@ public class JobConfig
 	public final IntValue blockMiningDelay;
 	public final IntValue blockBuildingDelay;
 	public final IntValue menuPerLevel;
+	public final BooleanValue disableLeisure;
 
 	public final IntValue craftingProgressMultiplier;
 	public final IntValue craftingHittingTime;
@@ -38,6 +39,8 @@ public class JobConfig
 		this.blockBuildingDelay = builder.defineInRange("blockBuildingDelay", AbstractEntityAIStructureAccessor.getBuildBlockDelay(), 0, Integer.MAX_VALUE);
 		builder.comment("for restaurant, netherworker");
 		this.menuPerLevel = builder.defineInRange("menuPerLevel", RestaurantMenuModule.STOCK_PER_LEVEL, 0, Integer.MAX_VALUE);
+		builder.comment("Disables the citizen's leisure.");
+		this.disableLeisure = builder.define("disableLeisure", true);
 
 		builder.push("crafing");
 		builder.comment("craftingTicks = progressMultiplier / craftSkillLevel * hittingTime");
