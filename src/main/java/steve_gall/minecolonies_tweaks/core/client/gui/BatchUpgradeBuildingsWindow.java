@@ -47,6 +47,8 @@ import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingBuilder;
 import com.minecolonies.core.network.messages.server.colony.building.BuildRequestMessage;
 
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -55,6 +57,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataSaveMessage;
@@ -68,6 +71,7 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 	public static final String TEXT_BUILDING_NAME = "buildingName";
 	public static final String TEXT_BUILDER_NAME = "builderName";
 	public static final String TEXT_ASSIGNED_COUNT = "assignedCount";
+	public static final String TEXT_DISTANCE_WITH_BUILDING = "distanceWithBuilding";
 	public static final String BUTTON_ASSIGN_AUTO = "assignAllAutomatically";
 	public static final String BUTTON_ASSGIN_CLEAR = "clearAssignments";
 	public static final String BUTTON_MARK_ALL = "markAllDontUpgrade";
@@ -455,7 +459,7 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 						continue;
 					}
 
-					builders.sort(this::compareBuilderForAssign);
+					builders.sort((o1, o2) -> this.compareBuilderForAssign(building, o1, o2));
 					var builder = builders.get(0);
 					this.assign(building, builder);
 				}
@@ -516,14 +520,14 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 
 	}
 
-	protected int compareBuilderForAssign(BuilderInfo o1, BuilderInfo o2)
+	protected int compareBuilderForAssign(BuildingInfo building, BuilderInfo o1, BuilderInfo o2)
 	{
 		if (o1.cachedAssignedCount != o2.cachedAssignedCount)
 		{
 			return Integer.compare(o1.cachedAssignedCount, o2.cachedAssignedCount);
 		}
 
-		return Integer.compare(o1.building.getBuildingLevel(), o2.building.getBuildingLevel());
+		return Double.compare(o1.getDistance(building), o2.getDistance(building));
 	}
 
 	protected void onBuildingDontUpgradeChanged()
@@ -712,44 +716,32 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 		{
 			var building = this.filteredBuildings.get(buildingIndex);
 			this.builders.stream().filter(builder -> this.testWorkable(building, builder)).forEach(this.filteredBuilders::add);
-			this.filteredBuilders.sort(this::compareBuilder);
+			this.filteredBuilders.sort((o1, o2) -> this.compareBuilder(building, o1, o2));
 		}
 
 		this.builderList.refreshElementPanes();
 	}
 
-	protected int compareBuilder(BuilderInfo builder1, BuilderInfo builder2)
+	protected int compareBuilder(BuildingInfo building, BuilderInfo builder1, BuilderInfo builder2)
 	{
-		if (this.selectedBuildingIndex > -1)
+		var assigned = this.assignments.get(building);
+
+		if (assigned == builder1)
 		{
-			var building = this.filteredBuildings.get(this.selectedBuildingIndex);
-			var assigned = this.assignments.get(building);
-
-			if (assigned == builder1)
-			{
-				return -1;
-			}
-			else if (assigned == builder2)
-			{
-				return 1;
-			}
-
+			return -1;
+		}
+		else if (assigned == builder2)
+		{
+			return 1;
 		}
 
-		var level1 = builder1.building.getBuildingLevel();
-		var level2 = builder2.building.getBuildingLevel();
-
-		if (level1 != level2)
-		{
-			return Integer.compare(level2, level1);
-		}
-
-		return builder1.nameLowerCase.compareTo(builder2.nameLowerCase);
+		return Double.compare(builder1.getDistance(building), builder2.getDistance(building));
 	}
 
 	protected void updateBuilderRow(int index, Pane row)
 	{
 		var builder = this.filteredBuilders.get(index);
+		var building = this.lastBuildersBuildingIndex == -1 ? null : this.filteredBuildings.get(this.lastBuildersBuildingIndex);
 
 		var builderLabel = row.findPaneOfTypeByID(TEXT_BUILDER_NAME, Text.class);
 		builderLabel.setText(Component.translatable("minecolonies_tweaks.gui.builder_name_with_level", builder.name, builder.building.getBuildingLevel()));
@@ -757,6 +749,9 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 
 		var assignedCountLabel = row.findPaneOfTypeByID(TEXT_ASSIGNED_COUNT, Text.class);
 		assignedCountLabel.setText(Component.translatable("minecolonies_tweaks.gui.assigned_count_with_value", builder.cachedAssignedCount));
+
+		var distanceLabel = row.findPaneOfTypeByID(TEXT_DISTANCE_WITH_BUILDING, Text.class);
+		distanceLabel.setText(Component.translatable("minecolonies_tweaks.gui.distance_with_building", (int) builder.getDistance(building)));
 	}
 
 	protected void updateUpgradeResources()
@@ -892,11 +887,8 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 			this.building = building;
 
 			var buildingEntry = building.getBuildingType();
-			var buildingId = buildingEntry.getRegistryName();
-			var customName = building.getCustomName();
-			var nameBase = customName.isEmpty() ? Component.translatable("com." + buildingId.getNamespace() + ".building." + buildingId.getPath()) : Component.literal(customName);
-			this.name = nameBase.append(" ").append(String.valueOf(building.getBuildingLevel()));
-			this.idLowerCase = buildingId.toString().toLowerCase(Locale.ENGLISH);
+			this.name = BuildingUtils.getDisplayName(building);
+			this.idLowerCase = buildingEntry.getRegistryName().toString().toLowerCase(Locale.ENGLISH);
 			this.nameLowerCase = this.name.getString().toLowerCase(Locale.ENGLISH);
 			this.icon = new ItemStack(buildingEntry.getBuildingBlock());
 			this.itemId = Item.getId(this.icon.getItem());
@@ -922,12 +914,24 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 
 		public int cachedAssignedCount = 0;
 
+		private final Object2DoubleMap<BuildingInfo> distances = new Object2DoubleOpenHashMap<>();
+
 		public BuilderInfo(IColonyView colony, ICitizenDataView builder)
 		{
 			this.citizen = builder;
 			this.name = Component.literal(builder.getName());
 			this.nameLowerCase = builder.getName().toLowerCase(Locale.ENGLISH);
 			this.building = colony.getBuilding(builder.getWorkBuilding());
+		}
+
+		public double getDistance(BuildingInfo building)
+		{
+			return this.distances.computeIfAbsent(building, (BuildingInfo b) ->
+			{
+				var pos1 = this.building.getPosition();
+				var pos2 = b.building.getPosition();
+				return Math.sqrt(pos1.distSqr(pos2));
+			});
 		}
 
 	}

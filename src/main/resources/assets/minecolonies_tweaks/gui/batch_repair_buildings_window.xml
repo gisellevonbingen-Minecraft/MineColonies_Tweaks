@@ -37,12 +37,15 @@
 				textalign="BOTTOM_MIDDLE" wrap="true" />
 			<box size="100% 160" pos="0 10" linewidth="1">
 				<list id="builders" size="100% 100%" pos="0 0">
-					<box size="100% 30" linewidth="1">
+					<box size="100% 40" linewidth="1">
 						<text id="builderName" size="122 20" pos="2 2" color="white"
 							textalign="TOP_LEFT" wrap="true" />
 						<text id="assignedCount" size="124 10" pos="2 20"
 							color="white"
 							label="$(minecolonies_tweaks.gui.assigned_count_with_value)"
+							wrap="true" />
+						<text id="distanceWithBuilding" size="124 10" pos="2 30" color="white"
+							label="$(minecolonies_tweaks.gui.distance_with_building)"
 							wrap="true" />
 					</box>
 				</list>
@@ -80,8 +83,8 @@
 	<button id="markAllDontRepair" align="BOTTOM_LEFT" size="80 24"
 		pos="170 0"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		label="$(minecolonies_tweaks.gui.mark_all_dont_repair)"
-		color="black" wrap="true" />
+		label="$(minecolonies_tweaks.gui.mark_all_dont_repair)" color="black"
+		wrap="true" />
 
 	<button id="clearDontRepair" align="BOTTOM_LEFT" size="80 24"
 		pos="255 0"
@@ -98,6 +101,6 @@
 		color="black" />
 
 	<button id="cancel" align="TOP_RIGHT" size="14 15" pos="5 5"
-	source="minecolonies:textures/gui/button_x.png" color="black" />
+		source="minecolonies:textures/gui/button_x.png" color="black" />
 
 </window>
