@@ -256,7 +256,7 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 
 			for (var building : this.colony.getBuildings())
 			{
-				if (building.hasWorkOrder() || building.isBuildingMaxLevel())
+				if (building.hasWorkOrder() || building.isBuildingMaxLevel() || !BuildingUtils.isUnlocked(this.colony, building.getBuildingType(), building.getBuildingLevel() + 1))
 				{
 					continue;
 				}

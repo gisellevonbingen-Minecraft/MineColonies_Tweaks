@@ -311,7 +311,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 			for (var building : this.colony.getBuildings())
 			{
-				if (building.hasWorkOrder())
+				if (building.hasWorkOrder() || !BuildingUtils.isUnlocked(this.colony, building.getBuildingType(), building.getBuildingLevel()))
 				{
 					continue;
 				}
