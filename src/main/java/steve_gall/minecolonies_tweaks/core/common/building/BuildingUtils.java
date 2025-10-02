@@ -2,6 +2,8 @@ package steve_gall.minecolonies_tweaks.core.common.building;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.MinecoloniesAPIProxy;
+import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
@@ -12,6 +14,22 @@ import net.minecraft.network.chat.MutableComponent;
 
 public class BuildingUtils
 {
+	public static boolean isUnlocked(IColony colony, BuildingEntry building, int level)
+	{
+		var hutResearch = colony.getResearchManager().getResearchEffectIdFrom(building.getBuildingBlock());
+
+		if (MinecoloniesAPIProxy.getInstance().getGlobalResearchTree().hasResearchEffect(hutResearch))
+		{
+			if (colony.getResearchManager().getResearchEffects().getEffectStrength(hutResearch) < Math.max(1, level))
+			{
+				return false;
+			}
+
+		}
+
+		return true;
+	}
+
 	private static MutableComponent getDisplayName(BuildingEntry type, String customName, int level)
 	{
 		var buildingName = Component.empty();
