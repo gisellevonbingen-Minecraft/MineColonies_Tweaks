@@ -37,7 +37,9 @@ public class ResearchCommands
 	{
 		return optionalBranch("reset", true, (context, colony, branchId) ->
 		{
-			if (colony.getResearchManager().getResearchTree() instanceof LocalResearchTreeExtension extension)
+			var localResearchManager = colony.getResearchManager();
+
+			if (localResearchManager.getResearchTree() instanceof LocalResearchTreeExtension extension)
 			{
 				if (branchId == null)
 				{
@@ -48,6 +50,7 @@ public class ResearchCommands
 					extension.minecolonies_tweaks$reset(colony, branchId);
 				}
 
+				localResearchManager.markDirty();
 				context.getSource().sendSuccess(() -> Component.literal("Done"), true);
 				return 1;
 			}
