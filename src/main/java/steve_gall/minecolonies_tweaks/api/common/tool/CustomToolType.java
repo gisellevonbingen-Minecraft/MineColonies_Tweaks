@@ -128,6 +128,9 @@ public class CustomToolType
 	private Component displayName;
 
 	@Nullable
+	private Component tooltip;
+
+	@Nullable
 	private EquipmentTypeEntry toolType;
 
 	public CustomToolType(@NotNull ResourceLocation name)
@@ -147,9 +150,14 @@ public class CustomToolType
 		return this.name;
 	}
 
+	public String getDefaultDisplayNameTranslationKey()
+	{
+		return getFallbackTranslationKey(this.getName());
+	}
+
 	protected Component createDisplayName()
 	{
-		return Component.translatable(getFallbackTranslationKey(this.getName()));
+		return Component.translatable(this.getDefaultDisplayNameTranslationKey());
 	}
 
 	@NotNull
@@ -161,6 +169,27 @@ public class CustomToolType
 		}
 
 		return this.displayName;
+	}
+
+	public String getDefaultTooltipTranslationKey()
+	{
+		return getDefaultDisplayNameTranslationKey() + ".desc";
+	}
+
+	protected Component createTooltip()
+	{
+		return Component.translatable(this.getDefaultTooltipTranslationKey());
+	}
+
+	@NotNull
+	public Component getTooltip()
+	{
+		if (this.tooltip == null)
+		{
+			this.tooltip = this.createTooltip();
+		}
+
+		return this.tooltip;
 	}
 
 	public final void pair(@NotNull EquipmentTypeEntry toolType)

@@ -17,6 +17,7 @@
 		"minecolonies.RestaurantMenuModuleWindow2Mixin",
 		"minecolonies.RestaurantMenuModuleWindowMixin",
 		"minecolonies.TileEntityScarecrowRendererMixin",
+		"minecolonies.ToolRecipeCategoryMixin",
 		"minecolonies.TownhallWindowMainPageMixin",
 		"minecolonies.WindowFieldMixin",
 		"minecolonies.WindowHutAllInventoryMixin",
