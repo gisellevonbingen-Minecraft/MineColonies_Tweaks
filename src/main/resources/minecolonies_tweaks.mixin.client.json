@@ -14,6 +14,7 @@
 		"minecolonies.ItemListModuleWindowMixin",
 		"minecolonies.MainWindowCitizenMixin",
 		"minecolonies.TileEntityScarecrowRendererMixin",
+		"minecolonies.ToolRecipeCategoryMixin",
 		"minecolonies.TownhallWindowMainPageMixin",
 		"minecolonies.WindowFieldMixin",
 		"minecolonies.WindowHutAllInventoryMixin",

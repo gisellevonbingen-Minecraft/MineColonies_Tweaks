@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +17,8 @@ public class ConfigToolType extends CustomToolType
 	@NotNull
 	private final String translationKey;
 	@NotNull
+	private final String tooltipKey;
+	@NotNull
 	private final int defaultLevel;
 
 	public ConfigToolType(Builder builder, String namespace)
@@ -26,6 +27,7 @@ public class ConfigToolType extends CustomToolType
 
 		this.hasVariableMaterials = builder.hasVariableMaterials;
 		this.translationKey = builder.translationKey.orElseGet(() -> getFallbackTranslationKey(this.getName().getPath()));
+		this.tooltipKey = builder.tooltipKey.orElseGet(() -> this.translationKey + ".desc");
 		this.defaultLevel = builder.defaultLevel;
 	}
 
@@ -36,9 +38,15 @@ public class ConfigToolType extends CustomToolType
 	}
 
 	@Override
-	protected Component createDisplayName()
+	public String getDefaultDisplayNameTranslationKey()
 	{
-		return Component.translatable(this.translationKey);
+		return this.translationKey;
+	}
+
+	@Override
+	public String getDefaultTooltipTranslationKey()
+	{
+		return this.tooltipKey;
 	}
 
 	@Override
@@ -60,6 +68,8 @@ public class ConfigToolType extends CustomToolType
 		private boolean hasVariableMaterials = false;
 		@NotNull
 		private Optional<String> translationKey = Optional.empty();
+		@NotNull
+		private Optional<String> tooltipKey = Optional.empty();
 		private int defaultLevel = -1;
 
 		public Builder(@NotNull String name)
@@ -72,6 +82,7 @@ public class ConfigToolType extends CustomToolType
 			this.name = data.getName().getPath();
 			this.hasVariableMaterials = data.hasVariableMaterials;
 			this.translationKey = Optional.of(data.translationKey);
+			this.tooltipKey = Optional.of(data.tooltipKey);
 			this.defaultLevel = data.defaultLevel;
 		}
 
@@ -80,6 +91,7 @@ public class ConfigToolType extends CustomToolType
 			this.name = GsonHelper.getAsString(json, "name");
 			this.hasVariableMaterials = GsonHelper.getAsBoolean(json, "hasVariableMaterials", false);
 			this.translationKey = GsonHelper2.of(json, "translationKey", GsonHelper::getAsString);
+			this.tooltipKey = GsonHelper2.of(json, "tooltipKey", GsonHelper::getAsString);
 			this.defaultLevel = GsonHelper.getAsInt(json, "defaultLevel", -1);
 		}
 
@@ -90,6 +102,7 @@ public class ConfigToolType extends CustomToolType
 			json.addProperty("name", this.name());
 			json.addProperty("hasVariableMaterials", this.hasVariableMaterials());
 			GsonHelper2.ifPresent("translationKey", this.translationKey(), json::addProperty);
+			GsonHelper2.ifPresent("tooltipKey", this.tooltipKey(), json::addProperty);
 			json.addProperty("defaultLevel", this.defaultLevel());
 			return json;
 		}
@@ -122,6 +135,19 @@ public class ConfigToolType extends CustomToolType
 		public Builder translationKey(@NotNull Optional<String> translationKey)
 		{
 			this.translationKey = translationKey;
+			return this;
+		}
+
+		@NotNull
+		public Optional<String> tooltipKey()
+		{
+			return this.tooltipKey;
+		}
+
+		@NotNull
+		public Builder tooltipKey(@NotNull Optional<String> tooltipKey)
+		{
+			this.tooltipKey = tooltipKey;
 			return this;
 		}
 

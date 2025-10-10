@@ -1,5 +1,6 @@
 {
 	"com.minecolonies.coremod.gui.workerhuts.recipe.test": "Test",
 	"minecolonies_tweaks.custom_tooltype.carrot": "Carrots",
+	"minecolonies_tweaks.custom_tooltype.carrot.desc": "All carrots",
 	"minecolonies_tweaks.custom_tooltype.leather": "Leathers"
 }
