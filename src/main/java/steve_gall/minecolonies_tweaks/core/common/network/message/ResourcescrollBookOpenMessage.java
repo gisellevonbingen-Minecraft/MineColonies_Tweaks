@@ -46,7 +46,6 @@ public class ResourcescrollBookOpenMessage extends AbstractMessage
 	{
 		super.encode(buffer);
 
-		buffer.writeCollection(new ArrayList<>(), ItemSerializationHelper::serialize);
 		buffer.writeBoolean(this.request);
 		ItemSerializationHelper.serialize(buffer, this.stack);
 	}
