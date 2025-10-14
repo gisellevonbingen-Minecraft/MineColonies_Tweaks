@@ -26,6 +26,7 @@
 		"minecolonies.CreativeBuildingStructureHandlerMixin",
 		"minecolonies.CitizenFoodHandlerMixin",
 		"minecolonies.EntityAIStructureBuilderAccessor",
+		"minecolonies.EntityAIStudyMixin",
 		"minecolonies.EntityAIWorkCookMixin",
 		"minecolonies.EntityAIWorkSifterAccessor",
 		"minecolonies.EntityAIWorkFarmerAccessor",
