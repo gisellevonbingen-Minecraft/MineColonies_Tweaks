@@ -1,7 +1,5 @@
 package steve_gall.minecolonies_tweaks.core.common.network.message;
 
-import java.util.ArrayList;
-
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
