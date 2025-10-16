@@ -1,7 +1,7 @@
 package steve_gall.minecolonies_tweaks.api.common.building.module;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,18 +11,18 @@ import net.minecraft.resources.ResourceLocation;
 
 public interface IIdListModuleView extends IBuildingModuleView
 {
-	default void addId(@NotNull ResourceLocation id)
+	default boolean addId(@NotNull ResourceLocation id)
 	{
-		this.addIds(Arrays.asList(id));
+		return this.addIds(Collections.singletonList(id));
 	}
 
-	void addIds(@NotNull Collection<ResourceLocation> id);
+	boolean addIds(@NotNull Collection<ResourceLocation> ids);
 
 	boolean containsId(@NotNull ResourceLocation id);
 
 	default boolean removeId(@NotNull ResourceLocation id)
 	{
-		return this.removeIds(Arrays.asList(id));
+		return this.removeIds(Collections.singletonList(id));
 	}
 
 	boolean removeIds(@NotNull Collection<ResourceLocation> ids);

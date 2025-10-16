@@ -58,11 +58,11 @@ public class AssignIdListMessage extends BuildingModuleMessage
 			}
 			else if (this.function == Function.ADD)
 			{
-				this.ids.forEach(module::addId);
+				module.addIds(this.ids);
 			}
 			else if (this.function == Function.REMOVE)
 			{
-				this.ids.forEach(module::removeId);
+				module.removeIds(this.ids);
 			}
 
 		}

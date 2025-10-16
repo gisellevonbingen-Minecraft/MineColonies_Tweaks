@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_tweaks.api.common.building.module;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,16 +67,63 @@ public abstract class AbstractIdListModule extends AbstractBuildingModule implem
 		buf.writeCollection(this.ids, FriendlyByteBuf::writeResourceLocation);
 	}
 
+	protected void onIdAdded(@NotNull ResourceLocation id)
+	{
+
+	}
+
+	protected void onIdRemoved(@NotNull ResourceLocation id)
+	{
+
+	}
+
+	protected void onIdsCleared()
+	{
+
+	}
+
+	protected void onIdsChanged()
+	{
+
+	}
+
 	@Override
-	public void addId(@NotNull ResourceLocation id)
+	public boolean addId(@NotNull ResourceLocation id)
 	{
 		var added = this.ids.add(id);
 
 		if (added)
 		{
+			this.onIdAdded(id);
+			this.onIdsChanged();
 			this.markDirty();
 		}
 
+		return added;
+	}
+
+	@Override
+	public boolean addIds(@NotNull Collection<ResourceLocation> ids)
+	{
+		var anyAdded = false;
+
+		for (var id : ids)
+		{
+			if (this.ids.add(id))
+			{
+				anyAdded = true;
+				this.onIdAdded(id);
+			}
+
+		}
+
+		if (anyAdded)
+		{
+			this.onIdsChanged();
+			this.markDirty();
+		}
+
+		return anyAdded;
 	}
 
 	@Override
@@ -91,6 +139,8 @@ public abstract class AbstractIdListModule extends AbstractBuildingModule implem
 
 		if (removed)
 		{
+			this.onIdRemoved(id);
+			this.onIdsChanged();
 			this.markDirty();
 		}
 
@@ -98,9 +148,36 @@ public abstract class AbstractIdListModule extends AbstractBuildingModule implem
 	}
 
 	@Override
+	public boolean removeIds(@NotNull Collection<ResourceLocation> ids)
+	{
+		var anyRemoved = false;
+
+		for (var id : ids)
+		{
+			if (this.ids.remove(id))
+			{
+				anyRemoved = true;
+				this.onIdRemoved(id);
+			}
+
+		}
+
+		if (anyRemoved)
+		{
+			this.onIdsChanged();
+			this.markDirty();
+		}
+
+		return false;
+	}
+
+	@Override
 	public void clearIds()
 	{
 		this.ids.clear();
+
+		this.onIdsCleared();
+		this.onIdsChanged();
 		this.markDirty();
 	}
 
