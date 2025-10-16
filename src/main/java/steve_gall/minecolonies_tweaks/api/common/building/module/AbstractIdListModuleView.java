@@ -36,10 +36,10 @@ public abstract class AbstractIdListModuleView extends AbstractBuildingModuleVie
 	}
 
 	@Override
-	public void addIds(@NotNull Collection<ResourceLocation> ids)
+	public boolean addIds(@NotNull Collection<ResourceLocation> ids)
 	{
 		MineColoniesTweaks.network().sendToServer(new AssignIdListMessage(this, Function.ADD, ids));
-		this.ids.addAll(ids);
+		return this.ids.addAll(ids);
 	}
 
 	@Override

@@ -8,11 +8,15 @@ import net.minecraft.resources.ResourceLocation;
 
 public interface IIdListModule
 {
-	void addId(@NotNull ResourceLocation id);
+	boolean addId(@NotNull ResourceLocation id);
+
+	boolean addIds(@NotNull Collection<ResourceLocation> ids);
 
 	boolean containsId(@NotNull ResourceLocation id);
 
 	boolean removeId(@NotNull ResourceLocation id);
+
+	boolean removeIds(@NotNull Collection<ResourceLocation> ids);
 
 	void clearIds();
 
