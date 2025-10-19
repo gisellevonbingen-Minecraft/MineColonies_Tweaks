@@ -44,6 +44,7 @@
 	"minecolonies_tweaks.gui.maximumstock.empty": "No maximum stock set",
 	"minecolonies_tweaks.gui.surely": "Sure?",
 	"minecolonies_tweaks.gui.distance_with_building": "Distance: %sm",
+	"minecolonies_tweaks.gui.break_chance": "Break Chance: %s%%",
 	
 	"minecolonies_tweaks.text.postbox_delivery_completed": "Postbox Delivery Complete: %s",
 	"minecolonies_tweaks.text.research_cost": "Research Cost",
@@ -100,6 +101,7 @@
 	"item.minecolonies_tweaks.universityscroll.tooltip": "Use: Open Linked University's Research Dashboard",
 	
 	"com.minecolonies.coremod.gui.workerhuts.maximumstock": "Maximum Stock",
+	"com.minecolonies.coremod.gui.workerhuts.study_item_blacklist": "Study Item List",
 	
 	"key.minecolonies_tweaks.categories.general": "Tweaks addon for MineColonies",
 	"key.minecolonies_tweaks.resourcescroll_book": "Open Resource Scroll Book GUI",
