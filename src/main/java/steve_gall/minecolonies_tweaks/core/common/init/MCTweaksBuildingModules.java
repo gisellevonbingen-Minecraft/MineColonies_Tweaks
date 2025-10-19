@@ -1,9 +1,13 @@
 package steve_gall.minecolonies_tweaks.core.common.init;
 
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
+import com.minecolonies.api.colony.requestsystem.request.RequestState;
+import com.minecolonies.core.colony.requestsystem.requests.StandardRequests.ItemStackRequest;
 
+import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_tweaks.core.common.building.module.MaximumStockModule;
 import steve_gall.minecolonies_tweaks.core.common.building.module.ResearchCostResolverBuildingModule;
+import steve_gall.minecolonies_tweaks.core.common.building.module.StudyItemListModule;
 
 public class MCTweaksBuildingModules
 {
@@ -14,6 +18,37 @@ public class MCTweaksBuildingModules
 	public static final BuildingEntry.ModuleProducer<MaximumStockModule, MaximumStockModule.View> MAXIMUM_STOCK = new BuildingEntry.ModuleProducer<>("maximum_stock", //
 			() -> new MaximumStockModule(), //
 			() -> MaximumStockModule.View::new);
+
+	public static final BuildingEntry.ModuleProducer<StudyItemListModule, StudyItemListModule.View> STUDY_ITEM_BLACKLIST = new BuildingEntry.ModuleProducer<>("study_item_blacklist", //
+			() -> new StudyItemListModule("study_item_blacklist")
+			{
+				@Override
+				protected void onIdsChanged()
+				{
+					super.onIdsChanged();
+
+					var blacklist = this.getIds();
+
+					for (var citizenData : this.building.getAllAssignedCitizen())
+					{
+						for (var request : this.building.getOpenRequests(citizenData.getId()))
+						{
+							if (request instanceof ItemStackRequest itemStackRequest)
+							{
+								if (blacklist.contains(ForgeRegistries.ITEMS.getKey(itemStackRequest.getRequest().getStack().getItem())))
+								{
+									this.building.getColony().getRequestManager().updateRequestState(request.getId(), RequestState.CANCELLED);
+								}
+
+							}
+
+						}
+
+					}
+
+				}
+			}, //
+			() -> () -> new StudyItemListModule.View("study_item_blacklist", "com.minecolonies.coremod.gui.workerhuts.study_item_blacklist", true));
 
 	private MCTweaksBuildingModules()
 	{
