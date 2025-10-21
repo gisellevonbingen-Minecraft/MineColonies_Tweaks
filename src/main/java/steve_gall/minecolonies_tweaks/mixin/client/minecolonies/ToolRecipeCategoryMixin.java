@@ -15,7 +15,6 @@ import com.minecolonies.core.compatibility.jei.ToolRecipeCategory;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import mezz.jei.common.gui.TooltipRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -74,9 +73,7 @@ public abstract class ToolRecipeCategoryMixin
 
 		if (new Rectangle(x, y, width, height).contains((int) mouseX, (int) mouseY))
 		{
-			RenderSystem.disableDepthTest();
-			TooltipRenderer.drawHoveringText(stack, tooltip, (int) mouseX, (int) mouseY);
-			RenderSystem.enableDepthTest();
+			stack.renderComponentTooltip(mc.font, tooltip, (int) mouseX, (int) mouseY);
 		}
 
 	}
