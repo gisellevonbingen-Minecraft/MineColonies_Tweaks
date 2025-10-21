@@ -44,8 +44,8 @@ public abstract class FoodUtilsMixin
 		return FoodUtils2.getTierRepresentedFood(foodStack.getItemStack());
 	}
 
-	@Redirect(method = "getBestFoodForCitizen", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/crafting/ItemStorage;getItem()Lnet/minecraft/world/item/Item;", remap = false, ordinal = 3))
-	private static Item getBestFoodForCitizen3(ItemStorage foodStack)
+	@Redirect(method = "getBestFoodForCitizen", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/crafting/ItemStorage;getItem()Lnet/minecraft/world/item/Item;", remap = false, ordinal = 2))
+	private static Item getBestFoodForCitizen2(ItemStorage foodStack)
 	{
 		return FoodUtils2.getTierRepresentedFood(foodStack.getItemStack());
 	}
