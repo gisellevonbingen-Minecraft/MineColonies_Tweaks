@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_tweaks.mixin.client.minecolonies;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,10 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.core.colony.crafting.ToolUsage;
 import com.minecolonies.core.compatibility.jei.ToolRecipeCategory;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import mezz.jei.common.gui.JeiTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -47,7 +46,7 @@ public abstract class ToolRecipeCategoryMixin
 		var modId = customToolType.getName().getNamespace();
 		var modContainer = ModList.get().getModContainerById(modId).orElse(null);
 
-		var tooltip = new JeiTooltip();
+		var tooltip = new ArrayList<Component>();
 		tooltip.add(customToolType.getDisplayName());
 
 		var rawTooltip = customToolType.getTooltip().getString();
@@ -73,9 +72,7 @@ public abstract class ToolRecipeCategoryMixin
 
 		if (new Rectangle(x, y, width, height).contains((int) mouseX, (int) mouseY))
 		{
-			RenderSystem.disableDepthTest();
-			tooltip.draw(stack, (int) mouseX, (int) mouseY);
-			RenderSystem.enableDepthTest();
+			stack.renderComponentTooltip(mc.font, tooltip, (int) mouseX, (int) mouseY);
 		}
 
 	}
