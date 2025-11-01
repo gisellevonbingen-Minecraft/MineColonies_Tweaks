@@ -55,7 +55,7 @@ public class StudyItemListModule extends AbstractIdListModule
 			this.desc = desc;
 			this.inverted = inverted;
 
-			this.studyItems = new ArrayList<StudyItem>();
+			this.studyItems = new ArrayList<>();
 		}
 
 		@Override
