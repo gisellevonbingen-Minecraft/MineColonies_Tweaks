@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_tweaks.core.common.config;
 
+import com.minecolonies.api.util.constant.UndertakerConstants;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
@@ -22,6 +24,14 @@ public class JobConfig
 	public final BooleanValue structureLeavesFree;
 	public final IntValue warehouseCouriersPerLevel;
 	public final IntValue maximumStockKindsPerLevel;
+	public final DoubleValue undertakerResurrectTotemSingleChance;
+	public final DoubleValue undertakerResurrectTotemMultipleChance;
+	public final DoubleValue undertakerResurrectBuildingLevelWeight;
+	public final DoubleValue undertakerResurrectManaLevelWeight;
+	public final BooleanValue undertakerResurrectCapDisable;
+	public final DoubleValue undertakerResurrectCapBase;
+	public final DoubleValue undertakerResurrectCapMysticalLevelWeight;
+	public final DoubleValue undertakerResurrectTotemBreakChance;
 
 	public JobConfig(ForgeConfigSpec.Builder builder)
 	{
@@ -54,6 +64,21 @@ public class JobConfig
 		builder.comment("whether plant seed after harvest crop");
 		builder.comment(ConfigConstants.VANILLA_IS_FALSE);
 		this.farmerPlantAfterHarvest = builder.define("plantAfterHarvest", true);
+		builder.pop();
+
+		builder.push("undertaker");
+		builder.push("resurrectChance");
+		this.undertakerResurrectTotemSingleChance = builder.defineInRange("totemSingleChance", UndertakerConstants.SINGLE_TOTEM_RESURRECTION_CHANCE_BONUS, 0.0D, 1.0D);
+		this.undertakerResurrectTotemMultipleChance = builder.defineInRange("totemMultipleChance", UndertakerConstants.MULTIPLE_TOTEMS_RESURRECTION_CHANCE_BONUS, 0.0D, 1.0D);
+		this.undertakerResurrectBuildingLevelWeight = builder.defineInRange("buildingLevelWeight", UndertakerConstants.RESURRECT_BUILDING_LVL_WEIGHT, 0.0D, 1.0D);
+		this.undertakerResurrectManaLevelWeight = builder.defineInRange("manaLevelWeight", UndertakerConstants.RESURRECT_WORKER_MANA_LVL_WEIGHT, 0.0D, 1.0D);
+		builder.pop();
+		builder.push("resurrectChanceCap");
+		this.undertakerResurrectCapDisable = builder.define("disable", true);
+		this.undertakerResurrectCapBase = builder.defineInRange("base", UndertakerConstants.MAX_RESURRECTION_CHANCE, 0.0D, 1.0D);
+		this.undertakerResurrectCapMysticalLevelWeight = builder.defineInRange("mysticalLevelWeight", UndertakerConstants.MAX_RESURRECTION_CHANCE_MYSTICAL_LVL_BONUS, 0.0D, 1.0D);
+		builder.pop();
+		this.undertakerResurrectTotemBreakChance = builder.defineInRange("resurrectTotemBreakChance", UndertakerConstants.TOTEM_BREAK_CHANCE, 0.0D, 1.0D);
 		builder.pop();
 
 		builder.push("structure");
