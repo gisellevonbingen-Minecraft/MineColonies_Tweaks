@@ -23,7 +23,6 @@
 		"minecolonies.WindowHutAllInventoryMixin",
 		"minecolonies.WindowCraftingsMixin",
 		"minecolonies.WindowInventoriesMixin",
-		"minecolonies.WindowPostBoxMixin",
 		"minecolonies.WindowResearchTreeMixin",
 		
 		"blockui.ButtonImageMixin",
