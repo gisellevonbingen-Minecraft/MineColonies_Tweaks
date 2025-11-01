@@ -2,9 +2,8 @@ package steve_gall.minecolonies_tweaks.core.common.init;
 
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.requestsystem.request.RequestState;
-import com.minecolonies.core.colony.requestsystem.requests.StandardRequests.ItemStackRequest;
+import com.minecolonies.core.colony.requestsystem.requests.StandardRequests.ItemStackListRequest;
 
-import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_tweaks.core.common.building.module.MaximumStockModule;
 import steve_gall.minecolonies_tweaks.core.common.building.module.ResearchCostResolverBuildingModule;
 import steve_gall.minecolonies_tweaks.core.common.building.module.StudyItemListModule;
@@ -27,15 +26,13 @@ public class MCTweaksBuildingModules
 				{
 					super.onIdsChanged();
 
-					var blacklist = this.getIds();
-
 					for (var citizenData : this.building.getAllAssignedCitizen())
 					{
 						for (var request : this.building.getOpenRequests(citizenData.getId()))
 						{
-							if (request instanceof ItemStackRequest itemStackRequest)
+							if (request instanceof ItemStackListRequest itemStackListRequest)
 							{
-								if (blacklist.contains(ForgeRegistries.ITEMS.getKey(itemStackRequest.getRequest().getStack().getItem())))
+								if (itemStackListRequest.getRequest().getDescription().equals("Study Items"))
 								{
 									this.building.getColony().getRequestManager().updateRequestState(request.getId(), RequestState.CANCELLED);
 								}
