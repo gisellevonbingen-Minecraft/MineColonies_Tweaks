@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.core.colony.crafting.ToolUsage;
 import com.minecolonies.core.compatibility.jei.ToolRecipeCategory;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import net.minecraft.ChatFormatting;
