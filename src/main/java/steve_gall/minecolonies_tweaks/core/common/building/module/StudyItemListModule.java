@@ -63,14 +63,15 @@ public class StudyItemListModule extends AbstractIdListModule
 		{
 			super.deserialize(buf);
 
-			this.studyItems.clear();
-			this.studyItems.addAll(buf.readCollection(ArrayList::new, b ->
+			var items = buf.readCollection(ArrayList::new, b ->
 			{
 				var item = b.readRegistryIdUnsafe(ForgeRegistries.ITEMS);
 				var skillIncrease = b.readInt();
 				var breakChance = b.readInt();
 				return new StudyItem(item, skillIncrease, breakChance);
-			}));
+			});
+			this.studyItems.clear();
+			this.studyItems.addAll(items);
 		}
 
 		@Override
