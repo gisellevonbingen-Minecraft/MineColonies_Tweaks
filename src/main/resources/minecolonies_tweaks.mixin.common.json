@@ -49,7 +49,6 @@
 		"minecolonies.LocalResearchTreeMixin",
 		"minecolonies.LoadOnlyStructureHandlerMixin",
 		"minecolonies.MinecoloniesCropBlockMixin",
-		"minecolonies.MinimumStockModuleMixin",
 		"minecolonies.PostBoxRequestMessageMixin",
 		"minecolonies.RestaurantMenuModuleMixin",
 		"minecolonies.RestaurantMenuModuleViewMixin",
