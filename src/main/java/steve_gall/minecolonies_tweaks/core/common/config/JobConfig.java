@@ -68,12 +68,14 @@ public class JobConfig
 
 		builder.push("undertaker");
 		builder.push("resurrectChance");
+		builder.comment("resurrectChance = totemChance + (buiding's level * buildingLevelWeight) + (worker's mana * manaLevelWeight)");
 		this.undertakerResurrectTotemSingleChance = builder.defineInRange("totemSingleChance", UndertakerConstants.SINGLE_TOTEM_RESURRECTION_CHANCE_BONUS, 0.0D, 1.0D);
 		this.undertakerResurrectTotemMultipleChance = builder.defineInRange("totemMultipleChance", UndertakerConstants.MULTIPLE_TOTEMS_RESURRECTION_CHANCE_BONUS, 0.0D, 1.0D);
 		this.undertakerResurrectBuildingLevelWeight = builder.defineInRange("buildingLevelWeight", UndertakerConstants.RESURRECT_BUILDING_LVL_WEIGHT, 0.0D, 1.0D);
 		this.undertakerResurrectManaLevelWeight = builder.defineInRange("manaLevelWeight", UndertakerConstants.RESURRECT_WORKER_MANA_LVL_WEIGHT, 0.0D, 1.0D);
 		builder.pop();
 		builder.push("resurrectChanceCap");
+		builder.comment("resurrectChanceCap = totemChance + base + (Mystical Site's level * mysticalLevelWeight)");
 		this.undertakerResurrectCapDisable = builder.define("disable", true);
 		this.undertakerResurrectCapBase = builder.defineInRange("base", UndertakerConstants.MAX_RESURRECTION_CHANCE, 0.0D, 1.0D);
 		this.undertakerResurrectCapMysticalLevelWeight = builder.defineInRange("mysticalLevelWeight", UndertakerConstants.MAX_RESURRECTION_CHANCE_MYSTICAL_LVL_BONUS, 0.0D, 1.0D);
