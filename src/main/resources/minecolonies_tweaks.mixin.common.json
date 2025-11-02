@@ -33,6 +33,7 @@
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.EntityAIWorkLumberjackMixin",
 		"minecolonies.EntityAIWorkSifterMixin",
+		"minecolonies.EntityAIWorkUndertakerMixin",
 		"minecolonies.EntityCitizenMixin",
 		"minecolonies.EquipmentTypeEntryMixin",
 		"minecolonies.FarmFieldMixin",
