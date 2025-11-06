@@ -10,12 +10,13 @@ import com.minecolonies.core.client.gui.WindowHireWorker;
 import com.minecolonies.core.client.gui.WindowHutAllInventory;
 import com.minecolonies.core.client.gui.WindowResourceList;
 import com.minecolonies.core.client.gui.map.WindowColonyMap;
+import com.minecolonies.core.client.gui.questlog.WindowQuestLog;
 
 import net.minecraft.client.gui.screens.Screen;
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
 import steve_gall.minecolonies_tweaks.core.client.gui.UniversityDashboardWindow;
 
-@Mixin(value = {WindowBuildBuilding.class, WindowHireWorker.class, WindowHutAllInventory.class, WindowAssignCitizen.class, WindowResourceList.class, WindowClipBoard.class, WindowColonyMap.class, UniversityDashboardWindow.class}, remap = false)
+@Mixin(value = {WindowBuildBuilding.class, WindowHireWorker.class, WindowHutAllInventory.class, WindowAssignCitizen.class, WindowResourceList.class, WindowClipBoard.class, WindowColonyMap.class, UniversityDashboardWindow.class, WindowQuestLog.class}, remap = false)
 public abstract class AbstractWindowSkeletonsMixin implements CloseableWindowExtension
 {
 	@Unique
