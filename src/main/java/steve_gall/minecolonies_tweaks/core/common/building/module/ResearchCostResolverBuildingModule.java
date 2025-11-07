@@ -13,6 +13,7 @@ import com.minecolonies.api.colony.requestsystem.resolver.IRequestResolver;
 import com.minecolonies.api.util.constant.TypeConstants;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_tweaks.core.common.research.ResearchCostResolver;
 
 public class ResearchCostResolverBuildingModule extends AbstractBuildingModule implements ICreatesResolversModule
@@ -80,7 +81,7 @@ public class ResearchCostResolverBuildingModule extends AbstractBuildingModule i
 		}
 
 		@Override
-		public String getDesc()
+		public Component getDesc()
 		{
 			return null;
 		}

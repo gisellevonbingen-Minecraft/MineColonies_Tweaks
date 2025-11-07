@@ -9,29 +9,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.ldtteam.blockui.Loader;
 import com.ldtteam.blockui.controls.Text;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
-import com.minecolonies.core.client.gui.AbstractModuleWindow;
-import com.minecolonies.core.client.gui.AbstractWindowModuleBuilding;
+import com.minecolonies.core.client.gui.AbstractBuildingMainWindow;
+import com.minecolonies.core.client.gui.AbstractBuildingWindow;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingWareHouse;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.building.BuildingEmptySlotCounter;
 
-@Mixin(value = AbstractWindowModuleBuilding.class, remap = false)
-public abstract class AbstractWindowModuleBuildingMixin<B extends IBuildingView> extends AbstractModuleWindow
+@Mixin(value = AbstractBuildingMainWindow.class, remap = false)
+public abstract class AbstractBuildingMainWindowMixin<B extends IBuildingView> extends AbstractBuildingWindow<B>
 {
 	private static final String TEXT_EMPTY_SLOTS = "empty_slots";
 
 	@Unique
 	private BuildingEmptySlotCounter minecolonies_tweaks$slotCounter;
 
-	public AbstractWindowModuleBuildingMixin(IBuildingView building, String res)
+	public AbstractBuildingMainWindowMixin(B buildingView, ResourceLocation res)
 	{
-		super(building, res);
+		super(buildingView, res);
 	}
 
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"), cancellable = false)
-	private void init(B building, String resource, CallbackInfo ci)
+	private void init(B building, ResourceLocation resource, CallbackInfo ci)
 	{
 		if (building instanceof BuildingWareHouse.View)
 		{

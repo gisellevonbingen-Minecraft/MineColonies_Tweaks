@@ -111,9 +111,9 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 	private int lastResourcesBuildingIndex = -1;
 	private int nameFilterRequested = 0;
 
-	public BatchUpgradeBuildingsWindow(IColonyView colony, @Nullable BOWindow parent)
+	public BatchUpgradeBuildingsWindow(@Nullable BOWindow parent, IColonyView colony)
 	{
-		super(MineColoniesTweaks.rl("gui/batch_upgrade_buildings_window.xml").toString(), null);
+		super(null, MineColoniesTweaks.rl("gui/batch_upgrade_buildings_window.xml"));
 		this.colony = colony;
 		this.parent = parent;
 

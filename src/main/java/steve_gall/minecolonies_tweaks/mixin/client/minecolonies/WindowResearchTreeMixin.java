@@ -69,7 +69,7 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 	@Shadow(remap = false)
 	private Text undoText;
 
-	public WindowResearchTreeMixin(String resource)
+	public WindowResearchTreeMixin(ResourceLocation resource)
 	{
 		super(resource);
 	}

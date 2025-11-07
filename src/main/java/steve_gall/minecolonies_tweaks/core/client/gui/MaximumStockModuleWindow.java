@@ -11,7 +11,6 @@ import com.ldtteam.blockui.controls.ButtonImage;
 import com.ldtteam.blockui.controls.ItemIcon;
 import com.ldtteam.blockui.controls.Text;
 import com.ldtteam.blockui.views.ScrollingList;
-import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
@@ -22,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.building.module.MaximumStockModule;
 
-public class MaximumStockModuleWindow extends AbstractModuleWindow
+public class MaximumStockModuleWindow extends AbstractModuleWindow<MaximumStockModule.View>
 {
 	private static final String LABEL_ADD = "com.minecolonies.coremod.gui.warehouse.add";
 	private static final String LABEL_LIMIT_REACHED = "com.minecolonies.coremod.gui.warehouse.limitreached";
@@ -34,9 +33,9 @@ public class MaximumStockModuleWindow extends AbstractModuleWindow
 
 	private Button confirmButton;
 
-	public MaximumStockModuleWindow(IBuildingView building, MaximumStockModule.View moduleView)
+	public MaximumStockModuleWindow(MaximumStockModule.View moduleView)
 	{
-		super(building, MineColoniesTweaks.rl("gui/layouthuts/layoutmaximumstock.xml").toString());
+		super(moduleView, MineColoniesTweaks.rl("gui/layouthuts/layoutmaximumstock.xml"));
 
 		this.moduleView = moduleView;
 		this.entries = new ArrayList<>();

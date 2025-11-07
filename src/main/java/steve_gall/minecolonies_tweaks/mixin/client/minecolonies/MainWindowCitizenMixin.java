@@ -24,6 +24,7 @@ import com.minecolonies.core.network.messages.server.colony.citizen.AdjustSkillC
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
@@ -38,11 +39,9 @@ public abstract class MainWindowCitizenMixin extends AbstractWindowCitizen imple
 	private static final String SKILL_ALL_BTS = "skill_all_bts";
 
 	@Shadow(remap = false)
-	private ICitizenDataView citizen;
-	@Shadow(remap = false)
 	private int tick;
 
-	public MainWindowCitizenMixin(ICitizenDataView citizen, String ui)
+	public MainWindowCitizenMixin(ICitizenDataView citizen, ResourceLocation ui)
 	{
 		super(citizen, ui);
 	}

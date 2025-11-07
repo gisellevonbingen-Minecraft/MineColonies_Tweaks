@@ -6,9 +6,9 @@
 	"client": [
 		"minecraft.AbstractContainerScreenMixin",
 		"minecraft.ScreenMixin",
-		
-		"minecolonies.AbstractModuleWindowMixin",
-		"minecolonies.AbstractWindowModuleBuildingMixin",
+
+		"minecolonies.AbstractBuildingMainWindowMixin",
+		"minecolonies.AbstractBuildingWindowMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.AbstractWindowSkeletonsMixin",
 		"minecolonies.ItemListModuleWindowMixin",
@@ -25,7 +25,6 @@
 		"minecolonies.WindowInventoriesMixin",
 		"minecolonies.WindowResearchTreeMixin",
 		
-		"blockui.ButtonImageMixin",
 		"blockui.ViewMixin"
 	],
 	"injectors": {

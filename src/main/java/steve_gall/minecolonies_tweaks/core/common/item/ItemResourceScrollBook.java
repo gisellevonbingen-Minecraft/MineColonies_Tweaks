@@ -145,7 +145,7 @@ public class ItemResourceScrollBook extends Item
 
 	public void openWindow(ItemStack stack)
 	{
-		new ResourceScrollBookListWindow(this.getItems(stack), null).open();
+		new ResourceScrollBookListWindow(null, this.getItems(stack)).open();
 	}
 
 	public void openInventory(ServerPlayer player, ItemStack stack, int slot)

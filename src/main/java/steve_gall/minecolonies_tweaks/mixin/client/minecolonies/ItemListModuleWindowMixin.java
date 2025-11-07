@@ -15,13 +15,14 @@ import com.ldtteam.blockui.PaneParams;
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.views.ScrollingList;
 import com.ldtteam.blockui.views.View;
+import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 import com.minecolonies.api.colony.buildings.modules.IItemListModuleView;
-import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
 import com.minecolonies.core.client.gui.modules.ItemListModuleWindow;
 import com.minecolonies.core.colony.buildings.moduleviews.ItemListModuleView;
 
+import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.network.message.AssignFilterableItemsMessage;
@@ -29,7 +30,7 @@ import steve_gall.minecolonies_tweaks.core.common.network.message.AssignFilterab
 import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.ItemListModuleViewAccessor;
 
 @Mixin(value = ItemListModuleWindow.class, remap = false)
-public abstract class ItemListModuleWindowMixin extends AbstractModuleWindow implements ViewOverrideExtension
+public abstract class ItemListModuleWindowMixin<T extends IBuildingModuleView> extends AbstractModuleWindow<T> implements ViewOverrideExtension
 {
 	@Unique
 	private static final String minecolonies_tweaks$BUTTON_TOGGLE_IN_CURRENT = "toggleInCurrent";
@@ -39,19 +40,17 @@ public abstract class ItemListModuleWindowMixin extends AbstractModuleWindow imp
 	@Shadow(remap = false)
 	private ScrollingList resourceList;
 	@Shadow(remap = false)
-	protected IBuildingView building;
-	@Shadow(remap = false)
 	private boolean isInverted;
 	@Shadow(remap = false)
 	private List<ItemStorage> currentDisplayedList;
 
-	public ItemListModuleWindowMixin(IBuildingView building, String res)
+	public ItemListModuleWindowMixin(T moduleView, ResourceLocation res)
 	{
-		super(building, res);
+		super(moduleView, res);
 	}
 
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"))
-	private void init(String res, IBuildingView building, IItemListModuleView moduleView, CallbackInfo ci)
+	private void init(IItemListModuleView moduleView, ResourceLocation res, CallbackInfo ci)
 	{
 		this.registerButton(minecolonies_tweaks$BUTTON_TOGGLE_IN_CURRENT, this::minecolonies_tweaks$toggleClick);
 		this.registerButton(minecolonies_tweaks$BUTTON_RESET_IN_CURRENT, this::minecolonies_tweaks$resetClick);
@@ -59,7 +58,7 @@ public abstract class ItemListModuleWindowMixin extends AbstractModuleWindow imp
 
 	private void minecolonies_tweaks$toggleClick(Button button)
 	{
-		var module = this.building.getModuleViewMatching(ItemListModuleView.class, view -> view.getId().equals(this.id));
+		var module = this.moduleView.getBuildingView().getModuleViewMatching(ItemListModuleView.class, view -> view.getId().equals(this.id));
 		var list = ((ItemListModuleViewAccessor) module).getListsOfItems();
 		var toRemoves = new ArrayList<ItemStorage>();
 		var toAdds = new ArrayList<ItemStorage>();
@@ -86,7 +85,7 @@ public abstract class ItemListModuleWindowMixin extends AbstractModuleWindow imp
 
 	private void minecolonies_tweaks$resetClick(Button button)
 	{
-		var module = this.building.getModuleViewMatching(ItemListModuleView.class, view -> view.getId().equals(this.id));
+		var module = this.moduleView.getBuildingView().getModuleViewMatching(ItemListModuleView.class, view -> view.getId().equals(this.id));
 		var list = ((ItemListModuleViewAccessor) module).getListsOfItems();
 
 		list.removeAll(this.currentDisplayedList);

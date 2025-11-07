@@ -36,9 +36,9 @@ public class ResourceScrollBookListWindow extends AbstractWindowSkeleton
 	private final List<ResourceScrollBookElement> elements;
 	private final ScrollingList resourceList;
 
-	public ResourceScrollBookListWindow(List<ItemStack> stacks, @Nullable BOWindow parent)
+	public ResourceScrollBookListWindow(@Nullable BOWindow parent, List<ItemStack> stacks)
 	{
-		super(MineColoniesTweaks.rl("gui/resourcescroll_book_list_window.xml").toString(), null);
+		super(null, MineColoniesTweaks.rl("gui/resourcescroll_book_list_window.xml"));
 
 		this.elements = new ArrayList<>();
 
