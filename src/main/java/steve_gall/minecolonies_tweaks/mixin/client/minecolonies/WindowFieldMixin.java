@@ -23,6 +23,7 @@ import com.minecolonies.core.network.messages.server.colony.building.fields.Farm
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
@@ -47,7 +48,7 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 	@Shadow(remap = false)
 	private AbstractTileEntityScarecrow tileEntityScarecrow;
 
-	public WindowFieldMixin(String resource)
+	public WindowFieldMixin(ResourceLocation resource)
 	{
 		super(resource);
 	}

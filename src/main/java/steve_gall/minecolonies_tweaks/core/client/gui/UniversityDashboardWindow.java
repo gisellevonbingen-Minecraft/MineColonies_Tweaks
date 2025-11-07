@@ -20,6 +20,7 @@ import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.client.gui.WindowResearchTree;
 import com.minecolonies.core.client.gui.modules.UniversityModuleWindow;
+import com.minecolonies.core.colony.buildings.moduleviews.UniversityResearchModuleView;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -32,11 +33,11 @@ public class UniversityDashboardWindow extends AbstractWindowSkeleton
 	private final IBuildingView buildingView;
 	private final UniversityModuleWindow fake;
 
-	public UniversityDashboardWindow(IBuildingView buildingView)
+	public UniversityDashboardWindow(UniversityResearchModuleView moduleView)
 	{
-		super(Constants.MOD_ID + WindowConstants.RESOURCE_STRING);
-		this.buildingView = buildingView;
-		this.fake = new UniversityModuleWindow(buildingView)
+		super(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "gui/layouthuts/layoutuniversity.xml"));
+		this.buildingView = moduleView.getBuildingView();
+		this.fake = new UniversityModuleWindow(moduleView)
 		{
 			@Override
 			public void updateResearchCount(int offset)
@@ -47,6 +48,7 @@ public class UniversityDashboardWindow extends AbstractWindowSkeleton
 			@Override
 			public void open()
 			{
+				UniversityDashboardWindow.this.close();
 				UniversityDashboardWindow.this.open();
 			}
 		};

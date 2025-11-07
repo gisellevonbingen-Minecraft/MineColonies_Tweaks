@@ -4,6 +4,7 @@ import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.requestsystem.request.RequestState;
 import com.minecolonies.core.colony.requestsystem.requests.StandardRequests.ItemStackListRequest;
 
+import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_tweaks.core.common.building.module.MaximumStockModule;
 import steve_gall.minecolonies_tweaks.core.common.building.module.ResearchCostResolverBuildingModule;
 import steve_gall.minecolonies_tweaks.core.common.building.module.StudyItemListModule;
@@ -45,7 +46,7 @@ public class MCTweaksBuildingModules
 
 				}
 			}, //
-			() -> () -> new StudyItemListModule.View("study_item_blacklist", "com.minecolonies.coremod.gui.workerhuts.study_item_blacklist", true));
+			() -> () -> new StudyItemListModule.View("study_item_blacklist", Component.translatable("com.minecolonies.coremod.gui.workerhuts.study_item_blacklist"), true));
 
 	private MCTweaksBuildingModules()
 	{

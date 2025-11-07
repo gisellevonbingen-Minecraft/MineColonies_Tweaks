@@ -30,7 +30,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.core.common.building.module.StudyItemListModule;
 
-public class StudyItemListModuleWindow extends AbstractModuleWindow
+public class StudyItemListModuleWindow extends AbstractModuleWindow<StudyItemListModule.View>
 {
 	public static final String OUTPUT_ICON = "outputIcon";
 	public static final String OUTPUT_NAME = "outputName";
@@ -48,9 +48,9 @@ public class StudyItemListModuleWindow extends AbstractModuleWindow
 	private int tick = 0;
 	private List<ItemCache> currentDisplayedList;
 
-	public StudyItemListModuleWindow(String res, StudyItemListModule.View module)
+	public StudyItemListModuleWindow(StudyItemListModule.View module, ResourceLocation res)
 	{
-		super(module.getBuildingView(), res);
+		super(module, res);
 
 		this.module = module;
 		this.resourceList = this.window.findPaneOfTypeByID(WindowConstants.LIST_RESOURCES, ScrollingList.class);
@@ -59,7 +59,6 @@ public class StudyItemListModuleWindow extends AbstractModuleWindow
 		this.descriptionCache = new HashMap<>();
 		this.hoverNameCache = new HashMap<>();
 
-		this.window.findPaneOfTypeByID(WindowConstants.DESC_LABEL, Text.class).setText(Component.translatable(module.getDesc().toLowerCase(Locale.US)));
 		this.window.findPaneOfTypeByID(WindowConstants.INPUT_FILTER, TextField.class).setHandler(input ->
 		{
 			this.setFilter(input.getText());

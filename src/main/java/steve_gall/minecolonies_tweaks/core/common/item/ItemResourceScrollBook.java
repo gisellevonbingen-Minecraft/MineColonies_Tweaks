@@ -149,7 +149,7 @@ public class ItemResourceScrollBook extends Item
 
 	public void openWindow(HolderLookup.Provider provider, ItemStack stack)
 	{
-		new ResourceScrollBookListWindow(this.getItems(provider, stack), null).open();
+		new ResourceScrollBookListWindow(null, this.getItems(provider, stack)).open();
 	}
 
 	public void openInventory(ServerPlayer player, ItemStack stack, int slot)

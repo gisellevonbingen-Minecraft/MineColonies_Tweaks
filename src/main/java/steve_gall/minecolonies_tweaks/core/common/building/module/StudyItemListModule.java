@@ -2,6 +2,7 @@ package steve_gall.minecolonies_tweaks.core.common.building.module;
 
 import com.ldtteam.blockui.views.BOWindow;
 
+import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_tweaks.api.common.building.module.AbstractIdListModule;
 import steve_gall.minecolonies_tweaks.api.common.building.module.AbstractIdListModuleView;
 import steve_gall.minecolonies_tweaks.core.client.gui.StudyItemListModuleWindow;
@@ -17,10 +18,10 @@ public class StudyItemListModule extends AbstractIdListModule
 	public static class View extends AbstractIdListModuleView
 	{
 		private final String icon;
-		private final String desc;
+		private final Component desc;
 		private final boolean inverted;
 
-		public View(String icon, String desc, boolean inverted)
+		public View(String icon, Component desc, boolean inverted)
 		{
 			this.icon = icon;
 			this.desc = desc;
@@ -30,7 +31,7 @@ public class StudyItemListModule extends AbstractIdListModule
 		@Override
 		public BOWindow getWindow()
 		{
-			return new StudyItemListModuleWindow(MineColoniesTweaks.rl("gui/layouthuts/layoutfilterablestudyitemlist.xml").toString(), this);
+			return new StudyItemListModuleWindow(this, MineColoniesTweaks.rl("gui/layouthuts/layoutfilterablestudyitemlist.xml"));
 		}
 
 		@Override
@@ -40,7 +41,7 @@ public class StudyItemListModule extends AbstractIdListModule
 		}
 
 		@Override
-		public String getDesc()
+		public Component getDesc()
 		{
 			return this.desc;
 		}

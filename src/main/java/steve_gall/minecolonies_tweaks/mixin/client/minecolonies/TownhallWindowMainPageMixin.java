@@ -34,12 +34,12 @@ public abstract class TownhallWindowMainPageMixin extends AbstractWindowTownHall
 
 	private void onBatchRepairClick()
 	{
-		new BatchRepairBuildingsWindow(this.building.getColony(), this).open();
+		new BatchRepairBuildingsWindow(this, this.buildingView.getColony()).open();
 	}
 
 	private void onBatchUpgradeClick()
 	{
-		new BatchUpgradeBuildingsWindow(this.building.getColony(), this).open();
+		new BatchUpgradeBuildingsWindow(this, this.buildingView.getColony()).open();
 	}
 
 	@Override

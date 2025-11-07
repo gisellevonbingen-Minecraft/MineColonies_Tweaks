@@ -24,6 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.client.gui.MaximumStockModuleWindow;
@@ -176,6 +177,8 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 	public static class View extends AbstractBuildingModuleView
 	{
+		public static final Component DESC = Component.translatable("com.minecolonies.coremod.gui.workerhuts.maximumstock");
+
 		protected final Object2IntMap<ItemStorage> maximumStock = new Object2IntOpenHashMap<>();
 
 		@Override
@@ -243,7 +246,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 		@Override
 		public BOWindow getWindow()
 		{
-			return new MaximumStockModuleWindow(this.buildingView, this);
+			return new MaximumStockModuleWindow(this);
 		}
 
 		@Override
@@ -253,9 +256,9 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 		}
 
 		@Override
-		public String getDesc()
+		public Component getDesc()
 		{
-			return "com.minecolonies.coremod.gui.workerhuts." + this.getIcon();
+			return DESC;
 		}
 
 	}

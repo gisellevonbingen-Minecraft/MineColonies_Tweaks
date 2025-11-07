@@ -10,10 +10,12 @@ import com.ldtteam.blockui.views.BOWindow;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.client.gui.WindowHutAllInventory;
 
+import net.minecraft.resources.ResourceLocation;
+
 @Mixin(value = WindowHutAllInventory.class, remap = false)
 public abstract class WindowHutAllInventoryMixin extends AbstractWindowSkeleton
 {
-	public WindowHutAllInventoryMixin(String resource)
+	public WindowHutAllInventoryMixin(ResourceLocation resource)
 	{
 		super(resource);
 	}

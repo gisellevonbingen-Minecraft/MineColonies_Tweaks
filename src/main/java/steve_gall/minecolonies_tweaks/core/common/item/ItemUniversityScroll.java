@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
+import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingUniversity;
 
 import net.minecraft.ChatFormatting;
@@ -29,7 +30,13 @@ public class ItemUniversityScroll extends ItemBuildingLinkScroll
 	@Override
 	protected void openWindow(@NotNull ItemStack stack, @Nullable Player player, @Nullable IBuildingView buildingView)
 	{
-		new UniversityDashboardWindow(buildingView).open();
+		var moduleView = buildingView.getModuleView(BuildingModules.UNIVERSITY_RESEARCH);
+
+		if (moduleView != null)
+		{
+			new UniversityDashboardWindow(moduleView).open();
+		}
+
 	}
 
 	@Override
