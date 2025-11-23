@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_tweaks.core.client;
 
+import com.ldtteam.blockui.BOScreen;
 import com.ldtteam.blockui.Loader;
 import com.minecolonies.api.items.ModItems;
 import com.minecolonies.core.items.ItemResourceScroll;
@@ -73,7 +74,11 @@ public class MineColoniesTweaksClient
 		{
 			if (extension.minecolonies_tweaks$getParent() == null)
 			{
-				extension.minecolonies_tweaks$setParent(event.getCurrentScreen());
+				if (event.getCurrentScreen() instanceof BOScreen screen)
+				{
+					extension.minecolonies_tweaks$setParent(screen);
+				}
+
 			}
 		});
 
