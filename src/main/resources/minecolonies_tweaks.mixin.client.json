@@ -24,6 +24,7 @@
 		"minecolonies.WindowResearchTreeMixin",
 		
 		"blockui.ButtonImageMixin",
+		"blockui.PaneMixin",
 		"blockui.ViewMixin"
 	],
 	"injectors": {
