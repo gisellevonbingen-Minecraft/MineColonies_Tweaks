@@ -7,6 +7,7 @@ import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDat
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataSaveMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.FarmFieldPlotResize2Message;
 import steve_gall.minecolonies_tweaks.core.common.network.message.MaximumStockUpdateMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.ResearchCostRequestMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.ResourcescrollBookOpenMessage;
@@ -24,6 +25,7 @@ public class MCTweaksMessagesRegistrar
 		channel.playBidirectional(ResourcescrollBookOpenMessage.TYPE, ResourcescrollBookOpenMessage::new);
 		channel.playToServer(ResearchCostRequestMessage.TYPE, ResearchCostRequestMessage::new);
 		channel.playToServer(MaximumStockUpdateMessage.TYPE, MaximumStockUpdateMessage::new);
+		channel.playToServer(FarmFieldPlotResize2Message.TYPE, FarmFieldPlotResize2Message::new);
 	}
 
 	private MCTweaksMessagesRegistrar()

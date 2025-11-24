@@ -14,11 +14,10 @@ import com.ldtteam.blockui.Loader;
 import com.ldtteam.blockui.PaneParams;
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.views.View;
-import com.minecolonies.api.tileentities.AbstractTileEntityScarecrow;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.client.gui.containers.WindowField;
 import com.minecolonies.core.colony.buildingextensions.FarmField;
-import com.minecolonies.core.network.messages.server.colony.building.fields.FarmFieldPlotResizeMessage;
+import com.minecolonies.core.tileentities.TileEntityScarecrow;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Direction;
@@ -28,6 +27,7 @@ import net.minecraft.util.Mth;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.core.client.gui.ViewOverrideExtension;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.network.message.FarmFieldPlotResize2Message;
 
 @Mixin(value = WindowField.class, remap = false)
 public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements ViewOverrideExtension
@@ -46,7 +46,7 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 	private FarmField farmField;
 	@NotNull
 	@Shadow(remap = false)
-	private AbstractTileEntityScarecrow tileEntityScarecrow;
+	private TileEntityScarecrow tileEntityScarecrow;
 
 	public WindowFieldMixin(ResourceLocation resource)
 	{
@@ -54,7 +54,7 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 	}
 
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"))
-	private void init(@NotNull AbstractTileEntityScarecrow tileEntityScarecrow, CallbackInfo ci)
+	private void init(@NotNull TileEntityScarecrow tileEntityScarecrow, CallbackInfo ci)
 	{
 		for (Direction dir : Direction.Plane.HORIZONTAL)
 		{
@@ -73,10 +73,36 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 		Loader.createFromXMLFile(MineColoniesTweaks.rl("gui/windowfield.xml"), this);
 	}
 
+	@Inject(method = "onDirectionalButtonClick", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	private void onDirectionalButtonClick(Button button, CallbackInfo ci)
+	{
+		ci.cancel();
+
+		if (!button.isEnabled())
+		{
+			return;
+		}
+
+		var directionName = button.getID().replace(DIRECTIONAL_BUTTON_ID_PREFIX, "");
+		var direction = Direction.Plane.HORIZONTAL.stream().filter(f -> f.getName().equals(directionName)).findFirst();
+
+		if (direction.isEmpty())
+		{
+			return;
+		}
+
+		var currentValue = this.tileEntityScarecrow.getFieldSize()[direction.get().get2DDataValue()];
+		var newRadius = (currentValue % FarmField.MAX_RANGE) + 1;
+		this.tileEntityScarecrow.setFieldSize(direction.get(), newRadius);
+		button.setText(Component.literal(String.valueOf(newRadius)));
+
+		PacketDistributor.sendToServer(new FarmFieldPlotResize2Message(newRadius, direction.get(), tileEntityScarecrow.getBlockPos()));
+	}
+
 	@Unique
 	private void minecolonies_tweaks$changRadius(Button button, String prefix, int delta)
 	{
-		if (this.farmField == null || !button.isEnabled())
+		if (!button.isEnabled())
 		{
 			return;
 		}
@@ -98,13 +124,14 @@ public abstract class WindowFieldMixin extends AbstractWindowSkeleton implements
 			delta *= minecolonies_tweaks$SHIFT_MULTIPLIER;
 		}
 
-		var newRadius = Mth.clamp(this.farmField.getRadius(direction) + delta, 1, this.farmField.getMaxRadius());
-		this.farmField.setRadius(direction, newRadius);
+		var currentValue = this.tileEntityScarecrow.getFieldSize()[direction.get2DDataValue()];
+		var newRadius = Mth.clamp(currentValue + delta, 1, FarmField.MAX_RANGE);
+		this.tileEntityScarecrow.setFieldSize(direction, newRadius);
 
 		var arrowButton = this.findPaneOfTypeByID(DIRECTIONAL_BUTTON_ID_PREFIX + direction.getName(), Button.class);
 		arrowButton.setText(Component.literal(String.valueOf(newRadius)));
 
-		PacketDistributor.sendToServer(new FarmFieldPlotResizeMessage(this.tileEntityScarecrow.getCurrentColony(), newRadius, direction, farmField.getPosition()));
+		PacketDistributor.sendToServer(new FarmFieldPlotResize2Message(newRadius, direction, this.tileEntityScarecrow.getBlockPos()));
 	}
 
 	@Unique
