@@ -13,7 +13,7 @@ public class FieldConfig
 	{
 		builder.comment("If true, Citizen can works same field to without wait time. Also work in field list by sequentially.", "If false, use MineColonies' s method.");
 		this.newRetrieveMethod = builder.define("newRetrieveMethod", true);
-		this.farmMaxRange = builder.defineInRange("farmMaxRange", 5, 5, 15);
+		this.farmMaxRange = builder.defineInRange("farmMaxRange", 20, 5, 20);
 	}
 
 }
