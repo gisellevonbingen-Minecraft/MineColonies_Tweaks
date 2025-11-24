@@ -36,7 +36,6 @@
 		"minecolonies.EntityAIWorkUndertakerMixin",
 		"minecolonies.EntityCitizenMixin",
 		"minecolonies.EquipmentTypeEntryMixin",
-		"minecolonies.FarmFieldMixin",
 		"minecolonies.FoodUtilsMixin",
 		"minecolonies.GlobalResearchBranchMixin",
 		"minecolonies.GlobalResearchEffectMixin",
