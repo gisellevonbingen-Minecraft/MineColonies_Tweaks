@@ -23,7 +23,7 @@ public abstract class AbstractEntityRaiderMobMixin
 	@Shadow(remap = false)
 	private boolean tempEnvDamageImmunity;
 
-	@Inject(method = "hurt", remap = false, at = @At(value = "HEAD"), cancellable = false)
+	@Inject(method = "hurt", remap = true, at = @At(value = "HEAD"), cancellable = false)
 	private void hurt(DamageSource damageSource, float damage, CallbackInfoReturnable<Boolean> cir)
 	{
 		if (MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
