@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.MinecoloniesAPIProxy;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.buildings.IBuilding;
+import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.colony.requestsystem.requester.IRequester;
@@ -33,9 +34,19 @@ public class BuildingUtils
 	private static MutableComponent getDisplayName(BuildingEntry type, String customName, int level)
 	{
 		var buildingName = Component.empty();
-		buildingName.append(customName.isEmpty() ? Component.translatable(type.getTranslationKey()) : Component.literal(customName));
-		buildingName.append(" ").append(String.valueOf(level));
+		buildingName.append(customName.isEmpty() ? Component.translatable(type.getBuildingBlock().getDescriptionId()) : Component.literal(customName));
+
+		if (hasLevel(type))
+		{
+			buildingName.append(" ").append(String.valueOf(level));
+		}
+
 		return buildingName;
+	}
+
+	public static boolean hasLevel(BuildingEntry type)
+	{
+		return type != ModBuildings.stash.get() && type != ModBuildings.postBox.get();
 	}
 
 	@Nullable
