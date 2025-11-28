@@ -51,7 +51,7 @@
 	"minecolonies_tweaks.text.research_cost.long": "Research Cost: %1$s - %2$s",
 	"minecolonies_tweaks.text.research_cost.branch": "Branch: %s",
 	"minecolonies_tweaks.text.research_cost.research": "Research: %s",
-	"minecolonies_tweaks.text.research_cost.delivery_completed": "Research Cost Delivery Complete: %1$s - %2$s",
+	"minecolonies_tweaks.text.research_cost.delivery_completed": "[PostBox] Research Cost Delivery Complete: %1$s - %2$s",
 	
 	"item.minecolonies_tweaks.resourcescroll_black": "Black Resource Scroll",
 	"item.minecolonies_tweaks.resourcescroll_blue": "Blue Resource Scroll",
@@ -80,7 +80,7 @@
 	"item.minecolonies_tweaks.buildingscroll.missing_pos": "Not linked with building, Sneak+Use on Building Block first.",
 	"item.minecolonies_tweaks.buildingscroll.missing_building": "Linked building is missing.",
 	"item.minecolonies_tweaks.inventoryscroll": "Inventory Scroll",
-	"item.minecolonies_tweaks.inventoryscroll.tooltip": "Use: Open Linked Building's Inventory Summary",
+	"item.minecolonies_tweaks.inventoryscroll.tooltip": "Use: Open linked Building's Inventory Summary",
 	"item.minecolonies_tweaks.inventoryscroll_black": "Black Inventory Scroll",
 	"item.minecolonies_tweaks.inventoryscroll_blue": "Blue Inventory Scroll",
 	"item.minecolonies_tweaks.inventoryscroll_brown": "Brown Inventory Scroll",
