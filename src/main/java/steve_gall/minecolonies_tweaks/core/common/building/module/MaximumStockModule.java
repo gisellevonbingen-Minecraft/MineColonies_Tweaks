@@ -25,13 +25,16 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockEntry;
+import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockModule;
+import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockModuleView;
 import steve_gall.minecolonies_tweaks.core.client.gui.MaximumStockModuleWindow;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.inventory.BlackHoleItemHandler;
 import steve_gall.minecolonies_tweaks.core.common.network.message.MaximumStockUpdateMessage;
 
-public class MaximumStockModule extends AbstractBuildingModule implements IPersistentModule, ITickingModule
+public class MaximumStockModule extends AbstractBuildingModule implements IMaximumStockModule, IPersistentModule, ITickingModule
 {
 	protected final Object2IntMap<ItemStorage> maximumStock = new Object2IntOpenHashMap<>();
 
@@ -40,21 +43,24 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 	}
 
-	public boolean hasReachedLimit()
+	@Override
+	public int getMaximumStockCount()
 	{
-		return this.maximumStock.size() >= this.getKindsLimit();
+		return this.maximumStock.size();
 	}
 
-	public int getKindsLimit()
+	@Override
+	public int getMaximumStockLimit()
 	{
 		var building = this.building;
 		var increase = 1.0D + building.getColony().getResearchManager().getResearchEffects().getEffectStrength(ResearchConstants.MINIMUM_STOCK);
 		return (int) (building.getBuildingLevel() * increase * MCTweaksConfigServer.INSTANCE.jobs.maximumStockKindsPerLevel.get());
 	}
 
-	public List<Entry> getList()
+	@Override
+	public List<IMaximumStockEntry> getMaximumStocks()
 	{
-		var list = new ArrayList<Entry>();
+		var list = new ArrayList<IMaximumStockEntry>();
 
 		for (var entry : this.maximumStock.object2IntEntrySet())
 		{
@@ -64,12 +70,14 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 		return list;
 	}
 
-	public boolean contains(ItemStack stack)
+	@Override
+	public boolean isMaximumStocked(ItemStack stack)
 	{
 		return this.maximumStock.containsKey(new ItemStorage(stack));
 	}
 
-	public void add(ItemStack stack, int quantity)
+	@Override
+	public void addMaximumStock(ItemStack stack, int quantity)
 	{
 		if (stack.isEmpty())
 		{
@@ -80,7 +88,8 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 		this.markDirty();
 	}
 
-	public void remove(ItemStack stack)
+	@Override
+	public void removeMaximumStock(ItemStack stack)
 	{
 		this.maximumStock.removeInt(new ItemStorage(stack));
 		this.markDirty();
@@ -173,7 +182,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 	}
 
-	public static class View extends AbstractBuildingModuleView
+	public static class View extends AbstractBuildingModuleView implements IMaximumStockModuleView
 	{
 		public static final Component DESC = Component.translatable("com.minecolonies.coremod.gui.workerhuts.maximumstock");
 
@@ -195,9 +204,10 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 		}
 
-		public List<Entry> getList()
+		@Override
+		public List<IMaximumStockEntry> getMaximumStocks()
 		{
-			var list = new ArrayList<Entry>();
+			var list = new ArrayList<IMaximumStockEntry>();
 
 			for (var entry : this.maximumStock.object2IntEntrySet())
 			{
@@ -207,24 +217,28 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 			return list;
 		}
 
-		public boolean hasReachedLimit()
+		@Override
+		public int getMaximumStockCount()
 		{
-			return this.maximumStock.size() >= this.getKindsLimit();
+			return this.maximumStock.size();
 		}
 
-		public int getKindsLimit()
+		@Override
+		public int getMaximumStockLimit()
 		{
 			var building = this.buildingView;
 			var increase = 1.0D + building.getColony().getResearchManager().getResearchEffects().getEffectStrength(ResearchConstants.MINIMUM_STOCK);
 			return (int) (building.getBuildingLevel() * increase * MCTweaksConfigServer.INSTANCE.jobs.maximumStockKindsPerLevel.get());
 		}
 
-		public boolean contains(ItemStack stack)
+		@Override
+		public boolean isMaximumStocked(ItemStack stack)
 		{
 			return this.maximumStock.containsKey(new ItemStorage(stack));
 		}
 
-		public void add(ItemStack stack, int quantity)
+		@Override
+		public void addMaximumStock(ItemStack stack, int quantity)
 		{
 			if (stack.isEmpty())
 			{
@@ -235,7 +249,8 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 			MineColoniesTweaks.network().sendToServer(MaximumStockUpdateMessage.add(this, stack, quantity));
 		}
 
-		public void remove(ItemStack stack)
+		@Override
+		public void removeMaximumStock(ItemStack stack)
 		{
 			this.maximumStock.removeInt(new ItemStorage(stack));
 			MineColoniesTweaks.network().sendToServer(MaximumStockUpdateMessage.remove(this, stack));
@@ -261,7 +276,7 @@ public class MaximumStockModule extends AbstractBuildingModule implements IPersi
 
 	}
 
-	public static record Entry(ItemStack stack, int quantity)
+	public static record Entry(ItemStack stack, int quantity) implements IMaximumStockEntry
 	{
 
 	}
