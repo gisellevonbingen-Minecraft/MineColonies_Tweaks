@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemCopyScroll;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemInventoryScroll;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemResourceScrollBook;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemUniversityScroll;
@@ -24,6 +25,7 @@ public class MCTweaksItems
 	public static final DeferredHolder<Item, ItemInventoryScroll> INVENTORYSCROLL = REGISTER.register("inventoryscroll", () -> new ItemInventoryScroll(new Item.Properties()));
 	public static final Map<DyeColor, DeferredHolder<Item, ItemInventoryScroll>> COLOR_INVENTORY_SCROLLS;
 	public static final DeferredHolder<Item, ItemUniversityScroll> UNIVERSITYSCROLL = REGISTER.register("universityscroll", () -> new ItemUniversityScroll(new Item.Properties()));
+	public static final DeferredHolder<Item, ItemCopyScroll> COPYSCROLL = REGISTER.register("copyscroll", () -> new ItemCopyScroll(new Item.Properties()));
 
 	static
 	{

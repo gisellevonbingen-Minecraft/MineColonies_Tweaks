@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "minecolonies:item/resourcescroll",
+		"layer1": "minecolonies_tweaks:item/copyscroll"
+	}
+}
