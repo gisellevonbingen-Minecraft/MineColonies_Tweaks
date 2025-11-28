@@ -18,22 +18,23 @@ import com.minecolonies.core.client.gui.WindowSelectRes;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockEntry;
+import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockModuleView;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
-import steve_gall.minecolonies_tweaks.core.common.building.module.MaximumStockModule;
 
-public class MaximumStockModuleWindow extends AbstractModuleWindow<MaximumStockModule.View>
+public class MaximumStockModuleWindow extends AbstractModuleWindow<IMaximumStockModuleView>
 {
 	private static final String LABEL_ADD = "com.minecolonies.coremod.gui.warehouse.add";
 	private static final String LABEL_LIMIT_REACHED = "com.minecolonies.coremod.gui.warehouse.limitreached";
 
 	private final ScrollingList resourceList;
 
-	private final MaximumStockModule.View moduleView;
-	private final List<MaximumStockModule.Entry> entries;
+	private final IMaximumStockModuleView moduleView;
+	private final List<IMaximumStockEntry> entries;
 
 	private Button confirmButton;
 
-	public MaximumStockModuleWindow(MaximumStockModule.View moduleView)
+	public MaximumStockModuleWindow(IMaximumStockModuleView moduleView)
 	{
 		super(moduleView, MineColoniesTweaks.rl("gui/layouthuts/layoutmaximumstock.xml"));
 
@@ -84,7 +85,7 @@ public class MaximumStockModuleWindow extends AbstractModuleWindow<MaximumStockM
 				var row = this.resourceList.getListElementIndexByPane(button);
 				var entry = this.entries.get(row);
 
-				this.moduleView.remove(entry.stack());
+				this.moduleView.removeMaximumStock(entry.stack());
 				this.updateStockList();
 			}
 			else
@@ -96,11 +97,11 @@ public class MaximumStockModuleWindow extends AbstractModuleWindow<MaximumStockM
 		}
 		else if (button.getID().equals(WindowConstants.STOCK_ADD))
 		{
-			if (!this.moduleView.hasReachedLimit())
+			if (!this.moduleView.hasMaximumStockReachedLimit())
 			{
 				new WindowSelectRes(this, (stack) -> true, (stack, qty) ->
 				{
-					this.moduleView.add(stack, qty);
+					this.moduleView.addMaximumStock(stack, qty);
 					this.updateStockList();
 				}, true).open();
 			}
@@ -120,11 +121,11 @@ public class MaximumStockModuleWindow extends AbstractModuleWindow<MaximumStockM
 	private void updateStockList()
 	{
 		this.entries.clear();
-		this.entries.addAll(this.moduleView.getList());
+		this.entries.addAll(this.moduleView.getMaximumStocks());
 
 		var button = this.findPaneOfTypeByID(WindowConstants.STOCK_ADD, ButtonImage.class);
 
-		if (this.moduleView.hasReachedLimit())
+		if (this.moduleView.hasMaximumStockReachedLimit())
 		{
 			button.setText(Component.translatable(LABEL_LIMIT_REACHED));
 			button.setImage(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/builderhut/builder_button_medium_disabled.png"));
@@ -136,7 +137,7 @@ public class MaximumStockModuleWindow extends AbstractModuleWindow<MaximumStockM
 		}
 
 		var kindsText = this.findPaneOfTypeByID("kinds", Text.class);
-		kindsText.setText(Component.literal(this.entries.size() + "/" + this.moduleView.getKindsLimit()));
+		kindsText.setText(Component.literal(this.entries.size() + "/" + this.moduleView.getMaximumStockLimit()));
 	}
 
 }
