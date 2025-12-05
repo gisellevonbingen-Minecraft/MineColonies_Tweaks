@@ -1,21 +1,29 @@
 package steve_gall.minecolonies_tweaks.core.common.item;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
+import com.minecolonies.api.colony.IColonyManager;
+import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
+import com.minecolonies.api.colony.buildings.modules.ICraftingBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IEntityListModule;
 import com.minecolonies.api.colony.buildings.modules.IItemListModule;
 import com.minecolonies.api.colony.buildings.modules.IMinimumStockModule;
 import com.minecolonies.api.colony.buildings.modules.IPersistentModule;
 import com.minecolonies.api.colony.buildings.modules.ISettingsModule;
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
+import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
 import com.minecolonies.api.tileentities.AbstractTileEntityColonyBuilding;
 import com.minecolonies.core.colony.buildings.modules.RestaurantMenuModule;
 
+import io.netty.buffer.Unpooled;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -123,12 +131,10 @@ public class ItemCopyScroll extends Item
 
 						if (module instanceof IPersistentModule persistentModule && canCopy(persistentModule))
 						{
-							var tag = new CompoundTag();
-							persistentModule.serializeNBT(tag);
-
+							var text = getModuleViewText(module);
 							var entry = new CompoundTag();
 							entry.putString(NBT_ENTRY_KEY, moduleProducer.key);
-							entry.put(NBT_ENTRY_TAG, tag);
+							entry.put(NBT_ENTRY_TAG, copy(persistentModule));
 							entries.add(entry);
 
 							if (entries.size() > 1)
@@ -136,7 +142,7 @@ public class ItemCopyScroll extends Item
 								names.append(", ");
 							}
 
-							names.append(Component.translatable("'%s'", getModuleViewText(moduleProducer.key)));
+							names.append(Component.translatable("'%s'", text));
 						}
 
 					}
@@ -185,8 +191,8 @@ public class ItemCopyScroll extends Item
 						{
 							try
 							{
-								persistentModule.deserializeNBT(tag);
-								persistentModule.markDirty();
+								var text = getModuleViewText(module);
+								paste(persistentModule, tag);
 								pasted++;
 
 								if (pasted > 1)
@@ -194,7 +200,7 @@ public class ItemCopyScroll extends Item
 									names.append(", ");
 								}
 
-								names.append(Component.translatable("'%s'", getModuleViewText(key)));
+								names.append(Component.translatable("'%s'", text));
 							}
 							catch (Exception e)
 							{
@@ -219,26 +225,89 @@ public class ItemCopyScroll extends Item
 
 	}
 
+	public static CompoundTag copy(IPersistentModule module)
+	{
+		var tag = new CompoundTag();
+		module.serializeNBT(tag);
+		return tag;
+	}
+
+	public static void paste(IPersistentModule module, CompoundTag tag)
+	{
+		onPastePre(module);
+
+		module.deserializeNBT(tag);
+		module.markDirty();
+
+		onPastePost(module);
+	}
+
+	private static void onPastePre(IPersistentModule module)
+	{
+		if (module instanceof ICraftingBuildingModule craftingModule)
+		{
+			for (var token : new ArrayList<>(craftingModule.getRecipes()))
+			{
+				craftingModule.removeRecipe(token);
+			}
+
+		}
+
+	}
+
+	private static void onPastePost(IPersistentModule module)
+	{
+		if (module instanceof ICraftingBuildingModule craftingModule)
+		{
+			var requestManager = craftingModule.getBuilding().getColony().getRequestManager();
+
+			for (var token : new ArrayList<>(craftingModule.getRecipes()))
+			{
+				var recipeStorage = IColonyManager.getInstance().getRecipeManager().getRecipes().get(token);
+
+				if (recipeStorage != null)
+				{
+					var allOutputs = Stream.concat(Stream.of(recipeStorage.getPrimaryOutput()), recipeStorage.getAlternateOutputs().stream()).filter(stack -> !stack.isEmpty()).toList();
+					requestManager.onColonyUpdate(request -> request.getRequest() instanceof IDeliverable delivery && allOutputs.stream().anyMatch(i -> delivery.matches(i)));
+				}
+
+			}
+
+		}
+
+	}
+
 	public static boolean canCopy(IPersistentModule module)
 	{
 		return module instanceof ISettingsModule || module instanceof IMinimumStockModule //
 				|| module instanceof IEntityListModule || module instanceof IItemListModule //
-				|| module instanceof RestaurantMenuModule //
+				|| module instanceof RestaurantMenuModule || module instanceof ICraftingBuildingModule //
 				|| module instanceof IMaximumStockModule || module instanceof IIdListModule //
 		;
 	}
 
-	public static Component getModuleViewText(String producerKey)
+	public static Component getModuleViewText(IBuildingModule module)
 	{
-		var view = BuildingEntry.produceViewWithoutBuilding(producerKey);
+		var view = BuildingEntry.produceViewWithoutBuilding(module.getProducer().key);
 
 		if (view != null)
 		{
+			try
+			{
+				var buf = new FriendlyByteBuf(Unpooled.buffer());
+				module.serializeToView(buf, true);
+				view.deserialize(buf);
+			}
+			catch (Exception e)
+			{
+
+			}
+
 			return view.getDesc();
 		}
 		else
 		{
-			return Component.literal(producerKey);
+			return Component.literal(module.getProducer().key);
 		}
 
 	}
