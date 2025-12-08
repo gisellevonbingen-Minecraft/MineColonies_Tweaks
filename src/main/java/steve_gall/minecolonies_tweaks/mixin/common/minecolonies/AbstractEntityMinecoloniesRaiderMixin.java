@@ -19,8 +19,6 @@ public abstract class AbstractEntityMinecoloniesRaiderMixin
 	@Shadow(remap = false)
 	private int envDmgCooldown;
 	@Shadow(remap = false)
-	private boolean envDamageImmunity;
-	@Shadow(remap = false)
 	private boolean tempEnvDamageImmunity;
 
 	@Inject(method = "hurt", remap = true, at = @At(value = "HEAD"), cancellable = false)
@@ -29,7 +27,6 @@ public abstract class AbstractEntityMinecoloniesRaiderMixin
 		if (MCTweaksConfigServer.INSTANCE.monsters.disableImmunity.get())
 		{
 			this.envDmgCooldown = 0;
-			this.envDamageImmunity = false;
 			this.tempEnvDamageImmunity = false;
 		}
 
