@@ -19,7 +19,7 @@ import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 import com.minecolonies.api.colony.buildings.modules.IItemListModuleView;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
-import com.minecolonies.core.client.gui.modules.ItemListModuleWindow;
+import com.minecolonies.core.client.gui.modules.building.ItemListModuleWindow;
 import com.minecolonies.core.colony.buildings.moduleviews.ItemListModuleView;
 
 import net.minecraft.resources.ResourceLocation;

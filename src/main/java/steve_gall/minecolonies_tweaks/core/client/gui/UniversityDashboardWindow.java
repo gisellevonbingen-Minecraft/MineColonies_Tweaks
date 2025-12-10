@@ -19,7 +19,7 @@ import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.client.gui.WindowResearchTree;
-import com.minecolonies.core.client.gui.modules.UniversityModuleWindow;
+import com.minecolonies.core.client.gui.modules.building.UniversityModuleWindow;
 import com.minecolonies.core.colony.buildings.moduleviews.UniversityResearchModuleView;
 
 import net.minecraft.ChatFormatting;
