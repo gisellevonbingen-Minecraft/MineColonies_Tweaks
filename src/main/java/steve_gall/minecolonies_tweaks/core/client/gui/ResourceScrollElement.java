@@ -48,7 +48,7 @@ public class ResourceScrollElement extends ResourceScrollBookElement
 		}
 
 		this.valid = true;
-		this.workerName = Component.literal(buildingView.getWorkerName()).withStyle(ChatFormatting.DARK_PURPLE);
+		this.workerName = Component.translatable("%s (lvl. %s)", buildingView.getWorkerName(), buildingView.getBuildingLevel()).withStyle(ChatFormatting.DARK_PURPLE);
 
 		var resourceView = buildingView.getModuleViewByType(BuildingResourcesModuleView.class);
 		var workOrderView = buildingView.getColony().getWorkOrder(resourceView.getWorkOrderId());
