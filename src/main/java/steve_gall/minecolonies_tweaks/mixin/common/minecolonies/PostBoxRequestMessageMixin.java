@@ -21,8 +21,9 @@ public abstract class PostBoxRequestMessageMixin
 	private IToken<?> createRequest(PostBox building, IRequestable requested, boolean async, Operation<IToken<?>> operation, @Local(argsOnly = true) NetworkEvent.Context ctxIn)
 	{
 		var token = operation.call(building, requested, async);
+		var request = building.getColony().getRequestManager().getRequestForToken(token);
 
-		if (building.getColony().getRequestManager().getRequestForToken(token).getRequest() instanceof StackExtension extension)
+		if (request != null && request.getRequest() instanceof StackExtension extension)
 		{
 			extension.minecolonies_tweaks$setRequester(ctxIn.getSender().getUUID());
 		}
