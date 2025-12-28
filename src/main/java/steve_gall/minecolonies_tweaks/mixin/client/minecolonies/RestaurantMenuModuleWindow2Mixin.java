@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_tweaks.core.common.item.FoodUtils2;
 
-@Mixin(targets = "com.minecolonies.core.client.gui.modules.RestaurantMenuModuleWindow$2", remap = false)
+@Mixin(targets = "com.minecolonies.core.client.gui.modules.building.RestaurantMenuModuleWindow$2", remap = false)
 public abstract class RestaurantMenuModuleWindow2Mixin
 {
 	@Redirect(method = "updateElement", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getItem()Lnet/minecraft/world/item/Item;", remap = true, ordinal = 1))

@@ -35,7 +35,7 @@ import com.minecolonies.api.util.SoundUtils;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.client.gui.WindowResearchTree;
-import com.minecolonies.core.client.gui.modules.UniversityModuleWindow;
+import com.minecolonies.core.client.gui.modules.building.UniversityModuleWindow;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.items.IMinecoloniesFoodItem;
-import com.minecolonies.core.client.gui.modules.RestaurantMenuModuleWindow;
+import com.minecolonies.core.client.gui.modules.building.RestaurantMenuModuleWindow;
 
 import net.minecraft.world.item.Item;
 import steve_gall.minecolonies_tweaks.core.common.item.FoodUtils2;

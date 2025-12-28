@@ -8,7 +8,6 @@
 		"minecraft.ScreenMixin",
 		
 		"minecolonies.AbstractBuildingMainWindowMixin",
-		"minecolonies.AbstractBuildingWindowMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.AbstractWindowSkeletonsMixin",
 		"minecolonies.ItemListModuleWindowMixin",
@@ -16,6 +15,7 @@
 		"minecolonies.RestaurantMenuModuleWindow1Mixin",
 		"minecolonies.RestaurantMenuModuleWindow2Mixin",
 		"minecolonies.RestaurantMenuModuleWindowMixin",
+		"minecolonies.TabsWindowModuleMixin",
 		"minecolonies.TileEntityScarecrowRendererMixin",
 		"minecolonies.ToolRecipeCategoryMixin",
 		"minecolonies.TownhallWindowMainPageMixin",
