@@ -11,6 +11,7 @@
 		"minecolonies.AbstractWindowModuleBuildingMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.AbstractWindowSkeletonsMixin",
+		"minecolonies.ColonyBlueprintRendererBuildGogglesMixin",
 		"minecolonies.ItemListModuleWindowMixin",
 		"minecolonies.MainWindowCitizenMixin",
 		"minecolonies.TileEntityScarecrowRendererMixin",
