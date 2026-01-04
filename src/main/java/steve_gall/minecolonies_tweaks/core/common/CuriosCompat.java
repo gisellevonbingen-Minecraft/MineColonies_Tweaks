@@ -17,6 +17,7 @@ public class CuriosCompat
 	public static void sendInterModComms()
 	{
 		InterModComms.sendTo(MOD_ID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
+		InterModComms.sendTo(MOD_ID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
 	}
 
 	public static ItemStack findFirstCurio(Player player, Predicate<ItemStack> predicate)
