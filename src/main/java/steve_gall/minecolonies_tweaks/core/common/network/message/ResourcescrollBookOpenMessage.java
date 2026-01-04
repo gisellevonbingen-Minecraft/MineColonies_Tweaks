@@ -88,21 +88,11 @@ public class ResourcescrollBookOpenMessage extends AbstractMessage
 
 		if (ModList.get().isLoaded(CuriosCompat.MOD_ID))
 		{
-			var handler = CuriosCompat.getEquippedCurios(player);
+			var stack = CuriosCompat.findFirstCurio(player, this::testResourcescrollBook);
 
-			if (handler != null)
+			if (!stack.isEmpty())
 			{
-				for (var i = 0; i < handler.getSlots(); i++)
-				{
-					var stack = handler.getStackInSlot(i);
-
-					if (this.testResourcescrollBook(stack))
-					{
-						return stack;
-					}
-
-				}
-
+				return stack;
 			}
 
 		}
