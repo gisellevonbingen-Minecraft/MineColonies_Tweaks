@@ -10,6 +10,7 @@
 		"minecolonies.AbstractBuildingMainWindowMixin",
 		"minecolonies.AbstractWindowSkeletonMixin",
 		"minecolonies.AbstractWindowSkeletonsMixin",
+		"minecolonies.ColonyBlueprintRendererBuildGogglesMixin",
 		"minecolonies.ItemListModuleWindowMixin",
 		"minecolonies.MainWindowCitizenMixin",
 		"minecolonies.RestaurantMenuModuleWindow1Mixin",
