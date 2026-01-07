@@ -42,9 +42,11 @@
 	"minecolonies_tweaks.gui.research_missing": "Research is missing",
 	"minecolonies_tweaks.gui.maximumstock.description": "Workers doesn't stop working.\nThis feature only destroys excess items.",
 	"minecolonies_tweaks.gui.maximumstock.empty": "No maximum stock set",
+	"minecolonies_tweaks.gui.maximumstock.stacks": "Stacks",
 	"minecolonies_tweaks.gui.surely": "Sure?",
 	"minecolonies_tweaks.gui.distance_with_building": "Distance: %sm",
 	"minecolonies_tweaks.gui.break_chance": "Break Chance: %s%%",
+	"minecolonies_tweaks.gui.select_research_cost": "Research Cost: %s",
 	
 	"minecolonies_tweaks.text.postbox_delivery_completed": "Postbox Delivery Complete: %s",
 	"minecolonies_tweaks.text.research_cost": "Research Cost",

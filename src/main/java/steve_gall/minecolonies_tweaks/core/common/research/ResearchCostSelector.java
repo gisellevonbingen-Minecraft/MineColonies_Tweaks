@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.ldtteam.blockui.views.BOWindow;
+import com.ldtteam.structurize.client.gui.WindowSelectRes;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.IGlobalResearch;
-import com.minecolonies.core.client.gui.WindowSelectRes;
+import com.minecolonies.api.util.ItemStackUtils;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
@@ -52,11 +54,11 @@ public class ResearchCostSelector
 
 			if (items.size() > 1)
 			{
-				new WindowSelectRes(this.origin, stack -> items.contains(stack.getItem()), (stack, count) ->
+				new WindowSelectRes(this.origin, Component.translatable("minecolonies_tweaks.gui.select_research_cost", ItemStackUtils.getTranslatedName(cost)), null, items.stream().map(ItemStack::new).toList(), (stack, count) ->
 				{
 					this.selectedCosts.add(new ItemStorage(stack, cost.count()));
 					this.cycle();
-				}, false).open();
+				}).open();
 				break;
 			}
 			else

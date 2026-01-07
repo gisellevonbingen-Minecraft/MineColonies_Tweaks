@@ -11,10 +11,11 @@ import com.ldtteam.blockui.controls.ButtonImage;
 import com.ldtteam.blockui.controls.ItemIcon;
 import com.ldtteam.blockui.controls.Text;
 import com.ldtteam.blockui.views.ScrollingList;
+import com.ldtteam.structurize.client.gui.WindowSelectRes;
+import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
-import com.minecolonies.core.client.gui.WindowSelectRes;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +27,7 @@ public class MaximumStockModuleWindow extends AbstractModuleWindow<IMaximumStock
 {
 	private static final String LABEL_ADD = "com.minecolonies.coremod.gui.warehouse.add";
 	private static final String LABEL_LIMIT_REACHED = "com.minecolonies.coremod.gui.warehouse.limitreached";
+	private static final String LABEL_STACKS = "minecolonies_tweaks.gui.maximumstock.stacks";
 
 	private final ScrollingList resourceList;
 
@@ -99,11 +101,11 @@ public class MaximumStockModuleWindow extends AbstractModuleWindow<IMaximumStock
 		{
 			if (!this.moduleView.hasMaximumStockReachedLimit())
 			{
-				new WindowSelectRes(this, (stack) -> true, (stack, qty) ->
+				new WindowSelectRes(this, this.moduleView.getDesc(), null, IColonyManager.getInstance().getCompatibilityManager().getListOfAllItems(), (stack, qty) ->
 				{
 					this.moduleView.addMaximumStock(stack, qty);
 					this.updateStockList();
-				}, true).open();
+				}, true, Component.translatable(LABEL_STACKS)).open();
 			}
 
 		}
