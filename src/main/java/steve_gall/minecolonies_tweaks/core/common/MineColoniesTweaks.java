@@ -100,7 +100,7 @@ public class MineColoniesTweaks
 
 		NETWORK = new NetworkChannel(MOD_ID, "main");
 		MCTweaksMessagesRegistrar.register(NETWORK);
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
