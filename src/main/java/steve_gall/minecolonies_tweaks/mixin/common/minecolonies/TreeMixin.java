@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.core.entity.ai.workers.util.Tree;
 
 import net.minecraft.core.BlockPos;
@@ -69,6 +70,17 @@ public abstract class TreeMixin
 	@Inject(method = "checkTree", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private static void checkTree(LevelReader level, BlockPos pos, List<ItemStorage> treesToNotCut, int dyntreesize, CallbackInfoReturnable<Boolean> cir)
 	{
+		var chorusSapling = new ItemStack(Blocks.CHORUS_FLOWER);
+
+		for (var stack : treesToNotCut)
+		{
+			if (ItemStackUtils.compareItemStacksIgnoreStackSize(chorusSapling, stack.getItemStack()))
+			{
+				return;
+			}
+
+		}
+
 		var chrousTree = new ChrousTree(level, pos);
 
 		if (chrousTree.isChorusTree() && chrousTree.getAliveFlowers().size() == 0)
