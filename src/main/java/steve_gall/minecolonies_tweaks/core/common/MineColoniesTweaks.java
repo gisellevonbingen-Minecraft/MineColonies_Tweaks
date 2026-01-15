@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.blocks.ModBlocks;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
@@ -177,7 +178,11 @@ public class MineColoniesTweaks
 
 	private void onRegister(RegisterEvent e)
 	{
-		if (e.getRegistryKey() == MCTweaksEquipmentTypes.REGISTER.getRegistryKey())
+		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().getRegistryKey())
+		{
+			MCTweaksBuildingModules.init();
+		}
+		else if (e.getRegistryKey() == MCTweaksEquipmentTypes.REGISTER.getRegistryKey())
 		{
 			CustomToolType.init();
 			@SuppressWarnings("unchecked")
