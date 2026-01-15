@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
 import steve_gall.minecolonies_tweaks.api.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
@@ -74,6 +76,7 @@ public class MineColoniesTweaks
 		MCTweaksMenuTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLLoadComplete);
+		fml_bus.addListener(this::onRegister);
 		fml_bus.addListener(this::onInterModEnqueue);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
@@ -134,6 +137,15 @@ public class MineColoniesTweaks
 	{
 		RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
 		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
+	}
+
+	private void onRegister(RegisterEvent e)
+	{
+		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().getRegistryKey())
+		{
+			MCTweaksBuildingModules.init();
+		}
+
 	}
 
 	private void onInterModEnqueue(InterModEnqueueEvent event)
