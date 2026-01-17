@@ -99,23 +99,6 @@ public class MineColoniesTweaks
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestResolverFactory<>(ResearchCostResolver.class, SerializationIds.RESEARCH_COST, ResearchCostResolver::serialize, ResearchCostResolver::deserialize));
 			RequestableObjectRegistry.INSTANCE.register(ResearchCost.ID, ResearchCost::serialize, ResearchCost::deserialize);
 
-			CustomCraftingModule.loadCustomCraftingModules();
-
-			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.postBox, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter, ModBuildings.university))
-			{
-				var moduleProducers = buildingEntry.get().getModuleProducers();
-
-				if (!moduleProducers.contains(BuildingModules.MIN_STOCK))
-				{
-					moduleProducers.add(BuildingModules.MIN_STOCK);
-				}
-
-			}
-
-			ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
-			ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
-			ModBuildings.library.get().getModuleProducers().add(MCTweaksBuildingModules.STUDY_ITEM_BLACKLIST);
-
 			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
 
 			this.registerCompostables();
@@ -143,7 +126,22 @@ public class MineColoniesTweaks
 	{
 		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().getRegistryKey())
 		{
-			MCTweaksBuildingModules.init();
+			CustomCraftingModule.loadCustomCraftingModules();
+
+			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.postBox, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter, ModBuildings.university))
+			{
+				var moduleProducers = buildingEntry.get().getModuleProducers();
+
+				if (!moduleProducers.contains(BuildingModules.MIN_STOCK))
+				{
+					moduleProducers.add(BuildingModules.MIN_STOCK);
+				}
+
+			}
+
+			ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
+			ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
+			ModBuildings.library.get().getModuleProducers().add(MCTweaksBuildingModules.STUDY_ITEM_BLACKLIST);
 		}
 
 	}
