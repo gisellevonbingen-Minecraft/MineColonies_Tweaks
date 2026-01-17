@@ -111,6 +111,20 @@ public class MineColoniesTweaks
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestResolverFactory<>(ResearchCostResolver.class, SerializationIds.RESEARCH_COST, ResearchCostResolver::serialize, ResearchCostResolver::deserialize));
 			RequestableObjectRegistry.INSTANCE.register(ResearchCost.ID, ResearchCost::serialize, ResearchCost::deserialize);
 
+			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
+		});
+	}
+
+	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
+	{
+		RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
+		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
+	}
+
+	private void onRegister(RegisterEvent e)
+	{
+		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().key())
+		{
 			CustomCraftingModule.loadCustomCraftingModules();
 
 			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter, ModBuildings.university))
@@ -127,22 +141,6 @@ public class MineColoniesTweaks
 			ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
 			ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
 			ModBuildings.library.get().getModuleProducers().add(MCTweaksBuildingModules.STUDY_ITEM_BLACKLIST);
-
-			DispenserBlock.registerBehavior(ModItems.compost, new CompostDispenseItemBehavior());
-		});
-	}
-
-	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
-	{
-		RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
-		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
-	}
-
-	private void onRegister(RegisterEvent e)
-	{
-		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().key())
-		{
-			MCTweaksBuildingModules.init();
 		}
 		else if (e.getRegistryKey() == MCTweaksEquipmentTypes.REGISTER.getRegistryKey())
 		{
