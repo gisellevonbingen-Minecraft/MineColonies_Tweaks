@@ -13,6 +13,7 @@ import com.minecolonies.api.creativetab.ModCreativeTabs;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.items.ModItems;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
+import com.minecolonies.core.items.ItemLargeBottle;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -27,7 +28,10 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -55,6 +59,7 @@ import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksRecipes;
 import steve_gall.minecolonies_tweaks.core.common.item.CompostDispenseItemBehavior;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemCropExtension;
+import steve_gall.minecolonies_tweaks.core.common.item.capability.LargeBottleCapabilityProvider;
 import steve_gall.minecolonies_tweaks.core.common.network.MCTweaksMessagesRegistrar;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequest;
 import steve_gall.minecolonies_tweaks.core.common.requestsystem.CustomizableDeliverableRequestFactory;
@@ -88,6 +93,7 @@ public class MineColoniesTweaks
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
 		fml_bus.addListener(this::onRegisterPayloadHandlers);
+		fml_bus.addListener(this::onAttachCapabilitiesItemStackEvent);
 
 		var forge_bus = NeoForge.EVENT_BUS;
 		forge_bus.addListener((RegisterCommandsEvent e) -> MCTweaksCommands.register(e.getDispatcher()));
@@ -98,6 +104,7 @@ public class MineColoniesTweaks
 			new MineColoniesTweaksClient(modContainer);
 		}
 
+		NeoForgeMod.enableMilkFluid();
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
@@ -222,6 +229,19 @@ public class MineColoniesTweaks
 		var modVersion = ModList.get().getModContainerById(MOD_ID).get().getModInfo().getVersion().toString();
 		var registry = new MessageRegistrar(event.registrar(MOD_ID).versioned(modVersion));
 		MCTweaksMessagesRegistrar.register(registry);
+	}
+
+	private void onAttachCapabilitiesItemStackEvent(RegisterCapabilitiesEvent e)
+	{
+		for (var item : BuiltInRegistries.ITEM)
+		{
+			if (item instanceof ItemLargeBottle)
+			{
+				e.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new LargeBottleCapabilityProvider(stack), item);
+			}
+
+		}
+
 	}
 
 	public static ResourceLocation rl(String path)
