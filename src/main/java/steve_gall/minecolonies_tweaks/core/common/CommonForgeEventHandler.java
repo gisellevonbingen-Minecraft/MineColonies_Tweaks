@@ -5,12 +5,15 @@ import java.util.HashMap;
 import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
+import com.minecolonies.core.items.ItemLargeBottle;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -18,6 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import steve_gall.minecolonies_tweaks.api.common.research.ResearchEffectChangedEventArgs;
 import steve_gall.minecolonies_tweaks.core.common.colony.ColonyExtension;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
+import steve_gall.minecolonies_tweaks.core.common.item.capability.LargeBottleCapabilityProvider;
 import steve_gall.minecolonies_tweaks.core.common.research.GlobalResearchEffectExtension;
 
 public class CommonForgeEventHandler
@@ -25,6 +29,16 @@ public class CommonForgeEventHandler
 	public static final Component GREAT_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 3);
 	public static final Component DECENT_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 2);
 	public static final Component FINE_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 1);
+
+	@SubscribeEvent
+	public void onAttachCapabilitiesItemStackEvent(AttachCapabilitiesEvent<ItemStack> e)
+	{
+		if (e.getObject().getItem() instanceof ItemLargeBottle)
+		{
+			e.addCapability(MineColoniesTweaks.rl("large_bottle"), new LargeBottleCapabilityProvider(e.getObject()));
+		}
+
+	}
 
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent e)

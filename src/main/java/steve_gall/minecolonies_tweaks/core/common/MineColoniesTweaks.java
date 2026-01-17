@@ -22,6 +22,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -102,6 +103,8 @@ public class MineColoniesTweaks
 		NETWORK = new NetworkChannel(MOD_ID, "main");
 		MCTweaksMessagesRegistrar.register(NETWORK);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
+		
+		ForgeMod.enableMilkFluid();
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
