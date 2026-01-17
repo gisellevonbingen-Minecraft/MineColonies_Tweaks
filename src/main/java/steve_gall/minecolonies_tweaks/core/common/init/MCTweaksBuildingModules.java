@@ -48,11 +48,6 @@ public class MCTweaksBuildingModules
 			}, //
 			() -> () -> new StudyItemListModule.View("study_item_blacklist", Component.translatable("com.minecolonies.coremod.gui.workerhuts.study_item_blacklist"), true));
 
-	public static void init()
-	{
-
-	}
-
 	private MCTweaksBuildingModules()
 	{
 
