@@ -39,7 +39,7 @@ public class NetworkChannel
 		this.name = name;
 
 		var modVersion = ModList.get().getModContainerById(modId).get().getModInfo().getVersion().toString();
-		this.rawChannel = NetworkRegistry.newSimpleChannel(new ResourceLocation(modId, name), () -> modVersion, modVersion::equals, modVersion::equals);
+		this.rawChannel = NetworkRegistry.newSimpleChannel(new ResourceLocation(modId, name), () -> modVersion, str -> str.equals(modVersion), str -> str.equals(modVersion));
 		this.rawMessageId = new AtomicInteger();
 		this.rawChannel.registerMessage(this.rawMessageId.incrementAndGet(), FrameMessage.class, FrameMessage::encode, buffer -> new FrameMessage(this, buffer), (msg, supplier) ->
 		{
