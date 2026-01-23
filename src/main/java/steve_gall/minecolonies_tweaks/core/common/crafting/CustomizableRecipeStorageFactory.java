@@ -79,7 +79,7 @@ public class CustomizableRecipeStorageFactory implements IFactory<IToken<?>, Cus
 	@Override
 	public short getSerializationId()
 	{
-		return SerializationIds.CUSTOMIZABLE_RECIPE_STORAGE_ID;
+		return SerializationIds.CUSTOMIZABLE_RECIPE_STORAGE;
 	}
 
 }

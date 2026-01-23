@@ -33,7 +33,7 @@ public class CustomizableRequestableRequestFactory extends CustomizableRequestFa
 	@Override
 	public short getSerializationId()
 	{
-		return SerializationIds.CUSTOMIZABLE_REQUESTABLE_REQUEST_ID;
+		return SerializationIds.CUSTOMIZABLE_REQUESTABLE_REQUEST;
 	}
 
 	@Override
