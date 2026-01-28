@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.blocks.ModBlocks;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
@@ -28,17 +27,18 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
+import steve_gall.minecolonies_tweaks.api.common.building.module.ModuleRegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
@@ -89,8 +89,8 @@ public class MineColoniesTweaks
 		MCTweaksMenuTypes.REGISTER.register(fml_bus);
 		MCTweaksEquipmentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
-		fml_bus.addListener(this::onFMLLoadComplete);
 		fml_bus.addListener(this::onRegister);
+		fml_bus.addListener(this::onModuleRegister);
 		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
@@ -103,7 +103,7 @@ public class MineColoniesTweaks
 		NETWORK = new NetworkChannel(MOD_ID, "main");
 		MCTweaksMessagesRegistrar.register(NETWORK);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> MineColoniesTweaksClient::new);
-		
+
 		ForgeMod.enableMilkFluid();
 	}
 
@@ -111,9 +111,14 @@ public class MineColoniesTweaks
 	{
 		e.enqueueWork(() ->
 		{
+			ModLoader.get().postEvent(new ModuleRegisterEvent());
+
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestableRequestFactory());
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
+
+			RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
+			RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
 
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestResolverFactory<>(ResearchCostResolver.class, SerializationIds.RESEARCH_COST_RESOLVER, ResearchCostResolver::serialize, ResearchCostResolver::deserialize));
 			RequestableObjectRegistry.INSTANCE.register(ResearchCost.ID, ResearchCost::serialize, ResearchCost::deserialize);
@@ -156,34 +161,29 @@ public class MineColoniesTweaks
 		ComposterBlock.COMPOSTABLES.put(itemLike.asItem(), chance);
 	}
 
-	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
+	private void onModuleRegister(ModuleRegisterEvent e)
 	{
-		RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
-		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
+		CustomCraftingModule.loadCustomCraftingModules();
+
+		for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter, ModBuildings.university))
+		{
+			var moduleProducers = buildingEntry.get().getModuleProducers();
+
+			if (!moduleProducers.contains(BuildingModules.MIN_STOCK))
+			{
+				moduleProducers.add(BuildingModules.MIN_STOCK);
+			}
+
+		}
+
+		ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
+		ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
+		ModBuildings.library.get().getModuleProducers().add(MCTweaksBuildingModules.STUDY_ITEM_BLACKLIST);
 	}
 
 	private void onRegister(RegisterEvent e)
 	{
-		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().getRegistryKey())
-		{
-			CustomCraftingModule.loadCustomCraftingModules();
-
-			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter, ModBuildings.university))
-			{
-				var moduleProducers = buildingEntry.get().getModuleProducers();
-
-				if (!moduleProducers.contains(BuildingModules.MIN_STOCK))
-				{
-					moduleProducers.add(BuildingModules.MIN_STOCK);
-				}
-
-			}
-
-			ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
-			ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
-			ModBuildings.library.get().getModuleProducers().add(MCTweaksBuildingModules.STUDY_ITEM_BLACKLIST);
-		}
-		else if (e.getRegistryKey() == MCTweaksEquipmentTypes.REGISTER.getRegistryKey())
+		if (e.getRegistryKey() == MCTweaksEquipmentTypes.REGISTER.getRegistryKey())
 		{
 			CustomToolType.init();
 			@SuppressWarnings("unchecked")
