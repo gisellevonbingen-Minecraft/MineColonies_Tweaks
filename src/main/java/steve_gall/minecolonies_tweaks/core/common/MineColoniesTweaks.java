@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.manager.RequestMappingHandler;
@@ -22,11 +21,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -37,6 +36,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.SerializationIds;
+import steve_gall.minecolonies_tweaks.api.common.building.module.ModuleRegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.network.MessageRegistrar;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
@@ -87,8 +87,8 @@ public class MineColoniesTweaks
 		MCTweaksMenuTypes.REGISTER.register(fml_bus);
 		MCTweaksEquipmentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
-		fml_bus.addListener(this::onFMLLoadComplete);
 		fml_bus.addListener(this::onRegister);
+		fml_bus.addListener(this::onModuleRegister);
 		fml_bus.addListener((ModConfigEvent.Loading e) -> this.onConfigReload(e));
 		fml_bus.addListener((ModConfigEvent.Reloading e) -> this.onConfigReload(e));
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
@@ -111,9 +111,14 @@ public class MineColoniesTweaks
 	{
 		e.enqueueWork(() ->
 		{
+			ModLoader.postEvent(new ModuleRegisterEvent());
+
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestableRequestFactory());
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableDeliverableRequestFactory());
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRecipeStorageFactory());
+
+			RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
+			RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
 
 			StandardFactoryController.getInstance().registerNewFactory(new CustomizableRequestResolverFactory<>(ResearchCostResolver.class, SerializationIds.RESEARCH_COST_RESOLVER, ResearchCostResolver::serialize, ResearchCostResolver::deserialize));
 			RequestableObjectRegistry.INSTANCE.register(ResearchCost.ID, ResearchCost::serialize, ResearchCost::deserialize);
@@ -122,34 +127,29 @@ public class MineColoniesTweaks
 		});
 	}
 
-	private void onFMLLoadComplete(FMLLoadCompleteEvent e)
+	private void onModuleRegister(ModuleRegisterEvent e)
 	{
-		RequestMappingHandler.registerRequestableTypeMapping(CustomizableRequestable.class, CustomizableRequestableRequest.class);
-		RequestMappingHandler.registerRequestableTypeMapping(CustomizableDeliverable.class, CustomizableDeliverableRequest.class);
+		CustomCraftingModule.loadCustomCraftingModules();
+
+		for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter, ModBuildings.university))
+		{
+			var moduleProducers = buildingEntry.get().getModuleProducers();
+
+			if (!moduleProducers.contains(BuildingModules.MIN_STOCK))
+			{
+				moduleProducers.add(BuildingModules.MIN_STOCK);
+			}
+
+		}
+
+		ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
+		ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
+		ModBuildings.library.get().getModuleProducers().add(MCTweaksBuildingModules.STUDY_ITEM_BLACKLIST);
 	}
 
 	private void onRegister(RegisterEvent e)
 	{
-		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().key())
-		{
-			CustomCraftingModule.loadCustomCraftingModules();
-
-			for (var buildingEntry : Arrays.asList(ModBuildings.alchemist, ModBuildings.blacksmith, ModBuildings.concreteMixer, ModBuildings.crusher, ModBuildings.dyer, ModBuildings.fletcher, ModBuildings.glassblower, ModBuildings.mechanic, ModBuildings.plantation, ModBuildings.sawmill, ModBuildings.stoneMason, ModBuildings.stoneSmelter, ModBuildings.university))
-			{
-				var moduleProducers = buildingEntry.get().getModuleProducers();
-
-				if (!moduleProducers.contains(BuildingModules.MIN_STOCK))
-				{
-					moduleProducers.add(BuildingModules.MIN_STOCK);
-				}
-
-			}
-
-			ModBuildings.university.get().getModuleProducers().add(MCTweaksBuildingModules.RESEARCH_COST_RESOLVER);
-			ModBuildings.wareHouse.get().getModuleProducers().add(MCTweaksBuildingModules.MAXIMUM_STOCK);
-			ModBuildings.library.get().getModuleProducers().add(MCTweaksBuildingModules.STUDY_ITEM_BLACKLIST);
-		}
-		else if (e.getRegistryKey() == MCTweaksEquipmentTypes.REGISTER.getRegistryKey())
+		if (e.getRegistryKey() == MCTweaksEquipmentTypes.REGISTER.getRegistryKey())
 		{
 			CustomToolType.init();
 			@SuppressWarnings("unchecked")
