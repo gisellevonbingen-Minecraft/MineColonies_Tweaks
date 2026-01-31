@@ -4,7 +4,7 @@ import com.minecolonies.api.colony.buildingextensions.IBuildingExtension;
 
 import net.minecraft.core.BlockPos;
 
-public interface IColonyViewExtension
+public interface IRegisteredStructureManagerViewExtension
 {
 	IBuildingExtension minecolonies_tweaks$getBuildingExtension(BlockPos pos);
 }

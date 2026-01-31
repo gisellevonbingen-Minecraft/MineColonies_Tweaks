@@ -108,7 +108,7 @@ public abstract class LocalResearchTreeMixin implements LocalResearchTreeExtensi
 	{
 		this.resetEffects(colony);
 		colony.getResearchManager().markDirty();
-		colony.getBuildingManager().markBuildingsDirty();
+		colony.getServerBuildingManager().markBuildingsDirty();
 
 		for (var citizen : colony.getCitizenManager().getCitizens())
 		{

@@ -110,7 +110,7 @@ public class ResourceScrollElement extends ResourceScrollBookElement
 				var mc = Minecraft.getInstance();
 				var colonyView = IColonyManager.getInstance().getColonyView(colonyId, mc.level.dimension());
 
-				if (colonyView != null && colonyView.getBuilding(builderPos) instanceof BuildingBuilder.View buildingView)
+				if (colonyView != null && colonyView.getClientBuildingManager().getBuilding(builderPos) instanceof BuildingBuilder.View buildingView)
 				{
 					return buildingView;
 				}

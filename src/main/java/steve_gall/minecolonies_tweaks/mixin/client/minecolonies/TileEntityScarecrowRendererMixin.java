@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.blocks.huts.AbstractBlockMinecoloniesDefault;
+import com.minecolonies.api.colony.IColonyView;
 import com.minecolonies.api.tileentities.AbstractTileEntityScarecrow;
 import com.minecolonies.core.client.render.TileEntityScarecrowRenderer;
 import com.minecolonies.core.colony.buildingextensions.FarmField;
@@ -17,7 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
-import steve_gall.minecolonies_tweaks.core.common.colony.IColonyViewExtension;
+import steve_gall.minecolonies_tweaks.core.common.colony.IRegisteredStructureManagerViewExtension;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigClient;
 
 @Mixin(value = TileEntityScarecrowRenderer.class, remap = false)
@@ -36,7 +37,7 @@ public abstract class TileEntityScarecrowRendererMixin
 	@Unique
 	private void minecolonies_tweaks$renderSeed(AbstractTileEntityScarecrow te, PoseStack matrixStack, MultiBufferSource iRenderTypeBuffer, int lightA, int lightB)
 	{
-		if (te.getCurrentColony() instanceof IColonyViewExtension colonyView && colonyView.minecolonies_tweaks$getBuildingExtension(te.getBlockPos()) instanceof FarmField field)
+		if (((IColonyView) te.getCurrentColony()).getClientBuildingManager() instanceof IRegisteredStructureManagerViewExtension buildingManager && buildingManager.minecolonies_tweaks$getBuildingExtension(te.getBlockPos()) instanceof FarmField field)
 		{
 			var facing = te.getLevel().getBlockState(te.getBlockPos()).getOptionalValue(AbstractBlockMinecoloniesDefault.FACING).orElse(null);
 
