@@ -133,7 +133,7 @@ public class ResearchCostResolver extends CustomizableRequestableResolver<Resear
 				{
 					if (localTree instanceof LocalResearchTreeExtension extension)
 					{
-						var building = colony.getBuildingManager().getBuilding(this.getLocation().getInDimensionLocation());
+						var building = colony.getServerBuildingManager().getBuilding(this.getLocation().getInDimensionLocation());
 						extension.minecolonies_tweaks$setBuilding(building);
 					}
 

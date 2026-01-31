@@ -129,7 +129,7 @@ public class BuildingPos
 			return null;
 		}
 
-		return colony.getBuildingManager().getBuilding(this.buildingId);
+		return colony.getServerBuildingManager().getBuilding(this.buildingId);
 	}
 
 	@Nullable
@@ -142,7 +142,7 @@ public class BuildingPos
 			return null;
 		}
 
-		return colony.getBuilding(this.buildingId);
+		return colony.getClientBuildingManager().getBuilding(this.buildingId);
 	}
 
 	@NotNull

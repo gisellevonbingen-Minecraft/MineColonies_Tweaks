@@ -278,29 +278,27 @@ public class ItemCopyScroll extends Item
 
 	public static Component getModuleViewText(IBuildingModule module)
 	{
-		var view = BuildingEntry.produceViewWithoutBuilding(module.getProducer().key);
-
-		if (view != null)
+		try
 		{
-			try
+			var view = BuildingEntry.produceViewWithoutBuilding(module.getProducer().key, null);
+
+			if (view != null)
 			{
 				@SuppressWarnings("deprecation")
 				var buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), module.getBuilding().getColony().getWorld().registryAccess());
 				module.serializeToView(buf, true);
 				view.deserialize(buf);
-			}
-			catch (Exception e)
-			{
 
+				return view.getDesc();
 			}
 
-			return view.getDesc();
 		}
-		else
+		catch (Exception e)
 		{
-			return Component.literal(module.getProducer().key);
+
 		}
 
+		return Component.literal(module.getProducer().key);
 	}
 
 	public record CopyData(Component name, List<Entry> entries)

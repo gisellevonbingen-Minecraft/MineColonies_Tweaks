@@ -59,7 +59,7 @@ public class FarmFieldPlotResize2Message extends AbstractMessage
 
 			if (colony != null)
 			{
-				colony.getBuildingManager().getMatchingBuildingExtension(f -> f.getBuildingExtensionType().equals(BuildingExtensionRegistries.farmField.get()) && f.getPosition().equals(this.position)).map(m -> (FarmField) m).ifPresent(field -> field.setRadius(this.direction, this.size));
+				colony.getServerBuildingManager().getMatchingBuildingExtension(f -> f.getBuildingExtensionType().equals(BuildingExtensionRegistries.farmField.get()) && f.getPosition().equals(this.position)).map(m -> (FarmField) m).ifPresent(field -> field.setRadius(this.direction, this.size));
 			}
 
 		}

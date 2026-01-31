@@ -49,7 +49,7 @@ public class ClipboardElement extends ResourceScrollBookElement
 
 		var requestCount = 0;
 
-		for (var buildingView : colonyView.getBuildings())
+		for (var buildingView : colonyView.getClientBuildingManager().getBuildings().values())
 		{
 			requestCount += buildingView.getOpenRequestsOfBuilding().size();
 		}

@@ -11,19 +11,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.colony.buildingextensions.IBuildingExtension;
-import com.minecolonies.core.colony.ColonyView;
+import com.minecolonies.core.colony.managers.views.RegisteredStructureManagerView;
 
 import net.minecraft.core.BlockPos;
-import steve_gall.minecolonies_tweaks.core.common.colony.IColonyViewExtension;
+import steve_gall.minecolonies_tweaks.core.common.colony.IRegisteredStructureManagerViewExtension;
 
-@Mixin(value = ColonyView.class, remap = false)
-public abstract class ColonyViewMixin implements IColonyViewExtension
+@Mixin(value = RegisteredStructureManagerView.class, remap = false)
+public abstract class RegisteredStructureManagerViewMixin implements IRegisteredStructureManagerViewExtension
 {
 	@Unique
 	private final Map<BlockPos, IBuildingExtension> minecolonies_tweaks$pos2buildingExtensions = new HashMap<>();
 
-	@Inject(method = "handleColonyBuildingExtensionsViewUpdateMessage", remap = false, at = @At(value = "TAIL"), cancellable = false)
-	private void handleColonyBuildingExtensionsViewUpdateMessage(Set<IBuildingExtension> fields, CallbackInfo ci)
+	@Inject(method = "handleColonyBuildingExtensionViewUpdateMessage", remap = false, at = @At(value = "TAIL"), cancellable = false)
+	private void handleColonyBuildingExtensionViewUpdateMessage(Set<IBuildingExtension> fields, CallbackInfo ci)
 	{
 		this.minecolonies_tweaks$pos2buildingExtensions.clear();
 

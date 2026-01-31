@@ -309,7 +309,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 			var level = this.mc.level;
 
-			for (var building : this.colony.getBuildings())
+			for (var building : this.colony.getClientBuildingManager().getBuildings().values())
 			{
 				if (building.hasWorkOrder() || !BuildingUtils.isUnlocked(this.colony, building.getBuildingType(), building.getBuildingLevel()))
 				{
@@ -1033,7 +1033,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 			this.citizen = builder;
 			this.name = Component.literal(builder.getName());
 			this.nameLowerCase = builder.getName().toLowerCase(Locale.ENGLISH);
-			this.building = colony.getBuilding(builder.getWorkBuilding());
+			this.building = colony.getClientBuildingManager().getBuilding(builder.getWorkBuilding());
 		}
 
 		public double getDistance(BuildingInfo building)
