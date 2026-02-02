@@ -40,12 +40,9 @@ import com.minecolonies.core.client.gui.modules.building.UniversityModuleWindow;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_tweaks.api.common.building.BuildingPos;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
-import steve_gall.minecolonies_tweaks.core.common.inventory.InventoryUtils2;
 import steve_gall.minecolonies_tweaks.core.common.network.message.ResearchCostRequestMessage;
 import steve_gall.minecolonies_tweaks.core.common.research.ResearchCost;
 import steve_gall.minecolonies_tweaks.core.common.research.ResearchCostResolver;
@@ -139,20 +136,6 @@ public abstract class WindowResearchTreeMixin extends AbstractWindowSkeleton
 		}
 
 		return operation.call(building);
-	}
-
-	@WrapOperation(method = {"generateResearchTooltips", "getResearchButtonState", "onButtonClicked"}, remap = false, at = @At(value = "NEW", target = "net/neoforged/neoforge/items/wrapper/InvWrapper", remap = false))
-	private InvWrapper newInvWrapper(Container inv, Operation<InvWrapper> operation)
-	{
-		var original = operation.call(inv);
-		var level = this.building.getColony().getWorld();
-
-		if (level != null)
-		{
-			return InventoryUtils2.wrapWithBuilding(original, level, this.building.getPosition());
-		}
-
-		return original;
 	}
 
 	@Inject(method = "drawResearchBoxes", remap = false, at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)

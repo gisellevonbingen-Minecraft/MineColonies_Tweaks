@@ -86,7 +86,7 @@ public class BuildingEmptySlotCounter
 	{
 		var positions = new ArrayList<BlockPos>();
 		positions.add(buildingView.getPosition());
-		positions.addAll(buildingView.getContainerList());
+		positions.addAll(buildingView.getContainers());
 		this.positions = positions;
 	}
 
