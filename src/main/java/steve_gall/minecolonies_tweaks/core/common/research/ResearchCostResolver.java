@@ -15,6 +15,7 @@ import com.minecolonies.api.colony.requestsystem.requestable.Stack;
 import com.minecolonies.api.colony.requestsystem.requester.IRequester;
 import com.minecolonies.api.colony.requestsystem.token.IToken;
 import com.minecolonies.api.research.IGlobalResearchTree;
+import com.minecolonies.core.colony.buildings.workerbuildings.BuildingUniversity;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -127,25 +128,10 @@ public class ResearchCostResolver extends CustomizableRequestableResolver<Resear
 				var researchName = research != null ? MutableComponent.create(research.getName()) : Component.literal(request.getResearchId().toString());
 				player.sendSystemMessage(Component.translatable("minecolonies_tweaks.text.research_cost.delivery_completed", branchName, researchName).withStyle(ChatFormatting.GRAY));
 
-				var localTree = colony.getResearchManager().getResearchTree();
-
-				try
+				if (colony.getServerBuildingManager().getBuilding(this.getLocation().getInDimensionLocation()) instanceof BuildingUniversity building)
 				{
-					if (localTree instanceof LocalResearchTreeExtension extension)
-					{
-						var building = colony.getServerBuildingManager().getBuilding(this.getLocation().getInDimensionLocation());
-						extension.minecolonies_tweaks$setBuilding(building);
-					}
-
-					localTree.attemptBeginResearch(player, colony, research);
-				}
-				finally
-				{
-					if (localTree instanceof LocalResearchTreeExtension extension)
-					{
-						extension.minecolonies_tweaks$setBuilding(null);
-					}
-
+					var localTree = colony.getResearchManager().getResearchTree();
+					localTree.attemptBeginResearch(player, colony, building, research);
 				}
 
 			}
