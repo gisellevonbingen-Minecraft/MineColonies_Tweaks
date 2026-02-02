@@ -98,7 +98,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		{
 			if (MCTweaksConfigServer.INSTANCE.jobs.farmerPlantAfterHarvest.get().booleanValue())
 			{
-				if (this.building.getFirstModuleOccurance(BuildingExtensionsModule.class).getCurrentExtension() instanceof FarmField farmField)
+				if (this.building.getModule(BuildingExtensionsModule.class).getCurrentExtension() instanceof FarmField farmField)
 				{
 					if (farmField.getSeed().getItem() instanceof BlockItem item && item.getBlock() instanceof StemBlock)
 					{
