@@ -37,7 +37,7 @@ public abstract class TileEntityScarecrowRendererMixin
 	@Unique
 	private void minecolonies_tweaks$renderSeed(AbstractTileEntityScarecrow te, PoseStack matrixStack, MultiBufferSource iRenderTypeBuffer, int lightA, int lightB)
 	{
-		if (((IColonyView) te.getCurrentColony()).getClientBuildingManager() instanceof IRegisteredStructureManagerViewExtension buildingManager && buildingManager.minecolonies_tweaks$getBuildingExtension(te.getBlockPos()) instanceof FarmField field)
+		if (te.getCurrentColony() instanceof IColonyView colonyView && colonyView.getClientBuildingManager() instanceof IRegisteredStructureManagerViewExtension buildingManager && buildingManager.minecolonies_tweaks$getBuildingExtension(te.getBlockPos()) instanceof FarmField field)
 		{
 			var facing = te.getLevel().getBlockState(te.getBlockPos()).getOptionalValue(AbstractBlockMinecoloniesDefault.FACING).orElse(null);
 
