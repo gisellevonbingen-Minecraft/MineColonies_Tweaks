@@ -332,7 +332,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 					if (blueprint != null)
 					{
 						blueprint.setRotationMirror(building.getRotationMirror(), level);
-						var placer = new StructurePlacer(new LoadOnlyStructureHandler(level, building.getPosition(), blueprint, RotationMirror.NONE, true));
+						var placer = new StructurePlacer(new LoadOnlyStructureHandler(level, building.getPosition(), blueprint, RotationMirror.NONE));
 						StructurePhasePlacementResult result;
 						var progressPos = AbstractBlueprintIterator.NULL_POS;
 
