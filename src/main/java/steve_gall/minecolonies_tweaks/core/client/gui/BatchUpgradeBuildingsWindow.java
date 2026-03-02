@@ -65,7 +65,6 @@ import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataSaveMessage;
 
-@SuppressWarnings("removal")
 public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 {
 	public static final String LIST_BUILDINGS = "buildings";
@@ -284,7 +283,8 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 						var buldingMirror = building.isMirrored() ? Mirror.FRONT_BACK : Mirror.NONE;
 						blueprint.setRotationMirrorRelative(RotationMirror.of(buildingRotation, buldingMirror), level);
 
-						var placer = new StructurePlacer(new LoadOnlyStructureHandler(level, building.getPosition(), blueprint, new PlacementSettings(), true));
+						@SuppressWarnings("deprecation")
+						var placer = new StructurePlacer(new LoadOnlyStructureHandler(level, building.getPosition(), blueprint, new PlacementSettings()));
 						StructurePhasePlacementResult result;
 						var progressPos = AbstractBlueprintIterator.NULL_POS;
 

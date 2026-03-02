@@ -69,7 +69,6 @@ import steve_gall.minecolonies_tweaks.core.common.colony.BuildingCost;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
 
-@SuppressWarnings("removal")
 public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 {
 	public static final Component O = Component.literal("O");
@@ -339,7 +338,8 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 						var buldingMirror = building.isMirrored() ? Mirror.FRONT_BACK : Mirror.NONE;
 						blueprint.setRotationMirrorRelative(RotationMirror.of(buildingRotation, buldingMirror), level);
 
-						var placer = new StructurePlacer(new LoadOnlyStructureHandler(level, building.getPosition(), blueprint, new PlacementSettings(), true));
+						@SuppressWarnings("deprecation")
+						var placer = new StructurePlacer(new LoadOnlyStructureHandler(level, building.getPosition(), blueprint, new PlacementSettings()));
 						StructurePhasePlacementResult result;
 						var progressPos = AbstractBlueprintIterator.NULL_POS;
 
