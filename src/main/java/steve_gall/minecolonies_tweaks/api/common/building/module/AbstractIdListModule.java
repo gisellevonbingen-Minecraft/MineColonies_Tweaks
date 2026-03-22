@@ -7,7 +7,6 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModule;
-import com.minecolonies.api.colony.buildings.modules.IPersistentModule;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +18,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
-public abstract class AbstractIdListModule extends AbstractBuildingModule implements IPersistentModule, IIdListModule
+public abstract class AbstractIdListModule extends AbstractBuildingModule implements ICopyableModule, IIdListModule
 {
 	public static final String TAG_IDS = MineColoniesTweaks.rl("ids").toString();
 

@@ -38,8 +38,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import steve_gall.minecolonies_tweaks.api.common.building.module.IIdListModule;
-import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockModule;
+import steve_gall.minecolonies_tweaks.api.common.building.module.ICopyableModule;
 import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksDataComponents;
 
@@ -272,7 +271,7 @@ public class ItemCopyScroll extends Item
 		return module instanceof ISettingsModule || module instanceof IMinimumStockModule //
 				|| module instanceof IEntityListModule || module instanceof IItemListModule //
 				|| module instanceof RestaurantMenuModule || module instanceof ICraftingBuildingModule //
-				|| module instanceof IMaximumStockModule || module instanceof IIdListModule//
+				|| module instanceof ICopyableModule//
 		;
 	}
 

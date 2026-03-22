@@ -10,7 +10,6 @@ import com.ldtteam.blockui.views.BOWindow;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModuleView;
-import com.minecolonies.api.colony.buildings.modules.IPersistentModule;
 import com.minecolonies.api.colony.buildings.modules.ITickingModule;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.research.util.ResearchConstants;
@@ -27,6 +26,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import steve_gall.minecolonies_tweaks.api.common.building.module.ICopyableModule;
 import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockEntry;
 import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockModule;
 import steve_gall.minecolonies_tweaks.api.common.building.module.IMaximumStockModuleView;
@@ -36,7 +36,7 @@ import steve_gall.minecolonies_tweaks.core.common.inventory.BlackHoleItemHandler
 import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 import steve_gall.minecolonies_tweaks.core.common.network.message.MaximumStockUpdateMessage;
 
-public class MaximumStockModule extends AbstractBuildingModule implements IMaximumStockModule, IPersistentModule, ITickingModule
+public class MaximumStockModule extends AbstractBuildingModule implements IMaximumStockModule, ICopyableModule, ITickingModule
 {
 	protected final Object2IntMap<ItemStorage> maximumStock = new Object2IntOpenHashMap<>();
 
