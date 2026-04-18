@@ -1,0 +1,30 @@
+<window xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	size="190 244" pause="false" lightbox="false"
+	xsi:noNamespaceSchemaLocation="file:../../../../../api/java/com/minecolonies/blockui/blockui.xsd">
+
+	<image
+		source="minecolonies:textures/gui/builderhut/builder_paper_sketch.png"
+		size="100% 100%" />
+	<image
+		source="minecolonies:textures/gui/builderhut/builder_charcoal_chalk.png"
+		size="19 59" pos="175 180" />
+
+	<text size="100% 11" pos="0 13" color="black" textalign="MIDDLE"
+		label="$(item.minecolonies_tweaks.copyscroll)" />
+
+	<text id="buildingName" size="100% 11" pos="0 25" color="black"
+		textalign="MIDDLE" label="BUILDINGNAME" />
+
+	<box size="164 200" linewidth="1" pos="13 38">
+		<list id="resources" size="100% 100%">
+			<box size="100% 22" linewidth="1">
+				<image id="icon" size="20 20" pos="1 1" />
+				<text id="text" size="101 100%" pos="22 0" color="black"
+					tooltip="TOOLTIP" />
+				<button id="remove" size="30 15" pos="124 3" label="X"
+					color="red"
+					source="minecolonies:textures/gui/builderhut/builder_button_medium.png" />
+			</box>
+		</list>
+	</box>
+</window>
