@@ -62,6 +62,10 @@ runs {
     }
 }
 
+tasks.named("test", Test) {
+    failOnNoDiscoveredTests = false
+}
+
 sourceSets.main.resources { srcDir "src/generated/resources" }
 
 dependencies {
