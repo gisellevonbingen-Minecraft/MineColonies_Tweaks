@@ -17,6 +17,7 @@
 		"minecolonies.BuildingExtensionsModuleMixin",
 		"minecolonies.BuildingStructureHandlerMixin",
 		"minecolonies.CitizenDataMixin",
+		"minecolonies.CitizenDiseaseHandlerAccessor",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
 		"minecolonies.CompatibilityManagerMixin",
