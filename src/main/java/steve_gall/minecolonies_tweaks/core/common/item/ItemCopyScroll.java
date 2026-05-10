@@ -120,9 +120,8 @@ public class ItemCopyScroll extends Item
 					var entries = data.entries();
 					var moduleViewInfoList = new ArrayList<ModuleViewInfo>();
 
-					for (var i = 0; i < entries.size(); i++)
+					for (Entry entry : entries)
 					{
-						var entry = entries.get(i);
 						var key = entry.key();
 						var producer = BuildingEntry.getProducer(key);
 
