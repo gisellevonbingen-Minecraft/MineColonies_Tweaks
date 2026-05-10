@@ -13,6 +13,7 @@
 		"minecolonies.AbstractEntityRaiderMobMixin",
 		"minecolonies.BuildingDyerCraftingModuleMixin",
 		"minecolonies.BuildingStructureHandlerMixin",
+		"minecolonies.CitizenDiseaseHandlerAccessor",
 		"minecolonies.CitizenMournHandlerMixin",
 		"minecolonies.ColonyMixin",
 		"minecolonies.ColonyViewMixin",

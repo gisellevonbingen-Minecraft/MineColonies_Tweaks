@@ -41,6 +41,7 @@ import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigClient;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigCommon;
 import steve_gall.minecolonies_tweaks.core.common.config.MCTweaksConfigServer;
 import steve_gall.minecolonies_tweaks.core.common.crafting.CustomizableRecipeStorageFactory;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksArgumentTypes;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksBuildingModules;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksItems;
 import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksMenuTypes;
@@ -73,6 +74,7 @@ public class MineColoniesTweaks
 		MCTweaksItems.REGISTER.register(fml_bus);
 		MCTweaksRecipes.SERIALIZERS.register(fml_bus);
 		MCTweaksMenuTypes.REGISTER.register(fml_bus);
+		MCTweaksArgumentTypes.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onModuleRegister);
 		fml_bus.addListener(this::onInterModEnqueue);

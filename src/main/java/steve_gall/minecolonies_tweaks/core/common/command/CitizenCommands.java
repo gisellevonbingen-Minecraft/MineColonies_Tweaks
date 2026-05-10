@@ -21,6 +21,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import steve_gall.minecolonies_tweaks.mixin.common.minecolonies.CitizenDiseaseHandlerAccessor;
 
 public class CitizenCommands
 {
@@ -28,6 +29,7 @@ public class CitizenCommands
 	{
 		var command = Commands.literal("citizens");
 		command.then(SaturationCommands.register());
+		command.then(DiseaseCommands.register());
 
 		return command;
 	}
@@ -59,6 +61,41 @@ public class CitizenCommands
 			{
 				citizen.getCitizenData().setSaturation(0.0D);
 				citizen.getCitizenData().setJustAte(false);
+				return true;
+			}, (context, citizens) -> context.getSource().sendSuccess(Component.literal("Done"), true));
+		}
+
+	}
+
+	public static class DiseaseCommands
+	{
+		public static ArgumentBuilder<CommandSourceStack, ?> register()
+		{
+			var command = Commands.literal("disease");
+			command.then(disease());
+			command.then(cure());
+
+			return command;
+		}
+
+		private static ArgumentBuilder<CommandSourceStack, ?> disease()
+		{
+			var diseaseArgument = IMCCommand.newArgument("disease", DiseaseArgumentType.instance());
+			executes(diseaseArgument, true, (context, citizen) ->
+			{
+				var disease = context.getArgument("disease", String.class);
+				((CitizenDiseaseHandlerAccessor) citizen.getCitizenDiseaseHandler()).setImmunityTicks(0);
+				((CitizenDiseaseHandlerAccessor) citizen.getCitizenDiseaseHandler()).setDisease(disease);
+				return true;
+			}, (context, citizens) -> context.getSource().sendSuccess(Component.literal("Done"), true));
+			return Commands.literal("set").then(diseaseArgument);
+		}
+
+		private static ArgumentBuilder<CommandSourceStack, ?> cure()
+		{
+			return executes(Commands.literal("cure"), true, (context, citizen) ->
+			{
+				citizen.getCitizenDiseaseHandler().cure();
 				return true;
 			}, (context, citizens) -> context.getSource().sendSuccess(Component.literal("Done"), true));
 		}
