@@ -3,49 +3,21 @@ package steve_gall.minecolonies_tweaks.core.common;
 import java.util.HashMap;
 
 import com.minecolonies.api.colony.IColonyManager;
-import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
-import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import steve_gall.minecolonies_tweaks.api.common.research.ResearchEffectChangedEventArgs;
 import steve_gall.minecolonies_tweaks.core.common.colony.ColonyExtension;
-import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksTags;
 import steve_gall.minecolonies_tweaks.core.common.research.GlobalResearchEffectExtension;
 
 public class CommonForgeEventHandler
 {
-	public static final Component GREAT_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 3);
-	public static final Component DECENT_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 2);
-	public static final Component FINE_FOOD_TOOLTIP = Component.translatable(TranslationConstants.TIER_TOOLTIP + 1);
-
-	@SubscribeEvent
-	public void onItemTooltip(ItemTooltipEvent e)
-	{
-		var tier = MCTweaksTags.Items.getFoodTier(e.getItemStack()::is);
-
-		if (tier == 3)
-		{
-			e.getToolTip().add(1, GREAT_FOOD_TOOLTIP);
-		}
-		else if (tier == 2)
-		{
-			e.getToolTip().add(1, DECENT_FOOD_TOOLTIP);
-		}
-		else if (tier == 1)
-		{
-			e.getToolTip().add(1, FINE_FOOD_TOOLTIP);
-		}
-
-	}
-
 	@SubscribeEvent
 	public void onLivingChangeTarget(LivingChangeTargetEvent e)
 	{
