@@ -1,5 +1,5 @@
 <minecolonies_tweaks:addition>
-	<view pos="106 102" size="24 13" id="skill_all_bts" visible="false">
+	<view pos="160 90" size="24 13" id="skill_all_bts" visible="false">
 		<button id="skill_all_up" size="12 13" pos="0 0" label="+" />
 		<button id="skill_all_down" size="12 13" pos="12 0" label="-" />
 	</view>
