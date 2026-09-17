@@ -107,6 +107,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 	private final List<BuilderInfo> filteredBuilders;
 	private final List<ItemStorage> repairResources;
 	private final Map<BuildingInfo, BuilderInfo> assignments;
+	private final BuilderInfo anyBuilder = BuilderInfo.any();
 
 	private boolean requested = false;
 	private boolean updating = false;
@@ -554,7 +555,9 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 			for (var entry : this.assignments.entrySet())
 			{
-				new BuildRequestMessage(entry.getKey().building, BuildRequestMessage.Mode.REPAIR, entry.getValue().building.getPosition()).sendToServer();
+				var builder = entry.getValue();
+				var builderPos = builder.isAny() ? BlockPos.ZERO : builder.building.getPosition();
+				new BuildRequestMessage(entry.getKey().building, BuildRequestMessage.Mode.REPAIR, builderPos).sendToServer();
 			}
 
 			var data = new BatchRepairData();
@@ -617,6 +620,11 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 	protected boolean testWorkable(BuildingInfo building, BuilderInfo builder)
 	{
+		if (builder.isAny())
+		{
+			return true;
+		}
+
 		return builder.building.getBuildingLevel() >= building.building.getBuildingLevel();
 	}
 
@@ -722,7 +730,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		}
 		else
 		{
-			builderText = Component.translatable("minecolonies_tweaks.gui.assigned_builder_name", builder != null ? (Component.translatable("minecolonies_tweaks.gui.builder_name_with_level", builder.name, builder.building.getBuildingLevel())) : Component.translatable("minecolonies_tweaks.gui.builder_no_assigned").withStyle(ChatFormatting.RED));
+			builderText = Component.translatable("minecolonies_tweaks.gui.assigned_builder_name", builder != null ? this.getBuilderDisplayName(builder) : Component.translatable("minecolonies_tweaks.gui.builder_no_assigned").withStyle(ChatFormatting.RED));
 		}
 
 		builderLabel.setText(builderText);
@@ -801,6 +809,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		if (buildingIndex > -1)
 		{
 			var building = this.filteredBuildings.get(buildingIndex);
+			this.filteredBuilders.add(this.anyBuilder);
 			this.builders.stream().filter(builder -> this.testWorkable(building, builder)).forEach(this.filteredBuilders::add);
 			this.filteredBuilders.sort((o1, o2) -> this.compareBuilder(building, o1, o2));
 		}
@@ -810,6 +819,15 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 	protected int compareBuilder(BuildingInfo building, BuilderInfo builder1, BuilderInfo builder2)
 	{
+		if (builder1.isAny())
+		{
+			return -1;
+		}
+		else if (builder2.isAny())
+		{
+			return 1;
+		}
+
 		var assigned = this.assignments.get(building);
 
 		if (assigned == builder1)
@@ -830,14 +848,19 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		var building = this.lastBuildersBuildingIndex == -1 ? null : this.filteredBuildings.get(this.lastBuildersBuildingIndex);
 
 		var builderLabel = row.findPaneOfTypeByID(TEXT_BUILDER_NAME, Text.class);
-		builderLabel.setText(Component.translatable("minecolonies_tweaks.gui.builder_name_with_level", builder.name, builder.building.getBuildingLevel()));
+		builderLabel.setText(this.getBuilderDisplayName(builder));
 		builderLabel.setColors(this.getBuilderLabelColor(index).getColor());
 
 		var assignedCountLabel = row.findPaneOfTypeByID(TEXT_ASSIGNED_COUNT, Text.class);
 		assignedCountLabel.setText(Component.translatable("minecolonies_tweaks.gui.assigned_count_with_value", builder.cachedAssignedCount));
 
 		var distanceLabel = row.findPaneOfTypeByID(TEXT_DISTANCE_WITH_BUILDING, Text.class);
-		distanceLabel.setText(Component.translatable("minecolonies_tweaks.gui.distance_with_building", (int) builder.getDistance(building)));
+		distanceLabel.setText(builder.isAny() ? Component.empty() : Component.translatable("minecolonies_tweaks.gui.distance_with_building", (int) builder.getDistance(building)));
+	}
+
+	protected Component getBuilderDisplayName(BuilderInfo builder)
+	{
+		return builder.isAny() ? builder.name : Component.translatable("minecolonies_tweaks.gui.builder_name_with_level", builder.name, builder.building.getBuildingLevel());
 	}
 
 	protected void updateRepairResources()
@@ -1036,8 +1059,31 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 			this.building = colony.getClientBuildingManager().getBuilding(builder.getWorkBuilding());
 		}
 
+		private BuilderInfo(Component name)
+		{
+			this.citizen = null;
+			this.name = name;
+			this.nameLowerCase = name.getString().toLowerCase(Locale.ENGLISH);
+			this.building = null;
+		}
+
+		public static BuilderInfo any()
+		{
+			return new BuilderInfo(Component.translatable("minecolonies_tweaks.gui.any_available_builder"));
+		}
+
+		public boolean isAny()
+		{
+			return this.building == null;
+		}
+
 		public double getDistance(BuildingInfo building)
 		{
+			if (this.isAny())
+			{
+				return 0;
+			}
+
 			return this.distances.computeIfAbsent(building, (BuildingInfo b) ->
 			{
 				var pos1 = this.building.getPosition();
