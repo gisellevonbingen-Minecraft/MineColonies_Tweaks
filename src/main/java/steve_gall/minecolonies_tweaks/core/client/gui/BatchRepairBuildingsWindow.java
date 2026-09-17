@@ -810,7 +810,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 		{
 			var building = this.filteredBuildings.get(buildingIndex);
 			this.filteredBuilders.add(this.anyBuilder);
-			this.builders.stream().filter(builder -> this.testWorkable(building, builder)).forEach(this.filteredBuilders::add);
+			this.streamWorkableBuilders(building).forEach(this.filteredBuilders::add);
 			this.filteredBuilders.sort((o1, o2) -> this.compareBuilder(building, o1, o2));
 		}
 
