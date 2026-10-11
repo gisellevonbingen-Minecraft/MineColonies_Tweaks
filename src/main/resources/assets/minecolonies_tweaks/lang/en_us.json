@@ -20,6 +20,7 @@
 	"minecolonies_tweaks.gui.assigned_builder_name": "Builder: %s",
 	"minecolonies_tweaks.gui.builder_name_with_level": "Lv. %2$s - %1$s",
 	"minecolonies_tweaks.gui.builder_no_assigned": "Not Assigned",
+	"minecolonies_tweaks.gui.any_available_builder": "Any Available Builder",
 	"minecolonies_tweaks.gui.assigned_count_with_value": "Assigned Count: %s",
 	"minecolonies_tweaks.gui.exceptOpenablesOnlyChanged": "Except buildings what Doors and Trapdoors only changed",
 	"minecolonies_tweaks.gui.available_builders": "Available Builders",
