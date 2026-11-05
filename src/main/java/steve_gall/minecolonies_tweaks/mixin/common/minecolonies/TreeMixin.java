@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_tweaks.mixin.common.minecolonies;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import steve_gall.minecolonies_tweaks.core.common.block.ChrousTree;
 
@@ -68,7 +70,7 @@ public abstract class TreeMixin
 	}
 
 	@Inject(method = "checkTree", remap = false, at = @At(value = "HEAD"), cancellable = true)
-	private static void checkTree(LevelReader level, BlockPos pos, List<ItemStorage> treesToNotCut, int dyntreesize, CallbackInfoReturnable<Boolean> cir)
+	private static void checkTree(LevelReader level, BlockPos pos, List<ItemStorage> treesToNotCut, int dyntreesize, HashMap<Block, ItemStorage> leavesToSaplingMapCache, CallbackInfoReturnable<Boolean> cir)
 	{
 		var chorusSapling = new ItemStack(Blocks.CHORUS_FLOWER);
 
