@@ -39,6 +39,7 @@
 		"minecolonies.ItemClipboardAccessor",
 		"minecolonies.ItemColonyMapAccessor",
 		"minecolonies.ItemCropMixin",
+		"minecolonies.ItemFoodMixin",
 		"minecolonies.ItemListModuleViewAccessor",
 		"minecolonies.ItemQuestLogAccessor",
 		"minecolonies.ItemResourceScrollAccessor",

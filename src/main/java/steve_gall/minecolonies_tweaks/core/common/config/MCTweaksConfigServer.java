@@ -20,6 +20,7 @@ public class MCTweaksConfigServer
 	public final CitizenConfig citizens;
 	public final MonsterConfig monsters;
 	public final BlockConfig blocks;
+	public final ItemConfig items;
 
 	public MCTweaksConfigServer(ForgeConfigSpec.Builder builder)
 	{
@@ -45,6 +46,10 @@ public class MCTweaksConfigServer
 
 		builder.push("blocks");
 		this.blocks = new BlockConfig(builder);
+		builder.pop();
+
+		builder.push("items");
+		this.items = new ItemConfig(builder);
 		builder.pop();
 	}
 
