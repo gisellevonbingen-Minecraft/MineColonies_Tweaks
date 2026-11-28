@@ -45,7 +45,6 @@ import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingBuilder;
-import com.minecolonies.core.network.messages.server.colony.building.BuildRequestMessage;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
@@ -61,6 +60,7 @@ import steve_gall.minecolonies_tweaks.core.common.building.BuildingUtils;
 import steve_gall.minecolonies_tweaks.core.common.colony.BatchUpgradeData;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchUpgradeDataSaveMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.BuildingRequestBuildMessage;
 
 public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 {
@@ -494,7 +494,7 @@ public class BatchUpgradeBuildingsWindow extends AbstractWindowSkeleton
 
 			for (var entry : this.assignments.entrySet())
 			{
-				new BuildRequestMessage(entry.getKey().building, BuildRequestMessage.Mode.BUILD, entry.getValue().building.getPosition()).sendToServer();
+				PacketDistributor.sendToServer(new BuildingRequestBuildMessage(entry.getKey().building, entry.getValue().building.getPosition(), BuildingRequestBuildMessage.BuildOption.UPGRADE));
 			}
 
 			var data = new BatchUpgradeData();

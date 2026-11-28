@@ -60,12 +60,12 @@ public class ModulePos
 
 	public ModulePos(@NotNull IBuildingModule module)
 	{
-		this(new BuildingPos(module.getBuilding()), module.getProducer().key);
+		this(new BuildingPos(module), module.getProducer().key);
 	}
 
 	public ModulePos(@NotNull IBuildingModuleView moduleView)
 	{
-		this(new BuildingPos(moduleView.getBuildingView()), moduleView.getProducer().key);
+		this(new BuildingPos(moduleView), moduleView.getProducer().key);
 	}
 
 	@Override

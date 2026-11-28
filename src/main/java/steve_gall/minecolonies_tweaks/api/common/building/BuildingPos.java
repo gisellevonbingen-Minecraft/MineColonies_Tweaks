@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.buildings.IBuilding;
+import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
+import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.api.items.component.BuildingId;
 import com.minecolonies.api.items.component.ColonyId;
@@ -91,6 +93,16 @@ public class BuildingPos
 	public BuildingPos(@NotNull IBuildingView buildingView)
 	{
 		this(buildingView.getColony(), buildingView.getID());
+	}
+
+	public BuildingPos(@NotNull IBuildingModule module)
+	{
+		this(module.getBuilding());
+	}
+
+	public BuildingPos(@NotNull IBuildingModuleView moduleView)
+	{
+		this(moduleView.getBuildingView());
 	}
 
 	@Override
