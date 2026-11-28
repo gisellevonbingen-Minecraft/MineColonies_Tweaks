@@ -46,9 +46,7 @@ import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.LoadOnlyStructureHandler;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.WindowConstants;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.client.gui.AbstractWindowSkeleton;
-import com.minecolonies.core.network.messages.server.colony.building.BuildRequestMessage;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
@@ -68,6 +66,7 @@ import steve_gall.minecolonies_tweaks.core.common.colony.BatchRepairData;
 import steve_gall.minecolonies_tweaks.core.common.colony.BuildingCost;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataLoadMessage;
 import steve_gall.minecolonies_tweaks.core.common.network.message.BatchRepairDataSaveMessage;
+import steve_gall.minecolonies_tweaks.core.common.network.message.BuildingRequestBuildMessage;
 
 public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 {
@@ -561,7 +560,7 @@ public class BatchRepairBuildingsWindow extends AbstractWindowSkeleton
 
 			for (var entry : this.assignments.entrySet())
 			{
-				Network.getNetwork().sendToServer(new BuildRequestMessage(entry.getKey().building, BuildRequestMessage.Mode.REPAIR, entry.getValue().building.getPosition()));
+				MineColoniesTweaks.network().sendToServer(new BuildingRequestBuildMessage(entry.getKey().building, entry.getValue().building.getPosition(), BuildingRequestBuildMessage.BuildOption.REPAIR));
 			}
 
 			var data = new BatchRepairData();
